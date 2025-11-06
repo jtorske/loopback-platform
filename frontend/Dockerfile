@@ -1,9 +1,9 @@
 # Stage 1: Build Angular app
 FROM node:20 AS build
 WORKDIR /app
-COPY package*.json ./
+COPY loopback/package*.json ./
 RUN npm install
-COPY . .
+COPY loopback/ .
 RUN npm run build --prod
 
 # Stage 2: Serve with NGINX

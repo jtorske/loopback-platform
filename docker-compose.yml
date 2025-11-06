@@ -5,9 +5,8 @@ services:
     build: ./frontend
     ports:
       - "4200:80"
-    environment:
-      # this is an example of how to pass in environment variables
-      - API_URL=http://localhost:5000
+    env_file:
+      - .env
     depends_on:
       - server
 
@@ -15,8 +14,8 @@ services:
     build: ./backend
     ports:
       - "5000:5000"
-    environment:
-      - MYSQL_HOST=db
+    env_file:
+      - .env
     depends_on:
       - db
 
@@ -26,7 +25,7 @@ services:
     env_file:
       - .env
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - db_data:/var/lib/mysql
 
