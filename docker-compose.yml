@@ -1,12 +1,13 @@
-version: "3.8"
-
 services:
   client:
     build: ./frontend
     ports:
-      - "4200:80"
+      - "4200:4200"
     env_file:
       - .env
+    volumes:
+      - ./frontend/loopback:/app
+      - /app/node_modules
     depends_on:
       - server
 
