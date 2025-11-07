@@ -1,13 +1,9 @@
-# Stage 1: Build Angular app
-FROM node:20 AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build --prod
+FROM node:20-slim
 
-# Stage 2: Serve with NGINX
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+WORKDIR /app
+COPY loopback/package*.json ./
+RUN npm install
+COPY loopback/ .
+
+EXPOSE 4200
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--port", "4200"]
