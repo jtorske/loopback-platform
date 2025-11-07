@@ -6,4 +6,13 @@
 
 ### To run
 
-run `docker-compose up --build`
+run `docker-compose build --no-cache`
+run `docker-compose up -d`
+
+### to fully clean
+
+run `docker-compose down --rmi all --volumes --remove-orphans`
+
+### to stop without cleaning
+
+run `docker-compose down`
