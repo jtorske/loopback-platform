@@ -1,18 +1,47 @@
-### Folder structure
+# Loopback
 
-- backend contains flask app
-- frontend contains angular app
-- mysql is spun up using the default mysql image
+Group 6
 
-### To run
+## Project overview
 
-run `docker-compose build --no-cache`
-run `docker-compose up -d`
+- `backend/` — Flask backend (Python)
+- `frontend/` — Angular frontend
+- `docker-compose.yml` — defines three services: `client` (frontend), `server` (backend), and `db` (MySQL)
 
-### to fully clean
+## Environment
 
-run `docker-compose down --rmi all --volumes --remove-orphans`
+This repository uses an environment file (`.env`) for sensitive configuration (DB credentials, application secrets). A safe example is provided in `.env.example`.
 
-### to stop without cleaning
+- Copy `.env.example` to `.env` in the root directory and fill in real values before starting the services.
 
-run `docker-compose down`
+## Ports
+
+- Frontend (client): host 4200 -> container 4200
+- Backend (server): host 5000 -> container 5000
+- MySQL (db): host 3307 -> container 3306 (connect from host to localhost:3307)
+
+## Run locally (development)
+
+Build images and start services (PowerShell):
+```powershell
+# build and run using your local .env
+docker compose up -d --build
+```
+
+If you prefer the separate build step:
+```powershell
+docker compose build --no-cache
+docker compose up -d
+```
+
+## Stop / clean
+
+Stop containers (keep images/volumes):
+```powershell
+docker compose down
+```
+
+Stop and remove images, volumes, and orphan containers:
+```powershell
+docker compose down --rmi all --volumes --remove-orphans
+```
