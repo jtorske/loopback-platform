@@ -2,6 +2,15 @@
 
 Group 6
 
+
+| Name | Student ID |
+| --- | --- |
+| Riyad Abdullayev | 30140509 |
+| Gaurav Ashar | 30140471 |
+| Isaac Hus | 30139733 |
+| Luke Nodwell | 30144931 |
+| Jordan Torske | 30142873 |
+
 ## Project overview
 
 - `backend/` — Flask backend (Python)
