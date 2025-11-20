@@ -1,70 +1,67 @@
 .navbar {
-  background: #0f172a;
-  border-bottom: 1px solid #1e293b;
-  padding: 1rem 1.5rem;
-  color: #f1f5f9;
-  font-family: system-ui, sans-serif;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  background-color: #002246;
+  font-family: 'Consolas', 'Courier New', monospace;
 }
 
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+.nav-left {
+  display: flex;
+}
+
+.nav-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  padding: 4px 12px;
+  background-color: #ffd600;
+  color: #000;
+  font-size: 14px;
+  text-decoration: none;
+  border: 2px solid #002246;
+  border-radius: 4px;
 }
 
-.logo {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #fff;
+.nav-item + .nav-item {
+  margin-left: 12px;
 }
 
-.nav-links {
-  list-style: none;
+.logo-icon {
+  height: 40px;
+  width: auto;
+}
+.nav-item.logo {
+  padding: 0;
+}
+
+.profile-btn {
   display: flex;
-  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  background-color: #ffd600;
+  border: 2px solid #002246;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.nav-links a {
-  color: #cbd5e1;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.25s ease;
+.profile-icon {
+  font-size: 28px;
+  color: #000;
 }
 
-.nav-links a:hover {
-  color: #fff;
-}
-
-.actions {
+.nav-item,
+.profile-btn {
   display: flex;
-  gap: 1rem;
-}
-
-.login-btn {
-  color: #cbd5e1;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.login-btn:hover {
-  color: #fff;
-}
-
-.signup-btn {
-  padding: 0.5rem 1.25rem;
-  border-radius: 999px;
-  background: #6366f1;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.25s ease;
-}
-
-.signup-btn:hover {
-  background: #4f46e5;
+  align-items: center;
+  padding: 8px 18px;
+  background-color: #ffd600;
+  border: 2px solid #002246;
+  font-size: 22px;
+  color: #000;
+  cursor: pointer;
 }
