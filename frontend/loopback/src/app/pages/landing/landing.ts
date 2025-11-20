@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
   selector: 'app-landing',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './landing.component.html',
-  styleUrl: './landing.component.css'
+  templateUrl: './landing.html',
+  styleUrl: './landing.css',
 })
-export class LandingComponent {}
+export class Landing {}
