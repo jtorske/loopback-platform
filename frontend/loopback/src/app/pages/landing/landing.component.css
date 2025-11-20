@@ -1,0 +1,84 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #0f172a;
+  color: #f9fafb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.hero {
+  padding: 4rem 1.5rem 3rem;
+  text-align: center;
+}
+
+.hero-content {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  margin-bottom: 0.75rem;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #cbd5f5;
+  margin-bottom: 2rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn.primary {
+  background: #6366f1;
+  color: #f9fafb;
+}
+
+.btn.secondary {
+  background: transparent;
+  color: #e5e7eb;
+  border-color: #4b5563;
+}
+
+.btn.primary:hover {
+  background: #4f46e5;
+}
+
+.btn.secondary:hover {
+  background: rgba(148, 163, 184, 0.1);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 1.5rem 3rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.feature-card {
+  background: #020617;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid #1f2937;
+}
+
+.feature-card h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
