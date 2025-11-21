@@ -28,11 +28,7 @@ docker compose up -d --build
 ## Run SQL manually
 - To apply scripts or run a single file against a running container:
 ```powershell
-# exec into container and run mysql client
+# execute into container and run mysql client
 docker compose exec db mysql -u root -p
 # then inside container: SOURCE /docker-entrypoint-initdb.d/schema.sql;
 ```
-
-## Notes
-- The bundled `schema.sql` creates the database and tables; `seed.sql` inserts example rows (placeholder passwords). Replace seeds or use a migration tool for production.
-
