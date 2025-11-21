@@ -1,0 +1,67 @@
+.navbar {
+  background-color: #002246;
+  font-family: 'Consolas', 'Courier New', monospace;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+}
+
+.nav-left {
+  display: flex;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  background-color: #ffd600;
+  color: #000;
+  font-size: 14px;
+  text-decoration: none;
+  border: 2px solid #002246;
+  border-radius: 4px;
+}
+
+.nav-item + .nav-item {
+  margin-left: 12px;
+}
+
+.logo-icon {
+  height: 40px;
+  width: auto;
+}
+.nav-item.logo {
+  padding: 0;
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  background-color: #ffd600;
+  border: 2px solid #002246;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.profile-icon {
+  font-size: 28px;
+  color: #000;
+}
+
+.nav-item,
+.profile-btn {
+  display: flex;
+  align-items: center;
+  padding: 8px 18px;
+  background-color: #ffd600;
+  border: 2px solid #002246;
+  font-size: 22px;
+  color: #000;
+  cursor: pointer;
+}

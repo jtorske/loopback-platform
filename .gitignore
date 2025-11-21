@@ -44,5 +44,5 @@ __screenshots__/
 .DS_Store
 Thumbs.db
 
-# Frontend
-/frontend/loopback/.angular/cache
+
+.angular/
