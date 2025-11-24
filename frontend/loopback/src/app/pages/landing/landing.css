@@ -92,3 +92,20 @@
   background: #000;
   color: #ffd600;
 }
+
+.image-placeholder {
+  width: 278px;
+  height: 278px;
+  background-color: #d9d9d9;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.bottom-image {
+  flex: 1;
+  background-color: #d9d9d9;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}

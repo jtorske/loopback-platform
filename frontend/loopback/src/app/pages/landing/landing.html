@@ -2,28 +2,40 @@
   <h1 class="title">Trending and New Products</h1>
 
   <div class="products-row">
-    @for (p of [1, 2, 3, 4]; track $index) {
+    @for (p of trendingProducts; track p.id) {
     <div class="product-card">
-      <div class="product-name">Product Name</div>
-      <div class="image-placeholder"></div>
+      <div class="product-name">{{ p.name }}</div>
+      <div
+        class="image-placeholder"
+        [ngStyle]="{
+          'background-image': 'url(' + p.imageUrl + ')',
+
+        }"
+      ></div>
     </div>
     }
   </div>
 
   <div class="bottom-grid">
-    <div class="bottom-card login-card" routerLink="/company-login">
-      <div class="bottom-title">Company Login</div>
-      <div class="bottom-image"></div>
+    @for (card of bottomCards; track card.id) {
+    <div
+      class="bottom-card"
+      [routerLink]="card.route"
+      [ngClass]="{
+        'login-card': card.id === 'company-login',
+        'products-card': card.id === 'browse-products',
+        'companies-card': card.id === 'browse-companies'
+      }"
+    >
+      <div class="bottom-title">{{ card.title }}</div>
+      <div
+        class="bottom-image"
+        [ngStyle]="{
+          'background-image': 'url(' + card.imageUrl + ')',
+  
+        }"
+      ></div>
     </div>
-
-    <div class="bottom-card products-card" routerLink="/products">
-      <div class="bottom-title">Browse Products</div>
-      <div class="bottom-image"></div>
-    </div>
-
-    <div class="bottom-card companies-card" routerLink="/companies">
-      <div class="bottom-title">Browse Companies</div>
-      <div class="bottom-image"></div>
-    </div>
+    }
   </div>
 </div>
