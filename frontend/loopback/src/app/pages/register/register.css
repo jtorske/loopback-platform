@@ -52,25 +52,19 @@
   gap: 1rem;
 }
 
-/* Put label & input on one row like the mock */
+/* Stack label above input */
 .field {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  column-gap: 1.5rem;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
 }
 
-/* Label styling + colon automatically added */
+/* Label just above the field */
 .field label {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #0b2344;
-  white-space: nowrap;
-}
-
-.field label::after {
-  content: ":";
-  margin-left: 0.15rem;
 }
 
 /* Inputs: wide, light-grey */
