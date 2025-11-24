@@ -1,1 +1,29 @@
-<p>landing works!</p>
+<div class="content">
+  <h1 class="title">Trending and New Products</h1>
+
+  <div class="products-row">
+    @for (p of [1, 2, 3, 4]; track $index) {
+    <div class="product-card">
+      <div class="product-name">Product Name</div>
+      <div class="image-placeholder"></div>
+    </div>
+    }
+  </div>
+
+  <div class="bottom-grid">
+    <div class="bottom-card login-card" routerLink="/company-login">
+      <div class="bottom-title">Company Login</div>
+      <div class="bottom-image"></div>
+    </div>
+
+    <div class="bottom-card products-card" routerLink="/products">
+      <div class="bottom-title">Browse Products</div>
+      <div class="bottom-image"></div>
+    </div>
+
+    <div class="bottom-card companies-card" routerLink="/companies">
+      <div class="bottom-title">Browse Companies</div>
+      <div class="bottom-image"></div>
+    </div>
+  </div>
+</div>

@@ -6,6 +6,6 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './landing.html',
-  styleUrl: './landing.css',
+  styleUrls: ['./landing.css'],
 })
 export class Landing {}
