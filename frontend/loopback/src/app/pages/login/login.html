@@ -1,0 +1,41 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <h1 class="title">Welcome back</h1>
+    <p class="subtitle">Log in to manage your reviews and profile.</p>
+
+    <form class="form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input
+          id="login-email"
+          name="email"
+          type="email"
+          required
+          [(ngModel)]="loginData.email"
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input
+          id="login-password"
+          name="password"
+          type="password"
+          required
+          [(ngModel)]="loginData.password"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button class="primary-btn" type="submit" [disabled]="loginForm.invalid">
+        Log in
+      </button>
+    </form>
+
+    <p class="switch-text">
+      Don’t have an account yet?
+      <a routerLink="/register" class="link">Create one</a>
+    </p>
+  </div>
+</div>
