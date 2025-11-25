@@ -6,12 +6,12 @@ import { CommonModule } from '@angular/common';
 interface Product {
   id: number | string;
   name: string;
-  imageUrl: string;
+  image_url: string;
 }
 
 interface BottomCardImageResponse {
   id: string;
-  imageUrl: string;
+  image_url: string;
 }
 
 interface LandingResponse {
@@ -27,8 +27,8 @@ interface LandingResponse {
   styleUrls: ['./landing.css'],
 })
 export class Landing implements OnInit {
-  private readonly urlplaceholder = '';
-  private readonly apiUrl = this.urlplaceholder;
+  private readonly apiUrl = "http://localhost:5000";
+  private readonly urlpath = "/landing-data";
 
   private http = inject(HttpClient);
 
@@ -36,22 +36,22 @@ export class Landing implements OnInit {
     {
       id: 1,
       name: 'Placeholder Product 1',
-      imageUrl: 'assets/placeholder.png',
+      image_url: 'assets/placeholder.png',
     },
     {
       id: 2,
       name: 'Placeholder Product 2',
-      imageUrl: 'assets/placeholder.png',
+      image_url: 'assets/placeholder.png',
     },
     {
       id: 3,
       name: 'Placeholder Product 3',
-      imageUrl: 'assets/placeholder.png',
+      image_url: 'assets/placeholder.png',
     },
     {
       id: 4,
       name: 'Placeholder Product 4',
-      imageUrl: 'assets/placeholder.png',
+      image_url: 'assets/placeholder.png',
     },
   ];
 
@@ -60,19 +60,19 @@ export class Landing implements OnInit {
       id: 'company-login',
       title: 'Company Login',
       route: '/company-login',
-      imageUrl: 'assets/placeholder.png',
+      image_url: 'assets/placeholder.png',
     },
     {
       id: 'browse-products',
       title: 'Browse Products',
       route: '/products',
-      imageUrl: 'assets/placeholder.png',
+      image_url: 'assets/placeholder.png',
     },
     {
       id: 'browse-companies',
       title: 'Browse Companies',
       route: '/companies',
-      imageUrl: 'assets/placeholder.png',
+      image_url: 'assets/placeholder.png',
     },
   ];
 
@@ -81,7 +81,7 @@ export class Landing implements OnInit {
   }
 
   private loadLandingData(): void {
-    this.http.get<LandingResponse>(this.apiUrl).subscribe({
+    this.http.get<LandingResponse>(this.apiUrl + this.urlpath).subscribe({
       next: (data) => {
         if (data.trendingProducts?.length) {
           this.trendingProducts = data.trendingProducts;
@@ -90,8 +90,8 @@ export class Landing implements OnInit {
         if (data.bottomCardImages?.length) {
           for (const apiCard of data.bottomCardImages) {
             const localCard = this.bottomCards.find((c) => c.id === apiCard.id);
-            if (localCard && apiCard.imageUrl) {
-              localCard.imageUrl = apiCard.imageUrl;
+            if (localCard && apiCard.image_url) {
+              localCard.image_url = apiCard.image_url;
             }
           }
         }

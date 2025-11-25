@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `name` VARCHAR(255) NOT NULL,
   `description` TEXT DEFAULT NULL,
   `price` DECIMAL(10,2) DEFAULT NULL,
+  `image_url` VARCHAR(255) DEFAULT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_products_company` (`company_id`),
