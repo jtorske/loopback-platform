@@ -12,6 +12,7 @@ export class CompanyDashboard implements OnInit {
 
     // placeholder state
     companyName = 'Example Company';
+    companyId = 1;
     industry = 'Technology';
     productCount = 15;
     announcements: Array<{ id: number; title: string; body: string; published_at?: string }> = [];
@@ -25,6 +26,11 @@ export class CompanyDashboard implements OnInit {
 
     visibleCount = 3;
     currIndex = 0;
+
+    // placeholder data for user context (local storage for now)
+    userRole: string | null = null;
+    userCompanyId: number | null = null;
+    isCorporateMember = false;
 
     get visibleProducts() {
         return this.products.slice(
@@ -50,11 +56,24 @@ export class CompanyDashboard implements OnInit {
     }
 
     ngOnInit(): void {
+        this.readUserContext();
         this.loadDashboard();
     }
 
     private loadDashboard(): void {
         // TODO: replace with real API endpoint for data retrieval
         const url = '/api/company/dashboard';
+    }
+
+    private readUserContext(): void {
+        this.userRole = localStorage.getItem('userRole');
+        const rawCompany = localStorage.getItem('userCompanyId');
+        this.userCompanyId = rawCompany ? parseInt(rawCompany, 10) : null;
+
+        // Define corporate membership: user must have corporate role and be assigned to this company
+        this.isCorporateMember =
+            !!this.userRole &&
+            (this.userRole === 'corporate' || this.userRole === 'company_admin') &&
+            this.userCompanyId === this.companyId;
     }
 }
