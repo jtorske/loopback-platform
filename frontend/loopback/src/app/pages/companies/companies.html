@@ -1,1 +1,68 @@
-<p>companies works!</p>
+<div class="page">
+  <div class="shell">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search"
+          (input)="onSearch($any($event.target).value)"
+        />
+      </div>
+
+      <select class="filter-select" (change)="onCategoryChange($any($event.target).value)">
+        <option value="all">All Categories</option>
+        <option *ngFor="let c of allCategories" [value]="c">{{ c }}</option>
+      </select>
+
+      <select class="filter-select" (change)="onSortChange($any($event.target).value)">
+        <option value="none">Sort: Default</option>
+
+        <option value="name-asc">Name (A-Z)</option>
+        <option value="name-desc">Name (Z-A)</option>
+
+        <option value="products-asc"># Products (Low → High)</option>
+        <option value="products-desc"># Products (High → Low)</option>
+
+        <option value="id-asc">ID (Asc)</option>
+        <option value="id-desc">ID (Desc)</option>
+      </select>
+    </div>
+
+    <div class="companies-list">
+      <article class="company-card" *ngFor="let company of filteredCompanies">
+        <div class="company-image-wrapper">
+          <img class="company-image" [src]="company.imageUrl" alt="Company image" />
+        </div>
+
+        <div class="company-content">
+          <div class="company-grid">
+            <div class="company-name">{{ company.name }}</div>
+            <div class="company-id">{{ company.id }}</div>
+            <div class="company-category">{{ company.category }}</div>
+
+            <div class="company-location">{{ company.location }}</div>
+            <div class="company-product-count">{{ company.productCount }} Products</div>
+            <div class="empty"></div>
+          </div>
+        </div>
+
+        <div class="top-product">
+          <div class="top-product-label">Top Product</div>
+          <div class="top-product-card">
+            <div class="top-product-image-wrapper">
+              <img
+                class="top-product-image"
+                [src]="company.topProduct.imageUrl"
+                alt="Top product image"
+              />
+            </div>
+            <div class="top-product-name">
+              {{ company.topProduct.name }}
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>
