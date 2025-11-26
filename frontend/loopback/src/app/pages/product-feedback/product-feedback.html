@@ -1,0 +1,64 @@
+<div class="feedback-page">
+  <div class="feedback-card">
+    <!-- Header: product image + text -->
+    <div class="header">
+      <div class="product-image">
+        <!-- Just a simple placeholder icon; replace with real image later -->
+        <span class="image-icon">🖼️</span>
+      </div>
+
+      <div class="product-meta">
+        <h1 class="product-name">{{ productName }}</h1>
+        <p class="company-name">{{ companyName }}</p>
+      </div>
+    </div>
+
+    <form class="form" (ngSubmit)="onSubmit()" #feedbackForm="ngForm">
+      <!-- Feedback textarea -->
+      <div class="section">
+        <h2 class="section-title">Your Feedback</h2>
+        <textarea
+          name="feedback"
+          [(ngModel)]="feedbackText"
+          required
+          placeholder="Share your experience with this product..."
+        ></textarea>
+      </div>
+
+      <!-- Tags -->
+      <div class="section">
+        <h2 class="section-title">Tags:</h2>
+        <div class="tags">
+          <button
+            type="button"
+            *ngFor="let tag of tags"
+            class="tag"
+            [class.tag--active]="tag === selectedTag"
+            (click)="selectTag(tag)"
+          >
+            {{ tag }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions">
+        <button
+          class="primary-btn"
+          type="submit"
+          [disabled]="feedbackForm.invalid"
+        >
+          Submit Feedback
+        </button>
+
+        <button
+          class="cancel-btn"
+          type="button"
+          (click)="onCancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

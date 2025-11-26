@@ -5,6 +5,9 @@ import { Products } from './pages/products/products';
 import { Companies } from './pages/companies/companies';
 import { Account } from './pages/account/account';
 import { CompanyDashboard } from './pages/company-dashboard/company-dashboard';
+import { Login } from './pages/login/login';
+import { Register } from './pages/register/register';
+import { ProductFeedback } from './pages/product-feedback/product-feedback';
 
 export const routes: Routes = [
   { path: '', component: Landing },
@@ -12,6 +15,9 @@ export const routes: Routes = [
   { path: 'companies', component: Companies },
   { path: 'company-dashboard', component: CompanyDashboard },
   { path: 'account', component: Account },
+  { path: 'login', component: Login },
+  { path: 'register', component: Register },
+  { path: 'feedback', component: ProductFeedback },
 
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
