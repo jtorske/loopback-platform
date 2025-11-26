@@ -4,3 +4,227 @@
   color: #f9fafb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+
+.page {
+  padding: 24px 16px 32px;
+}
+
+.shell {
+  max-width: 90%;
+  max-height: 90%;
+  margin: 0 auto;
+  background: #f9fafb;
+  border-radius: 16px;
+  padding: 24px 20px 28px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.45);
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.search-wrapper {
+  display: flex;
+}
+
+.search-input {
+  width: 100%;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 12px;
+  background: #e5e7eb;
+  font-size: 24px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #111827;
+}
+
+.search-input::placeholder {
+  color: #4b5563;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 12px;
+  background: #e5e7eb;
+  font-size: 24px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #111827;
+  cursor: pointer;
+}
+
+.filter-button .chevron {
+  margin-left: 8px;
+}
+
+.companies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 75vh;
+  overflow: auto;
+}
+
+.company-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #ffd600;
+  border-radius: 8px;
+  color: #111827;
+}
+
+.company-image-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.company-image {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.company-content {
+  display: flex;
+  align-items: center;
+  width: 475px;
+}
+
+.company-grid {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-template-rows: auto auto;
+  column-gap: 24px;
+  row-gap: 4px;
+  width: 100%;
+}
+
+.company-name {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 24px;
+}
+
+.company-id {
+  grid-column: 2;
+  grid-row: 1;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 20px;
+}
+
+.company-category {
+  grid-column: 3;
+  grid-row: 1;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 20px;
+}
+
+.company-location {
+  grid-column: 1;
+  grid-row: 2;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 18px;
+}
+
+.company-product-count {
+  grid-column: 2;
+  grid-row: 2;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 18px;
+}
+
+.empty {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.top-product {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.top-product-label {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 16px;
+}
+
+.top-product-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: #002246;
+  color: #f9fafb;
+  border-radius: 4px;
+}
+
+.top-product-image-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.top-product-image {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 2px;
+  background: #d1d5db;
+}
+
+.top-product-name {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 18px;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filter-select {
+  width: 100%;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 12px;
+  background: #e5e7eb;
+  font-size: 24px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #111827;
+  appearance: none;
+}
+
+.toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filter-select {
+  width: 100%;
+  border-radius: 4px;
+  border: none;
+  padding: 10px 12px;
+  background: #e5e7eb;
+  font-size: 14px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  color: #111827;
+  appearance: none;
+}
