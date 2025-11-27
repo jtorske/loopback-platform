@@ -1,18 +1,28 @@
 <div class="content">
-  <h1 class="title">Trending and New Products</h1>
+  <h1 class="title">Trending Products</h1>
 
+  <!-- Carousel wrapper -->
   <div class="products-row">
-    @for (p of trendingProducts; track p.id) {
-    <div class="product-card">
-      <div class="product-name">{{ p.name }}</div>
-      <div
-        class="image-placeholder"
-        [ngStyle]="{
-          'background-image': 'url(' + p.imageUrl + ')',
+    <div class="products-row-inner">
+      @for (p of trendingProducts; track p.id) {
+      <article class="product-card">
+        <div class="product-name">{{ p.name }}</div>
 
-        }"
-      ></div>
+        <div
+          class="image-placeholder"
+          [ngStyle]="{
+            'background-image': 'url(' + p.imageUrl + ')'
+          }"
+        ></div>
+        
+      </article>
+      }
     </div>
+  </div>
+
+  <div class="carousel-dots" *ngIf="trendingProducts.length > 1">
+    @for (p of trendingProducts; track p.id; let i = $index) {
+    <span class="dot" [class.dot--active]="i === 1"></span>
     }
   </div>
 
