@@ -35,8 +35,12 @@ ON DUPLICATE KEY UPDATE `employee_number` = VALUES(`employee_number`);
 -- ---------------------------------------------------------------------------
 -- Products
 -- ---------------------------------------------------------------------------
-INSERT INTO `products` (`id`, `company_id`, `sku`, `name`, `description`, `price`) VALUES
-  (1, 1, 'SKU-EX-001', 'Example Product', 'Seeded example product', 19.99)
+INSERT INTO `products` (`id`, `company_id`, `sku`, `name`, `description`, `price`, `image_url`) VALUES
+  (1, 1, 'SKU-EX-001', 'Example Product', 'Seeded example product', 19.99, 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg'),
+  (2, 1, 'SKU-EX-002', 'Another Product', 'Another seeded product', 29.99, 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg'),
+  (3, 1, 'SKU-EX-003', 'Third Product', 'Third seeded product', 39.99, 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg'),
+  (4, 1, 'SKU-EX-004', 'Fourth Product', 'Fourth seeded product', 49.99, 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg'),
+  (5, 1, 'SKU-EX-005', 'Fifth Product', 'Fifth seeded product', 59.99, 'https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg')
 ON DUPLICATE KEY UPDATE `name` = VALUES(`name`);
 
 -- ---------------------------------------------------------------------------
