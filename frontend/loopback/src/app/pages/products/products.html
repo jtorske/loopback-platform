@@ -1,1 +1,57 @@
-<p>products works!</p>
+<div class="page">
+  <div class="shell">
+    <div class="toolbar">
+      <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search"
+          aria-label="Search products"
+          (input)="onSearch($any($event.target).value)"
+        />
+      </div>
+
+      <select class="filter-select" (change)="onCategoryChange($any($event.target).value)">
+        <option value="all">All Types</option>
+        <option *ngFor="let category of allCategories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+
+      <select class="filter-select" (change)="onSortChange($any($event.target).value)">
+        <option value="none">Sort: Default</option>
+        <option value="name-asc">Name (A-Z)</option>
+        <option value="name-desc">Name (Z-A)</option>
+        <option value="price-asc">Price (Low → High)</option>
+        <option value="price-desc">Price (High → Low)</option>
+        <option value="id-asc">ID (Asc)</option>
+        <option value="id-desc">ID (Desc)</option>
+      </select>
+    </div>
+
+    <div class="products-list">
+      <article class="product-card" *ngFor="let product of filteredProducts">
+        <div class="product-image-wrapper">
+          <img class="product-image" [src]="product.imageUrl" alt="Product image" />
+        </div>
+
+        <div class="product-content">
+          <div class="product-grid">
+            <div class="product-name">{{ product.name }}</div>
+            <div class="product-id">{{ product.id }}</div>
+            <div class="product-category">{{ product.category }}</div>
+
+            <div class="company-name">{{ product.company }}</div>
+            <div class="price">{{ product.price }}</div>
+            <div class="empty"></div>
+          </div>
+        </div>
+
+        <div class="product-actions">
+          <button class="btn btn-primary" type="button">Review</button>
+          <button class="btn btn-secondary" type="button">Bookmark</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

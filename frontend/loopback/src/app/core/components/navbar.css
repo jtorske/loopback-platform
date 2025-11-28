@@ -14,6 +14,12 @@
   display: flex;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .nav-item {
   display: flex;
   align-items: center;
@@ -65,3 +71,78 @@
   color: #000;
   cursor: pointer;
 }
+
+.nav-auth {
+  font-size: 16px;
+  padding: 6px 14px;
+}
+
+/* ----- Bottom mobile navbar (Instagram style) ----- */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: #002246;
+  border-top: 2px solid #001533;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 1000; /* stay above page content */
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.bottom-icon {
+  font-size: 22px;
+  color: white;
+}
+
+/* Highlight the active route icon in yellow */
+.bottom-nav-item--active .bottom-icon {
+  color: #ffd600;
+}
+
+/* Only show bottom nav on small screens */
+@media (min-width: 768px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+
+/* Mobile: keep a small top bar with just the logo */
+@media (max-width: 767px) {
+  
+  /* Center the logo horizontally */
+  .nav-container {
+    justify-content: center;
+  }
+
+  /* Hide all nav-right content (Login / Sign up / Profile) */
+  .nav-right {
+    display: none;
+  }
+
+  /* In nav-left, hide everything except the logo link */
+  .nav-left .nav-item:not(.logo) {
+    display: none;
+  }
+
+  /* Optional: adjust height/padding for a slimmer mobile header */
+  .navbar {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+}
+
+
+

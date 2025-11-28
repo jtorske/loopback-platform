@@ -1,6 +1,7 @@
 <div class="content">
-  <h1 class="title">Trending and New Products</h1>
+  <h1 class="title">Trending Products</h1>
 
+  <!-- Carousel wrapper -->
   <div class="products-row">
     @for (p of trendingProducts; track p.id) {
     <div class="product-card">
@@ -10,9 +11,21 @@
         [ngStyle]="{
           'background-image': 'url(' + p.image_url + ')',
 
-        }"
-      ></div>
+        <div
+          class="image-placeholder"
+          [ngStyle]="{
+            'background-image': 'url(' + p.imageUrl + ')'
+          }"
+        ></div>
+        
+      </article>
+      }
     </div>
+  </div>
+
+  <div class="carousel-dots" *ngIf="trendingProducts.length > 1">
+    @for (p of trendingProducts; track p.id; let i = $index) {
+    <span class="dot" [class.dot--active]="i === 1"></span>
     }
   </div>
 

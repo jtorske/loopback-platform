@@ -9,8 +9,44 @@
       <a routerLink="/companies" class="nav-item">Companies</a>
     </div>
 
-    <button class="profile-btn" type="button" routerLink="/account">
-      <i class="fa-regular fa-user profile-icon"></i>
-    </button>
+    <div class="nav-right">
+      <a routerLink="/login" class="nav-item nav-auth">Log in</a>
+      <a routerLink="/register" class="nav-item nav-auth">Sign up</a>
+      <button class="profile-btn" type="button" routerLink="/account">
+        <i class="fa-regular fa-user profile-icon"></i>
+      </button>
+    </div>
+
   </div>
+</nav>
+
+<!-- Instagram-style bottom navbar for mobile -->
+<nav class="bottom-nav">
+  <a routerLink="/" routerLinkActive="bottom-nav-item--active" [routerLinkActiveOptions]="{ exact: true }"
+    class="bottom-nav-item">
+    <span class="bottom-icon">
+      <img src="assets/home.svg" alt="Home" class="bottom-icon-img" />
+    </span>
+  </a>
+
+  <a routerLink="/products" routerLinkActive="bottom-nav-item--active" class="bottom-nav-item">
+    <span class="bottom-icon"><img src="assets/search.svg" alt="Search" class="bottom-icon-img" /></span>
+  </a>
+
+  <!-- TODO: change to /bookmarks when you make that route -->
+  <a routerLink="/account" routerLinkActive="bottom-nav-item--active" class="bottom-nav-item">
+    <span class="bottom-icon"><img
+      src="assets/bookmark.svg"
+      alt="Bookmark"
+      class="bottom-icon-img"
+    /></span>
+  </a>
+
+  <a routerLink="/account" routerLinkActive="bottom-nav-item--active" class="bottom-nav-item">
+    <span class="bottom-icon"><img
+      src="assets/profile.svg"
+      alt="Profile"
+      class="bottom-icon-img"
+    /></span>
+  </a>
 </nav>
