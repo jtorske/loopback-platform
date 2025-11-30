@@ -32,7 +32,7 @@
     <div class="companies-list">
       <article class="company-card" *ngFor="let company of filteredCompanies">
         <div class="company-image-wrapper">
-          <img class="company-image" [src]="company.imageUrl" alt="Company image" />
+          <img class="company-image" [src]="company.image_url" alt="Company image" />
         </div>
 
         <div class="company-content">
@@ -53,7 +53,7 @@
             <div class="top-product-image-wrapper">
               <img
                 class="top-product-image"
-                [src]="company.topProduct.imageUrl"
+                [src]="company.topProduct.image_url"
                 alt="Top product image"
               />
             </div>

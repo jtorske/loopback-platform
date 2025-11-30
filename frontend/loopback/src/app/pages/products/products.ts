@@ -9,7 +9,7 @@ interface Product {
   company: string;
   price: string;
   category: string;
-  imageUrl: string;
+  image_url: string;
 }
 
 interface ProductsApiResponse {
@@ -33,61 +33,12 @@ type SortOption =
   styleUrls: ['./products.css'],
 })
 export class Products implements OnInit {
-  private readonly urlplaceholder = '';
-  private readonly apiUrl = this.urlplaceholder;
+  private readonly url = 'http://localhost:5000';
+  private readonly apiUrl = this.url + '/products';
 
   private http = inject(HttpClient);
 
-  products: Product[] = [
-    {
-      id: '#0298891',
-      name: 'Product Name',
-      company: 'Company Name',
-      price: '$950.99',
-      category: 'Laptops',
-      imageUrl: 'assets/placeholder.png',
-    },
-    {
-      id: '#0298891',
-      name: 'Product Name',
-      company: 'Company Name',
-      price: '$950.99',
-      category: 'Laptops',
-      imageUrl: 'assets/placeholder.png',
-    },
-    {
-      id: '#0298891',
-      name: 'Product Name',
-      company: 'Company Name',
-      price: '$950.99',
-      category: 'Laptops',
-      imageUrl: 'assets/placeholder.png',
-    },
-    {
-      id: '#0298892',
-      name: 'Another Product',
-      company: 'Company Name',
-      price: '$750.00',
-      category: 'Laptops',
-      imageUrl: 'assets/placeholder.png',
-    },
-    {
-      id: '#0298893',
-      name: 'Desktop Pro',
-      company: 'Company Name',
-      price: '$1250.00',
-      category: 'Desktops',
-      imageUrl: 'assets/placeholder.png',
-    },
-    {
-      id: '#0298894',
-      name: 'Tablet Max',
-      company: 'Company Name',
-      price: '$550.00',
-      category: 'Tablets',
-      imageUrl: 'assets/placeholder.png',
-    },
-  ];
+  products: Product[] = [];
 
   allCategories: string[] = [];
 
@@ -96,7 +47,6 @@ export class Products implements OnInit {
   sortOption: SortOption = 'none';
 
   ngOnInit(): void {
-    this.computeFilterOptions();
     this.loadProducts();
   }
 
@@ -148,22 +98,24 @@ export class Products implements OnInit {
 
   private loadProducts(): void {
     if (!this.apiUrl) return;
+    console.log('Fetching products from API:', this.apiUrl);
 
-    this.http.get<ProductsApiResponse>(this.apiUrl).subscribe({
+    this.http.get<Product[]>(this.apiUrl).subscribe({
       next: (data) => {
-        if (data.products?.length) {
-          this.products = data.products.map((p) => ({
-            ...p,
-            imageUrl: p.imageUrl || 'assets/placeholder.png',
-          }));
-          this.computeFilterOptions();
+        console.log('Products data received:', data);
+        console.log('Type of data:', typeof data);
+        if (data) {
+          this.products = Array.isArray(data) ? data : [];
         }
+        this.computeFilterOptions();
       },
-      error: (err) => console.error('Failed to fetch products:', err),
+      error: (err) => {
+        console.error('Failed to load landing data:', err);
+      },
     });
   }
 
-  private computeFilterOptions(): void {
+    private computeFilterOptions(): void {
     const categories = new Set<string>();
 
     for (const p of this.products) {
@@ -171,6 +123,7 @@ export class Products implements OnInit {
     }
 
     this.allCategories = Array.from(categories).sort();
+    console.log('Available categories:', this.allCategories);
   }
 
   private parsePrice(price: string): number {
