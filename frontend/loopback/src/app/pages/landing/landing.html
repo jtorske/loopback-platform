@@ -3,22 +3,17 @@
 
   <!-- Carousel wrapper -->
   <div class="products-row">
-    @for (p of trendingProducts; track p.id) {
-    <div class="product-card">
-      <div class="product-name">{{ p.name }}</div>
-      <div
-        class="image-placeholder"
-        [ngStyle]="{
-          'background-image': 'url(' + p.image_url + ')',
-
+    <div class="products-row-inner">
+      @for (p of trendingProducts; track p.id) {
+      <div class="product-card">
+        <div class="product-name">{{ p.name }}</div>
         <div
           class="image-placeholder"
           [ngStyle]="{
-            'background-image': 'url(' + p.imageUrl + ')'
+            'background-image': 'url(' + p.image_url + ')'
           }"
         ></div>
-        
-      </article>
+      </div>
       }
     </div>
   </div>
@@ -44,8 +39,7 @@
       <div
         class="bottom-image"
         [ngStyle]="{
-          'background-image': 'url(' + card.image_url + ')',
-  
+          'background-image': 'url(' + card.image_url + ')'
         }"
       ></div>
     </div>
