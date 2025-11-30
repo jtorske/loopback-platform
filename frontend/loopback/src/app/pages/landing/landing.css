@@ -203,3 +203,9 @@
     font-size: 20px;
   }
 }
+
+.image-grid {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
