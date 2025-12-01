@@ -17,7 +17,7 @@ export class Login {
     password: ''
   };
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   onSubmit() {
     this.http.post<any>('http://localhost:5000/login', {
@@ -30,6 +30,8 @@ export class Login {
         // Store user data and redirect
         localStorage.setItem('user', JSON.stringify(response.user));
         localStorage.setItem('permissions', response.user.role);
+        // notify other components in the same window that the user changed
+        try { window.dispatchEvent(new CustomEvent('user-changed')); } catch (e) { }
         this.router.navigate(['/']);
       },
       error: (error) => {

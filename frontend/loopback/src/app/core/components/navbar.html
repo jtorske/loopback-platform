@@ -7,40 +7,53 @@
 
       <a routerLink="/products" class="nav-item">Products</a>
       <a routerLink="/companies" class="nav-item">Companies</a>
-      <!-- need to implement logic to hide this item when user is not corporate -->
-      <a routerLink="/company-dashboard" class="nav-item">My Company</a>
+      <!-- show My Company only for employee/coadmin/sysadmin roles -->
+      <a *ngIf="showMyCompany" routerLink="/company-dashboard" class="nav-item">My Company</a>
     </div>
 
     <div class="nav-right">
-      <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-item nav-auth" id="login-button">Log in</a>
-      <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-item nav-auth" id="signup-button">Sign up</a>
+      <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-item nav-auth" id="login-button"
+        >Log in</a
+      >
+      <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-item nav-auth" id="signup-button"
+        >Sign up</a
+      >
       <button class="profile-btn" type="button" routerLink="/account">
         <i class="fa-regular fa-user profile-icon"></i>
       </button>
     </div>
-
   </div>
 </nav>
 
 <!-- Instagram-style bottom navbar for mobile -->
 <nav class="bottom-nav">
-  <a routerLink="/" routerLinkActive="bottom-nav-item--active" [routerLinkActiveOptions]="{ exact: true }"
-    class="bottom-nav-item">
+  <a
+    routerLink="/"
+    routerLinkActive="bottom-nav-item--active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    class="bottom-nav-item"
+  >
     <span class="bottom-icon">
       <img src="assets/home.svg" alt="Home" class="bottom-icon-img" />
     </span>
   </a>
 
   <a routerLink="/products" routerLinkActive="bottom-nav-item--active" class="bottom-nav-item">
-    <span class="bottom-icon"><img src="assets/search.svg" alt="Search" class="bottom-icon-img" /></span>
+    <span class="bottom-icon"
+      ><img src="assets/search.svg" alt="Search" class="bottom-icon-img"
+    /></span>
   </a>
 
   <!-- TODO: change to /bookmarks when you make that route -->
   <a routerLink="/account" routerLinkActive="bottom-nav-item--active" class="bottom-nav-item">
-    <span class="bottom-icon"><img src="assets/bookmark.svg" alt="Bookmark" class="bottom-icon-img" /></span>
+    <span class="bottom-icon"
+      ><img src="assets/bookmark.svg" alt="Bookmark" class="bottom-icon-img"
+    /></span>
   </a>
 
   <a routerLink="/account" routerLinkActive="bottom-nav-item--active" class="bottom-nav-item">
-    <span class="bottom-icon"><img src="assets/profile.svg" alt="Profile" class="bottom-icon-img" /></span>
+    <span class="bottom-icon"
+      ><img src="assets/profile.svg" alt="Profile" class="bottom-icon-img"
+    /></span>
   </a>
 </nav>
