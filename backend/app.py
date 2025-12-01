@@ -41,7 +41,10 @@ def create_app():
         email = db.Column(db.String(255), unique=True, nullable=False)
         role = db.Column(db.String(50), nullable=False, default="consumer")
         is_active = db.Column(db.Boolean, nullable=False, default=True)
-        created_at = db.Column(db.DateTime, default=datetime.utcnow)
+        created_at = db.Column(db.DateTime, default=datetime.now)
+        password_hash = db.Column(db.String(255), nullable=False, default="")
+        
+        
 
         def to_dict(self):
             return {
@@ -50,7 +53,8 @@ def create_app():
                 "email": self.email,
                 "role": self.role,
                 "is_active": self.is_active,
-                "created_at": self.created_at.isoformat() if self.created_at else None,
+                "created_at": self.created_at,
+                "passwordhash": self.password_hash,
             }
 
     class Company(db.Model):
@@ -313,24 +317,34 @@ def create_app():
         feedback_items = Feedback.query.filter_by(company_id=company_id).order_by(Feedback.created_at.desc()).all()
         return jsonify([f.to_dict() for f in feedback_items]), 200
     
-    # 15) verify login
+    # 15) login
     @app.route("/login", methods=["POST"])
     def login():
         data = request.get_json() or {}
-        username = data.get("username")
         email = data.get("email")
         passwordhash = data.get("password")
-        if not username or not email:
+        if not email:
             return jsonify({"error": "username and email are required"}), 400
-        user = User.query.filter_by(username=username, email=email).first()
+        user = User.query.filter_by(email=email).first()
         user_dict = user.to_dict() if user else None
-        if user_dict:
-            if user_dict.get("passwordhash") == passwordhash:
-                return jsonify({"message": "login successful", "user": user_dict}), 200
+        try:
+            if user_dict:
+                if user_dict.get("passwordhash") == passwordhash:
+                    ret_user = {
+                        "id": user_dict.get("id"),
+                        "username": user_dict.get("username"),
+                        "email": user_dict.get("email"),
+                        "role": user_dict.get("role"),
+                        "is_active": user_dict.get("is_active"),
+                        "created_at": user_dict.get("created_at")
+                    }
+                    return jsonify({"message": "login successful", "user": ret_user}), 200
+                else:
+                    return jsonify({"error": f"invalid password"}), 401
             else:
-                return jsonify({"error": "invalid password"}), 401
-        else:
-            return jsonify({"error": "user not found"}), 404
+                return jsonify({"error": "user not found."}), 404
+        except Exception as e:
+            return jsonify({"error": f"login error: {str(e)}"}), 500
         
     # 16) landing data
     @app.route("/landing-data", methods=["GET"])
@@ -370,16 +384,38 @@ def create_app():
 
         return jsonify(landing_response), 200
 
+    # 17) sign up
+    @app.route("/signup", methods=["POST"])
+    def signup():
+        data = request.get_json() or {}
+        username = data.get("username")
+        email = data.get("email")
+        passwordhash = data.get("password")
+        if not username or not email or not passwordhash:
+            return jsonify({"error": "username, email and password are required"}), 400
+        existing_user = User.query.filter(
+            (User.username == username) | (User.email == email)
+        ).first()
+        if existing_user:
+            return jsonify({"error": "username or email already exists"}), 409
+        new_user = User(
+            username=username,
+            email=email,
+            password_hash=passwordhash,
+            role="consumer",
+            is_active=True,
+            created_at=datetime.now()
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({"message": "signup successful", "user": new_user.to_dict()}), 201
     
-            
-            
-            
-        
-
+    # enable CORS for the created app so preflight (OPTIONS) requests
+    # are handled regardless of how the app is run (dev/prod/Werkzeug/gunicorn)
+    CORS(app, resources={r"/*": {"origins": "*"}})
     return app
 
 
 if __name__ == "__main__":
     app = create_app()
-    CORS(app, resources={r"/*": {"origins": "*"}})
     app.run(host="0.0.0.0", port=5000, debug=True)

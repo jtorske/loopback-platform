@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -13,11 +14,28 @@ import { RouterLink } from '@angular/router';
 export class Login {
   loginData = {
     email: '',
-    password: '',
+    password: ''
   };
 
+  constructor(private http: HttpClient, private router: Router) {}
+
   onSubmit() {
-    // TODO: replace console.log with your real API call later
-    console.log('Login form submitted:', this.loginData);
+    this.http.post<any>('http://localhost:5000/login', {
+      username: this.loginData.email,
+      email: this.loginData.email,
+      password: this.loginData.password,
+    }).subscribe({
+      next: (response) => {
+        console.log('Login successful:', response);
+        // Store user data and redirect
+        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('permissions', response.user.role);
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+        alert('Login failed: ' + (error.error.error || 'Unknown error'));
+      }
+    });
   }
 }
