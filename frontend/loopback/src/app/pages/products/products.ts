@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 interface Product {
@@ -45,6 +45,8 @@ export class Products implements OnInit {
   searchTerm = '';
   selectedCategory = 'all';
   sortOption: SortOption = 'none';
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -142,5 +144,9 @@ export class Products implements OnInit {
 
   onSortChange(value: string): void {
     this.sortOption = value as SortOption;
+  }
+
+  onReview(product: Product): void {
+    this.router.navigate(['/feedback', product.id]);
   }
 }
