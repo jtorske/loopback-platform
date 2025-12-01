@@ -29,6 +29,7 @@ export class Login {
         console.log('Login successful:', response);
         // Store user data and redirect
         localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('permissions', response.user.role);
         this.router.navigate(['/']);
       },
       error: (error) => {
