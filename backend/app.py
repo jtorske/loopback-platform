@@ -290,13 +290,21 @@ def create_app():
     @app.route("/products", methods=["GET"])
     def list_products():
         products = Product.query.all()
-        return jsonify([p.to_dict() for p in products]), 200
+        products_objects = [p.to_dict() for p in products]
+        for p_obj in products_objects:
+            company = Company.query.filter_by(id=p_obj["company_id"]).first()
+            p_obj["company"] = company.name if company else ""
+        return products_objects, 200
     
     # 12) Get single product
     @app.route("/products/<int:product_id>", methods=["GET"])
     def get_product(product_id):
         product = Product.query.get_or_404(product_id)
-        return jsonify(product.to_dict()), 200
+        company = Company.query.filter_by(id=product.company_id).first()
+        company_name = company.name if company else ""
+        return_dict = product.to_dict()
+        return_dict["company"] = company_name
+        return return_dict, 200
     
     # 13) get top 5 products by feedback count
     @app.route("/products/top-feedback", methods=["GET"])
@@ -409,6 +417,12 @@ def create_app():
         db.session.add(new_user)
         db.session.commit()
         return jsonify({"message": "signup successful", "user": new_user.to_dict()}), 201
+    
+        # 18) get single company
+    @app.route("/companies/<int:company_id>", methods=["GET"])
+    def get_company(company_id):
+        company = Company.query.get_or_404(company_id)
+        return jsonify(company.to_dict()), 200
     
     # enable CORS for the created app so preflight (OPTIONS) requests
     # are handled regardless of how the app is run (dev/prod/Werkzeug/gunicorn)
