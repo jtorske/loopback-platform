@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
 
 interface CompanyTopProduct {
   name: string;
-  imageUrl: string;
+  image_url: string;
 }
 
 interface Company {
@@ -12,7 +14,7 @@ interface Company {
   location: string;
   productCount: number;
   category: string;
-  imageUrl: string;
+  image_url: string;
   topProduct: CompanyTopProduct;
 }
 
@@ -28,76 +30,23 @@ type SortOption =
 @Component({
   selector: 'app-companies',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './companies.html',
   styleUrls: ['./companies.css'],
 })
 export class Companies implements OnInit {
-  companies: Company[] = [
-    {
-      id: '#81546',
-      name: 'Company Name',
-      location: 'Calgary, AB',
-      productCount: 32,
-      category: 'Electronics',
-      imageUrl: 'assets/placeholder.png',
-      topProduct: { name: 'Product Name', imageUrl: 'assets/placeholder.png' },
-    },
-    {
-      id: '#81546',
-      name: 'Company Name',
-      location: 'Calgary, AB',
-      productCount: 32,
-      category: 'Electronics',
-      imageUrl: 'assets/placeholder.png',
-      topProduct: { name: 'Product Name', imageUrl: 'assets/placeholder.png' },
-    },
-    {
-      id: '#81546',
-      name: 'Company Name',
-      location: 'Calgary, AB',
-      productCount: 32,
-      category: 'Electronics',
-      imageUrl: 'assets/placeholder.png',
-      topProduct: { name: 'Product Name', imageUrl: 'assets/placeholder.png' },
-    },
-    {
-      id: '#81547',
-      name: 'Another Company',
-      location: 'Calgary, AB',
-      productCount: 12,
-      category: 'Electronics',
-      imageUrl: 'assets/placeholder.png',
-      topProduct: { name: 'Product Name', imageUrl: 'assets/placeholder.png' },
-    },
-    {
-      id: '#81548',
-      name: 'Third Company',
-      location: 'Edmonton, AB',
-      productCount: 45,
-      category: 'Hardware',
-      imageUrl: 'assets/placeholder.png',
-      topProduct: { name: 'Product Name', imageUrl: 'assets/placeholder.png' },
-    },
-    {
-      id: '#81549',
-      name: 'Fourth Company',
-      location: 'Vancouver, BC',
-      productCount: 7,
-      category: 'Software',
-      imageUrl: 'assets/placeholder.png',
-      topProduct: { name: 'Product Name', imageUrl: 'assets/placeholder.png' },
-    },
-  ];
 
   allCategories: string[] = [];
+  companies: Company[] = [];
+  apiUrl = 'http://localhost:5000/companies';
 
   searchTerm = '';
   selectedCategory = 'all';
   sortOption: SortOption = 'none';
+  private http = inject(HttpClient);
 
   ngOnInit(): void {
-    this.computeFilterOptions();
+    this.getCompanies();
   }
 
   get filteredCompanies(): Company[] {
@@ -146,6 +95,26 @@ export class Companies implements OnInit {
     const set = new Set<string>();
     for (const c of this.companies) set.add(c.category);
     this.allCategories = Array.from(set).sort();
+  }
+
+  private getCompanies(): void {
+     if (!this.apiUrl) return;
+    console.log('Fetching products from API:', this.apiUrl);
+
+    this.http.get<Company[]>(this.apiUrl).subscribe({
+      next: (data) => {
+        console.log('Products data received:', data);
+        console.log('Type of data:', typeof data);
+        if (data) {
+          this.companies = Array.isArray(data) ? data : [];
+        }
+        this.computeFilterOptions();
+      },
+      error: (err) => {
+        console.error('Failed to load landing data:', err);
+      },
+    });
+
   }
 
   onSearch(value: string) {

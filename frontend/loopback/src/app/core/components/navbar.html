@@ -12,8 +12,8 @@
     </div>
 
     <div class="nav-right">
-      <a routerLink="/login" class="nav-item nav-auth">Log in</a>
-      <a routerLink="/register" class="nav-item nav-auth">Sign up</a>
+      <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-item nav-auth" id="login-button">Log in</a>
+      <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-item nav-auth" id="signup-button">Sign up</a>
       <button class="profile-btn" type="button" routerLink="/account">
         <i class="fa-regular fa-user profile-icon"></i>
       </button>

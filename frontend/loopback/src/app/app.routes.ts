@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'account', component: Account },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
-  { path: 'feedback', component: ProductFeedback },
+  { path: 'feedback/:id', component: ProductFeedback },
 
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
