@@ -4,3 +4,83 @@
   color: #f9fafb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+
+.account-card,
+.activity-card,
+.followed-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.title {
+  font-family: 'Roboto Mono', monospace;
+  font-weight: bold;
+  color: #001D3D;
+}
+
+.title-lg {
+  font-size: 48px;
+}
+
+.title-md {
+  font-size: 40px;
+}
+
+.title-sm {
+  font-size: 32px;
+}
+
+.account-page {
+  min-height: 89vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.account-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  height: 80vh; /* Ensure children can stretch to 80% of viewport height */
+}
+
+.side-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.account-card {
+  height: 80vh;
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 48px 56px 40px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.activity-card {
+  height: 40vh;
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 48px 56px 40px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.followed-card {
+  height: 40vh;
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 26px;
+  padding: 48px 56px 40px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
