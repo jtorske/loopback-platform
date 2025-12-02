@@ -20,8 +20,7 @@
   grid-template-rows: auto auto auto;
   grid-template-areas:
     "company announcements"
-    "products announcements"
-    "metrics metrics";
+    "products announcements";
   gap: 1.5rem;
   padding: 1.5rem;
 }
@@ -45,10 +44,6 @@
 
 .products-carousel {
   grid-area: products;
-}
-
-.metrics {
-  grid-area: metrics;
 }
 
 /* Company summary internal layout */
@@ -175,8 +170,7 @@
     grid-template-areas:
       "company"
       "announcements"
-      "products"
-      "metrics";
+      "products";
   }
 
   .products-row {
