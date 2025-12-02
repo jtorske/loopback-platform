@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-company-dashboard',
@@ -28,10 +29,10 @@ export class CompanyDashboard implements OnInit {
     currIndex = 0;
 
     // placeholder data for user context (local storage for now)
-    userRole: string | null = null;
-    userCompanyId: number | null = null;
-    isCorporateMember = false;
-
+    userPerms: string | null = null;
+    isCompanyMember = false;
+    user: any = null;
+    private http = inject(HttpClient);
     get visibleProducts() {
         return this.products.slice(
             this.currIndex,
@@ -61,19 +62,43 @@ export class CompanyDashboard implements OnInit {
     }
 
     private loadDashboard(): void {
-        // TODO: replace with real API endpoint for data retrieval
-        const url = '/api/company/dashboard';
+        // get company dashboard data from backend
     }
 
     private readUserContext(): void {
-        this.userRole = localStorage.getItem('userRole');
-        const rawCompany = localStorage.getItem('userCompanyId');
-        this.userCompanyId = rawCompany ? parseInt(rawCompany, 10) : null;
+        this.userPerms = localStorage.getItem('permissions');
+        this.user = JSON.parse(localStorage.getItem('user') || '{}');
 
-        // Define corporate membership: user must have corporate role and be assigned to this company
-        this.isCorporateMember =
-            !!this.userRole &&
-            (this.userRole === 'corporate' || this.userRole === 'company_admin') &&
-            this.userCompanyId === this.companyId;
+        const userId = this.user?.id;
+        if (!userId) {
+            // fallback to permission string
+            if (!this.userPerms) {
+                this.isCompanyMember = false;
+                return;
+            }
+            this.isCompanyMember = this.userPerms.includes('system_admin') || this.userPerms.includes('company_admin') || this.userPerms.includes('employee');
+            return;
+        }
+
+        this.http.get<any>('http://localhost:5000/users/employee', {
+            params: { user_id: userId },
+        }).subscribe({
+            next: (res: any) => {
+                console.log('Fetched company for user', res);
+                if (res && res.company_id) {
+                    this.companyId = res.company_id;
+                    console.log('User company_id:', this.companyId);
+                    this.isCompanyMember = true;
+                } else {
+                    // check sysadmin role
+                    this.isCompanyMember = (String(this.userPerms || this.user?.role || '').toLowerCase().includes('system_admin'));
+                }
+            },
+            error: (err: any) => {
+                console.error('Failed to fetch company for user', err);
+                this.isCompanyMember = false;
+            }
+        });
     }
+
 }

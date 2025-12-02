@@ -1,77 +1,73 @@
 <div class="company-dashboard">
-    <h1 class="title">My Company Dashboard</h1>
+  <h1 class="title">My Company Dashboard</h1>
 
-    <div class="dashboard-grid">
-        <section class="card company-summary">
-            <div class="company-header">
-                <!-- placeholder image box -->
-                <div class="company-logo"></div>
+  <div class="dashboard-grid">
+    <section class="card company-summary">
+      <div class="company-header">
+        <!-- placeholder image box -->
+        <div class="company-logo"></div>
 
-                <div class="company-info">
-                    <h2>{{ companyName }}</h2>
-                    <p class="industry">{{ industry }}</p>
-                    <p class="product-count">{{ productCount }} Products</p>
+        <div class="company-info">
+          <h2>{{ companyName }}</h2>
+          <p class="industry">{{ industry }}</p>
+          <p class="product-count">{{ productCount }} Products</p>
 
-                    <ul class="sentiment-list" *ngIf="isCorporateMember">
-                        <li>Average Sentiment: </li>
-                        <li>Recent Sentiment: </li>
-                        <li>Popular FB Type: </li>
-                    </ul>
-                </div>
-            </div>
+          <ul class="sentiment-list" *ngIf="isCompanyMember">
+            <li>Average Sentiment:</li>
+            <li>Recent Sentiment:</li>
+            <li>Popular FB Type:</li>
+          </ul>
+        </div>
+      </div>
 
-            <div class="company-actions">
-                <button class="btn btn-secondary">Follow Company</button>
-                <button class="btn btn-primary">View All Products</button>
-            </div>
-        </section>
+      <div class="company-actions">
+        <button class="btn btn-secondary">Follow Company</button>
+        <button class="btn btn-primary">View All Products</button>
+      </div>
+    </section>
 
-        <!-- Announcements -->
-        <section class="card announcements">
-            <div class="announcements-header">
-                <h3>Announcements</h3>
-            </div>
+    <!-- Announcements -->
+    <section class="card announcements">
+      <div class="announcements-header">
+        <h3>Announcements</h3>
+      </div>
 
-            <ul class="announcement-list">
-                <li>Announcement 1</li>
-                <li>Announcement 2</li>
-                <li>Announcement 3</li>
-            </ul>
+      <ul class="announcement-list">
+        <li>Announcement 1</li>
+        <li>Announcement 2</li>
+        <li>Announcement 3</li>
+      </ul>
 
-            <button class="btn btn-primary view-all-announcements">
-                View All Announcements
-            </button>
-        </section>
+      <button class="btn btn-primary view-all-announcements">View All Announcements</button>
+    </section>
 
-        <!-- Product cards carousel -->
-        <section class="products-carousel">
+    <!-- Product cards carousel -->
+    <section class="products-carousel">
+      <button class="carousel-arrow left" (click)="prevSlide()" [disabled]="currIndex === 0">
+        ‹
+      </button>
 
-            <button class="carousel-arrow left" (click)="prevSlide()" [disabled]="currIndex === 0">
-                ‹
-            </button>
+      <div class="carousel-track">
+        <article class="card product-card" *ngFor="let product of visibleProducts">
+          <h4>{{ product.name }}</h4>
+          <p class="product-meta">{{ product.description }}</p>
+          <button class="btn btn-primary">Read More</button>
+        </article>
+      </div>
 
-            <div class="carousel-track">
-                <article class="card product-card" *ngFor="let product of visibleProducts">
-                    <h4>{{ product.name }}</h4>
-                    <p class="product-meta">{{ product.description }}</p>
-                    <button class="btn btn-primary">Read More</button>
-                </article>
-            </div>
+      <button
+        class="carousel-arrow right"
+        (click)="nextSlide()"
+        [disabled]="currIndex + visibleCount >= products.length"
+      >
+        ›
+      </button>
+    </section>
 
-            <button class="carousel-arrow right" (click)="nextSlide()"
-                [disabled]="currIndex + visibleCount >= products.length">
-                ›
-            </button>
-
-        </section>
-
-
-        <!-- Metrics section -->
-        <section class="card metrics" *ngIf="isCorporateMember">
-            <h3>Company Metrics at a Glance</h3>
-            <!-- whatever charts / stats later -->
-        </section>
-
-    </div>
-
+    <!-- Metrics section -->
+    <section class="card metrics" *ngIf="isCompanyMember">
+      <h3>Company Metrics at a Glance</h3>
+      <!-- whatever charts / stats later -->
+    </section>
+  </div>
 </div>
