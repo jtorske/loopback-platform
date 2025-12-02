@@ -16,7 +16,7 @@ export class CompanyDashboard implements OnInit {
     companyId = 1;
     industry = 'Technology';
     productCount = 15;
-    announcements: Array<{ id: number; title: string; body: string; published_at?: string }> = [];
+    announcements: Array<{ id: number; title: string; body: string; published_at?: string; publisher?: string }> = [];
     products = [
         { name: 'Product 1', description: 'Description 1' },
         { name: 'Product 2', description: 'Description 2' },
@@ -63,6 +63,67 @@ export class CompanyDashboard implements OnInit {
 
     private loadDashboard(): void {
         // get company dashboard data from backend
+        this.http.get<any>('http://localhost:5000/company', {
+            params: { company_id: this.companyId },
+        }).subscribe({
+            next: (res: any) => {
+                console.log('Fetched company dashboard data', res);
+                this.companyName = res.name || this.companyName;
+                this.industry = (res.description && res.website)
+                    ? `${res.description} | ${res.website}`
+                    : (res.description || res.website || this.industry);
+                // fetch announcements asynchronously (getAnnouncements sets `this.announcements`)
+                this.getAnnouncements(this.companyId);
+                console.log('Announcements:', this.announcements);
+                this.updateProducts(this.companyId)
+                this.updateCompanyMetrics(this.companyId);
+            },
+            error: (err: any) => {
+                console.error('Failed to fetch company dashboard data', err);
+            }
+        });
+    }
+
+    private updateCompanyMetrics(companyId: number): void {
+    }
+
+    private updateProducts(companyId: number): void {
+        this.http.get<any>('http://localhost:5000/companies/products', {
+            params: { company_id: companyId },
+        }).subscribe({
+            next: (res: any) => {
+                console.log('Fetched products for company', res);
+                this.productCount = Array.isArray(res) ? res.length : 0;
+                this.products = Array.isArray(res) ? res.map((p: any) => ({
+                    name: p.name,
+                    description: p.description,
+                })) : [];
+            },
+            error: (err: any) => {
+                console.error('Failed to fetch products for company', err);
+            }
+        });
+    }
+
+    private getAnnouncements(companyId: number): void {
+        this.http.get<any[]>('http://localhost:5000/company/announcements', {
+            params: { company_id: companyId },
+        }).subscribe({
+            next: (res: any[]) => {
+                console.log('Fetched announcements for company', res);
+                this.announcements = Array.isArray(res) ? res.map((ann: any) => ({
+                    id: ann.id,
+                    title: ann.title,
+                    body: ann.body,
+                    published_at: ann.published_at,
+                    publisher: ann.publisher,
+                })) : [];
+            },
+            error: (err: any) => {
+                console.error('Failed to fetch announcement data', err);
+                this.announcements = [];
+            }
+        });
     }
 
     private readUserContext(): void {
@@ -86,9 +147,14 @@ export class CompanyDashboard implements OnInit {
             next: (res: any) => {
                 console.log('Fetched company for user', res);
                 if (res && res.company_id) {
+                    const prev = this.companyId;
                     this.companyId = res.company_id;
                     console.log('User company_id:', this.companyId);
                     this.isCompanyMember = true;
+                    // refresh dashboard if company changed
+                    if (this.companyId !== prev) {
+                        this.loadDashboard();
+                    }
                 } else {
                     // check sysadmin role
                     this.isCompanyMember = (String(this.userPerms || this.user?.role || '').toLowerCase().includes('system_admin'));

@@ -264,10 +264,13 @@ def create_app():
         return jsonify(company.to_dict()), 201
 
     # 6) List products for a company
-    @app.route("/companies/<int:company_id>/products", methods=["GET"])
-    def list_company_products(company_id):
-        company = Company.query.get_or_404(company_id)
-        return jsonify([p.to_dict() for p in company.products]), 200
+    @app.route("/companies/products", methods=["GET"])
+    def list_company_products():
+        company_id = request.args.get("company_id", type=int)
+        if not company_id:
+            return jsonify({"error": "company not found"}), 404
+        products = Product.query.filter_by(company_id=company_id).all()
+        return jsonify([p.to_dict() for p in products]), 200
 
     # 7) Create feedback
     @app.route("/feedback", methods=["POST"])
@@ -460,11 +463,27 @@ def create_app():
         db.session.commit()
         return jsonify({"message": "signup successful", "user": new_user.to_dict()}), 201
     
-        # 18) get single company
-    @app.route("/companies/<int:company_id>", methods=["GET"])
-    def get_company(company_id):
+    # 18) get single company
+    @app.route("/company", methods=["GET"])
+    def get_company():
+        company_id = request.args.get("company_id", type=int)
+        if not company_id:
+            return jsonify({"error": "company not found"}), 404
         company = Company.query.get_or_404(company_id)
         return jsonify(company.to_dict()), 200
+    
+    # 19) get company announcements
+    @app.route("/company/announcements", methods=["GET"])
+    def get_company_announcements():
+        company_id = request.args.get("company_id", type=int)
+        if not company_id:
+            return jsonify({"error": "company not found"}), 404
+
+        announcements = Announcement.query.filter_by(company_id=company_id).all()
+        company_announcements = [a.to_dict() for a in announcements]
+
+        return jsonify(company_announcements), 200
+
     
     # enable CORS for the created app so preflight (OPTIONS) requests
     # are handled regardless of how the app is run (dev/prod/Werkzeug/gunicorn)

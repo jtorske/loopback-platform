@@ -33,9 +33,16 @@
       </div>
 
       <ul class="announcement-list">
-        <li>Announcement 1</li>
-        <li>Announcement 2</li>
-        <li>Announcement 3</li>
+        <li *ngFor="let ann of announcements" class="announcement-item">
+          <h4 class="announcement-title">{{ ann.title }}</h4>
+          <p class="announcement-body">{{ ann.body }}</p>
+          <small class="announcement-date" *ngIf="ann.published_at">{{
+            ann.published_at | date : 'short'
+          }}</small>
+        </li>
+        <li *ngIf="!announcements || announcements.length === 0" class="no-announcements">
+          No announcements
+        </li>
       </ul>
 
       <button class="btn btn-primary view-all-announcements">View All Announcements</button>
