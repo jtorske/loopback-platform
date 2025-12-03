@@ -48,7 +48,6 @@
   flex: 0 0 80vw;
   max-width: 320px;
   scroll-snap-align: start;
-
   background: #003566;
   border-radius: 6px;
   padding: 12px;
@@ -58,12 +57,11 @@
 
 .product-name {
   text-align: center;
-  color: #ffd600;
   font-size: 18px;
   margin-bottom: 8px;
 }
 
-.loop-card .image-placeholder {
+.image-placeholder {
   width: 100%;
   height: 240px;
   background: #d9d9d9;
@@ -80,8 +78,26 @@
   }
 
   .title {
-    text-align: left;
     margin-left: 12px;
+  }
+}
+
+@media (min-width: 769px) {
+  .loop-carousel {
+    overflow-x: hidden;
+  }
+
+  .loop-track {
+    animation: desktop-slide 30s linear infinite;
+  }
+}
+
+@keyframes desktop-slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-25%);
   }
 }
 
@@ -116,11 +132,9 @@
   background: #ffd600;
   color: #000;
 }
-
 .products-card {
   background: #002246;
 }
-
 .companies-card {
   background: #000;
   color: #ffd600;
@@ -130,7 +144,6 @@
   .content {
     padding-top: 100px;
     height: calc(100% - 100px);
-    box-sizing: border-box;
   }
 
   .bottom-grid {
@@ -153,6 +166,7 @@
     text-align: center;
     margin: 16px 0 12px;
   }
+
   .loop-track {
     padding-left: 10vw;
     padding-right: 10vw;

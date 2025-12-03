@@ -1,8 +1,8 @@
 <div class="content">
   <h1 class="title">Trending Products</h1>
 
-  <!-- Universal carousel (mobile swipe + desktop wheel-scroll) -->
-  <div class="loop-carousel" #carousel (scroll)="onScroll()" (wheel)="onWheel($event)">
+  <!-- UNIVERSAL CAROUSEL (mobile swipe, desktop auto-slide) -->
+  <div class="loop-carousel" #carousel (scroll)="onScroll()">
     <div class="loop-track">
       <!-- FIRST SET -->
       @for (p of trendingProducts; track p.id) {
@@ -35,7 +35,10 @@
           [ngStyle]="{ 'background-image': 'url(' + p.image_url + ')' }"
         ></div>
       </div>
-      } @for (p of trendingProducts; track p.id) {
+      }
+
+      <!-- FOURTH SET -->
+      @for (p of trendingProducts; track p.id) {
       <div class="loop-card">
         <div class="product-name">{{ p.name }}</div>
         <div
@@ -47,7 +50,7 @@
     </div>
   </div>
 
-  <!-- Bottom grid stays as-is -->
+  <!-- BOTTOM GRID -->
   <div class="bottom-grid">
     @for (card of bottomCards; track card.id) {
     <div
