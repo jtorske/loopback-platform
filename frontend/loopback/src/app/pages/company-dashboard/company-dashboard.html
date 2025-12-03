@@ -47,7 +47,11 @@
         </ul>
       </div>
 
-      <button *ngIf="isCompanyAdmin" class="btn btn-primary create-announcement">
+      <button
+        *ngIf="isCompanyAdmin"
+        class="btn btn-primary create-announcement"
+        routerLink="/create-announcement"
+      >
         Create Announcement
       </button>
     </section>

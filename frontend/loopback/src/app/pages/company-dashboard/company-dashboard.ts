@@ -1,11 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
     selector: 'app-company-dashboard',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, RouterModule],
     templateUrl: './company-dashboard.html',
     styleUrls: ['./company-dashboard.css'],
 })
@@ -157,6 +158,7 @@ export class CompanyDashboard implements OnInit {
                     this.companyId = res.company_id;
                     console.log('User company_id:', this.companyId);
                     this.isCompanyMember = true;
+                    localStorage.setItem('companyId', String(this.companyId));
                     // refresh dashboard if company changed
                     if (this.companyId !== prev) {
                         this.loadDashboard();

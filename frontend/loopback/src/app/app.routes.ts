@@ -8,6 +8,7 @@ import { CompanyDashboard } from './pages/company-dashboard/company-dashboard';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { ProductFeedback } from './pages/product-feedback/product-feedback';
+import { CreateAnnouncement } from './pages/create-announcement/create-announcement';
 
 export const routes: Routes = [
   { path: '', component: Landing },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'feedback/:id', component: ProductFeedback },
+  { path: 'create-announcement', component: CreateAnnouncement },
 
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

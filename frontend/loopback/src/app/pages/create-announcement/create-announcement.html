@@ -1,0 +1,29 @@
+<div class="create-announcement-page">
+  <div class="create-card">
+    <div class="header">
+      <h1>Create Announcement</h1>
+    </div>
+
+    <form class="form" (ngSubmit)="onSubmit()" #annForm="ngForm">
+      <div class="section">
+        <h2 class="section-title">Title</h2>
+        <input name="title" [(ngModel)]="title" required placeholder="Short announcement title" />
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Body</h2>
+        <textarea
+          name="body"
+          [(ngModel)]="body"
+          required
+          placeholder="Write the announcement details here..."
+        ></textarea>
+      </div>
+
+      <div class="actions">
+        <button class="primary-btn" type="submit" [disabled]="annForm.invalid">Publish</button>
+        <button class="cancel-btn" type="button" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

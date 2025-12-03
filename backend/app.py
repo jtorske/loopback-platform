@@ -157,7 +157,7 @@ def create_app():
         title = db.Column(db.String(255), nullable=False)
         body = db.Column(db.Text, nullable=False)
         created_by_user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
-        published_at = db.Column(db.DateTime, nullable=True)
+        published_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
         
         def to_dict(self):
             return {
@@ -236,9 +236,9 @@ def create_app():
                     return e.to_dict()
         except Exception as ex:
             # fallback for any other DB errors
-            return jsonify({"company_id": "123"}), 200
+            return jsonify({"company_id": None}), 200
 
-        return jsonify({"company_id": "456"}), 200
+        return jsonify({"company_id": None}), 200
 
     # 4) List companies
     @app.route("/companies", methods=["GET"])
@@ -483,6 +483,30 @@ def create_app():
         company_announcements = [a.to_dict() for a in announcements]
 
         return jsonify(company_announcements), 200
+    
+    # 20) create company announcement
+    @app.route("/announcement", methods=["POST"])
+    def create_announcement():
+        data = request.get_json() or {}
+        try:
+            title = data.get("title")
+            body = data.get("body")
+            created_by_user_id = data.get("publisher_id")
+            company_id = data.get("company_id")
+            
+            announcement = Announcement(
+                title=title,
+                company_id=company_id,
+                body=body,
+                created_by_user_id=created_by_user_id
+            )
+            
+            db.session.add(announcement)
+            db.session.commit()
+        except Exception:
+            return jsonify("Announcement creation failed"), 500
+        
+        return jsonify("Announcement created"), 200
 
     
     # enable CORS for the created app so preflight (OPTIONS) requests
