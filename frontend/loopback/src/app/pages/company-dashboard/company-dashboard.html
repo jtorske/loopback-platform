@@ -1,5 +1,6 @@
 <div class="company-dashboard">
-  <h1 class="title">My Company Dashboard</h1>
+  <h1 *ngIf="isCompanyMember" class="title">My Company Dashboard</h1>
+  <h1 *ngIf="!isCompanyMember" class="title">Company Dashboard</h1>
 
   <div class="dashboard-grid">
     <section class="card company-summary">
@@ -13,9 +14,7 @@
           <p class="product-count">{{ productCount }} Products</p>
 
           <ul class="sentiment-list" *ngIf="isCompanyMember">
-            <li>Average Sentiment:</li>
-            <li>Recent Sentiment:</li>
-            <li>Popular FB Type:</li>
+            <li>Popular FB Type: {{ popularFeedbackType }}</li>
           </ul>
         </div>
       </div>

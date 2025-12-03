@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -29,11 +29,14 @@ export class CompanyDashboard implements OnInit {
     visibleCount = 3;
     currIndex = 0;
 
+    popularFeedbackType = 'Praise';
+
     // placeholder data for user context (local storage for now)
     userPerms: string | null = null;
     isCompanyMember = false;
     isCompanyAdmin = false;
     user: any = null;
+    private route = inject(ActivatedRoute);
     private http = inject(HttpClient);
     get visibleProducts() {
         return this.products.slice(
@@ -59,9 +62,23 @@ export class CompanyDashboard implements OnInit {
     }
 
     ngOnInit(): void {
-        this.readUserContext();
-        this.updateVisibleCount();
-        this.loadDashboard();
+        // Prefer `company_id` from URL query params if present (e.g. /company?company_id=42)
+        this.route.queryParams.subscribe(params => {
+            const qid = params['company_id'];
+            if (qid) {
+                this.companyId = Number(qid);
+                localStorage.setItem('companyId', String(this.companyId));
+                this.isCompanyMember = false;
+                this.updateVisibleCount();
+                this.loadDashboard();
+                return;
+            }
+
+            // No explicit company in URL — fall back to user context
+            this.readUserContext();
+            this.updateVisibleCount();
+            this.loadDashboard();
+        });
     }
 
     @HostListener('window:resize', ['$event'])
@@ -108,6 +125,34 @@ export class CompanyDashboard implements OnInit {
     }
 
     private updateCompanyMetrics(companyId: number): void {
+        this.http.get<any>('http://localhost:5000/feedback', {
+            params: { company_id: companyId },
+        }).subscribe({
+            next: (res: any) => {
+                console.log('Fetched feedback data for company metrics', res);
+                const items = Array.isArray(res) ? res : (res && Array.isArray(res.data) ? res.data : []);
+                const counts: Record<number, number> = { 1: 0, 2: 0, 3: 0 };
+
+                for (const it of items) {
+                    const id = Number(it?.feedback_type_id ?? it?.feedback_type ?? NaN);
+                    if (!Number.isNaN(id) && (id === 1 || id === 2 || id === 3)) {
+                        counts[id]++;
+                    }
+                }
+
+                const maxCount = Math.max(counts[1], counts[2], counts[3]);
+                if (maxCount === 0) {
+                    // no feedback found — keep default
+                    this.popularFeedbackType = 'Praise';
+                } else {
+                    const winner = [1, 2, 3].find(k => counts[k] === maxCount) || 1;
+                    this.popularFeedbackType = winner === 1 ? 'Praise' : winner === 2 ? 'Bug' : 'Enhancement';
+                }
+            },
+            error: (err: any) => {
+                console.error('Failed to fetch feedback data for company metrics', err);
+            }
+        });
     }
 
     private updateProducts(companyId: number): void {

@@ -16,6 +16,7 @@ export const routes: Routes = [
   { path: 'products', component: Products },
   { path: 'companies', component: Companies },
   { path: 'company-dashboard', component: CompanyDashboard },
+  { path: 'company', component: CompanyDashboard },
   { path: 'account', component: Account },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
