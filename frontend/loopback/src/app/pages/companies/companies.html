@@ -30,7 +30,14 @@
     </div>
 
     <div class="companies-list">
-      <article class="company-card" *ngFor="let company of filteredCompanies">
+      <article
+        class="company-card"
+        *ngFor="let company of filteredCompanies"
+        [routerLink]="['/company']"
+        [queryParams]="{ company_id: company.id }"
+        role="link"
+        tabindex="0"
+      >
         <div class="company-image-wrapper">
           <img class="company-image" [src]="company.image_url" alt="Company image" />
         </div>

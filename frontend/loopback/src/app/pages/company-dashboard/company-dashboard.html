@@ -1,0 +1,83 @@
+<div class="company-dashboard">
+  <h1 *ngIf="isCompanyMember" class="title">My Company Dashboard</h1>
+  <h1 *ngIf="!isCompanyMember" class="title">Company Dashboard</h1>
+
+  <div class="dashboard-grid">
+    <section class="card company-summary">
+      <div class="company-header">
+        <!-- placeholder image box -->
+        <div class="company-logo"></div>
+
+        <div class="company-info">
+          <h2>{{ companyName }}</h2>
+          <p class="industry">{{ industry }}</p>
+          <p class="product-count">{{ productCount }} Products</p>
+
+          <ul class="sentiment-list" *ngIf="isCompanyMember">
+            <li>Popular FB Type: {{ popularFeedbackType }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="company-actions">
+        <button class="btn btn-secondary">Follow Company</button>
+        <button *ngIf="isCompanyAdmin" class="btn btn-primary" routerLink="/add-product">
+          Add Product
+        </button>
+      </div>
+    </section>
+
+    <!-- Announcements -->
+    <section class="card announcements">
+      <div class="announcements-header">
+        <h3>Announcements</h3>
+      </div>
+
+      <div class="announcements-body">
+        <ul class="announcement-list">
+          <li *ngFor="let ann of announcements" class="announcement-item">
+            <h4 class="announcement-title">{{ ann.title }}</h4>
+            <p class="announcement-body">{{ ann.body }}</p>
+            <small class="announcement-date" *ngIf="ann.published_at">{{
+              ann.published_at | date : 'short'
+            }}</small>
+          </li>
+          <li *ngIf="!announcements || announcements.length === 0" class="no-announcements">
+            No announcements
+          </li>
+        </ul>
+      </div>
+
+      <button
+        *ngIf="isCompanyAdmin"
+        class="btn btn-primary create-announcement"
+        routerLink="/create-announcement"
+      >
+        Create Announcement
+      </button>
+    </section>
+
+    <!-- Product cards carousel -->
+    <section class="products-carousel">
+      <button class="carousel-arrow left" (click)="prevSlide()" [disabled]="currIndex === 0">
+        ‹
+      </button>
+
+      <div class="carousel-track">
+        <article class="card product-card" *ngFor="let product of visibleProducts">
+          <h4>{{ product.name }}</h4>
+          <p class="product-meta">{{ product.description }}</p>
+          <button class="btn btn-primary">Read More</button>
+        </article>
+      </div>
+
+      <button
+        class="carousel-arrow right"
+        (click)="nextSlide()"
+        [disabled]="currIndex + visibleCount >= products.length"
+      >
+        ›
+      </button>
+    </section>
+  </div>
+</div>

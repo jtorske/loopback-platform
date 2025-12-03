@@ -1,0 +1,227 @@
+:host {
+  display: block;
+  background: #003566;
+  color: #ffd600;
+  font-family: 'Roboto Mono', monospace;
+  height: 100%;
+}
+.company-dashboard {
+  padding: 1rem;
+}
+.title {
+  font-size: 48px;
+  font-weight: 600;
+  color: #ffd600;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "company announcements"
+    "products announcements";
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.card {
+  background: whitesmoke;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: black;
+}
+
+/* Grid area hooks */
+.company-summary {
+  grid-area: company;
+}
+
+.announcements {
+  grid-area: announcements;
+}
+
+/* Make the announcements list area vertically scrollable while keeping header/actions fixed */
+.announcements {
+  display: flex;
+  flex-direction: column;
+}
+
+.announcements-body {
+  /* limit height so area can scroll; adjust as needed */
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 0.5rem; /* avoid content under scrollbar */
+}
+
+.no-announcements {
+  color: #666;
+  padding: 0.5rem 0;
+}
+
+/* Thin, subtle scrollbar for webkit browsers */
+.announcements-body::-webkit-scrollbar {
+  width: 10px;
+}
+.announcements-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.12);
+  border-radius: 6px;
+}
+.announcements-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.products-carousel {
+  grid-area: products;
+}
+
+/* Company summary internal layout */
+.company-header {
+  display: flex;
+  gap: 1rem;
+}
+
+.company-logo {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  background: #d8dde8; /* placeholder image bg */
+}
+
+.company-info h2 {
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+/* Buttons */
+.company-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: transparent;
+  color: gray;
+  padding: 8px;
+  border: 2px solid gray;
+  border-radius: 8px;
+}
+
+.btn-secondary {
+  background: #ffc94b;
+  color: #0f2745;
+  padding: 8px;
+  border: 2px solid #ffc94b;
+  border-radius: 8px;
+}
+
+/* Announcements */
+.announcement-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 1rem;
+}
+
+.announcement-list li {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+/* Products row */
+/* Layout for the carousel row */
+.products-carousel {
+  display: flex;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.carousel-arrow {
+  border: none;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  background: #ffffff;
+  color: #0f2745;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.carousel-track {
+  flex: 1 1 auto;
+  display: flex;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.product-card {
+  flex: 1 1 0;
+}
+
+/* Responsive: on small screens show 1 or 2 cards nicely stacked */
+@media (max-width: 900px) {
+  .carousel-track {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 600px) {
+  /* On really small screens, maybe only 1 card visually */
+  .product-card {
+    min-width: 100%;
+  }
+}
+
+
+/* Responsive: stack on small screens */
+@media (max-width: 768px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "company"
+      "announcements"
+      "products";
+  }
+
+  .products-row {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  /* ensure cards and containers don't force page overflow */
+  .card,
+  .company-summary,
+  .announcements {
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  /* On small screens let announcements expand naturally (no scroll) */
+  .announcements-body {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+}
