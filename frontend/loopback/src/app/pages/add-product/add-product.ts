@@ -42,7 +42,8 @@ export class AddProduct {
         }
 
         const userRaw = localStorage.getItem('user');
-        const companyId = userRaw ? (JSON.parse(userRaw).company_id || Number(localStorage.getItem('companyId')) || 0) : Number(localStorage.getItem('companyId')) || 0;
+        const user = userRaw ? JSON.parse(userRaw) : null;
+        const companyId = userRaw ? user.company : 0;
 
         const payload: any = {
             company_id: companyId,

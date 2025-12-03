@@ -8,12 +8,13 @@ USE `seng513_db`;
 -- ---------------------------------------------------------------------------
 
 -- Users (single table with role column)
-INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `role`, `is_active`) VALUES
-  (1, 'sysadmin', 'sysadmin@example.com', 'password', 'system_admin', 1),
-  (2, 'coadmin', 'admin@example.com', 'password', 'company_admin', 1),
-  (3, 'employee', 'employee@example.com', 'password', 'employee', 1),
-  (4, 'consumer', 'consumer@example.com', 'password', 'consumer', 1),
-  (5, 'consumer2', 'consumer2@example.com', 'password', 'consumer', 1)
+INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `role`, `is_active`, `company`) VALUES
+  (1, 'sysadmin', 'sysadmin@example.com', 'password', 'system_admin', 1, NULL),
+  (2, 'coadmin', 'admin@example.com', 'password', 'company_admin', 1, 1),
+  (3, 'employee', 'employee@example.com', 'password', 'employee', 1, 1),
+  (4, 'consumer', 'consumer@example.com', 'password', 'consumer', 1, NULL),
+  (5, 'consumer2', 'consumer2@example.com', 'password', 'consumer', 1, NULL),
+    (5, 'coadmin2', 'admin2@example.com', 'password', 'company_admin', 1, 2)
 ON DUPLICATE KEY UPDATE
   `email` = VALUES(`email`),
   `role` = VALUES(`role`);

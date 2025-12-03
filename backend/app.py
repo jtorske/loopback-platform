@@ -45,6 +45,7 @@ def create_app():
         email = db.Column(db.String(255), unique=True, nullable=False)
         role = db.Column(db.String(50), nullable=False, default="consumer")
         is_active = db.Column(db.Boolean, nullable=False, default=True)
+        company = db.Column(db.Integer, nullable=True)
         created_at = db.Column(db.DateTime, default=datetime.now)
         password_hash = db.Column(db.String(255), nullable=False, default="")
         
@@ -58,6 +59,7 @@ def create_app():
                 "role": self.role,
                 "is_active": self.is_active,
                 "created_at": self.created_at,
+                "company": self.company,
                 "passwordhash": self.password_hash,
             }
 
@@ -390,7 +392,8 @@ def create_app():
                         "email": user_dict.get("email"),
                         "role": user_dict.get("role"),
                         "is_active": user_dict.get("is_active"),
-                        "created_at": user_dict.get("created_at")
+                        "created_at": user_dict.get("created_at"),
+                        "company": user_dict.get("company"),
                     }
                     return jsonify({"message": "login successful", "user": ret_user}), 200
                 else:
@@ -531,8 +534,9 @@ def create_app():
             
             db.session.add(product)
             db.session.commit()
-        except Exception:
-            return jsonify("Product creation failed"), 500
+        except Exception as e:
+            e = str(e)
+            return jsonify({"message":"error creating product", "error": e}), 500
         
         return jsonify("Product created"), 200
 
