@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, inject } from '@angular/core';
+
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -26,33 +27,19 @@ interface LandingResponse {
   templateUrl: './landing.html',
   styleUrls: ['./landing.css'],
 })
-export class Landing implements OnInit {
-  private readonly apiUrl = "http://localhost:5000";
-  private readonly urlpath = "/landing-data";
+export class Landing implements OnInit, AfterViewInit {
+  private readonly apiUrl = 'http://localhost:5000';
+  private readonly urlpath = '/landing-data';
 
   private http = inject(HttpClient);
 
+  @ViewChild('carousel') carousel!: ElementRef<HTMLDivElement>;
+
   trendingProducts: Product[] = [
-    {
-      id: 1,
-      name: 'Placeholder Product 1',
-      image_url: 'assets/placeholder.png',
-    },
-    {
-      id: 2,
-      name: 'Placeholder Product 2',
-      image_url: 'assets/placeholder.png',
-    },
-    {
-      id: 3,
-      name: 'Placeholder Product 3',
-      image_url: 'assets/placeholder.png',
-    },
-    {
-      id: 4,
-      name: 'Placeholder Product 4',
-      image_url: 'assets/placeholder.png',
-    },
+    { id: 1, name: 'Placeholder Product 1', image_url: 'assets/placeholder.png' },
+    { id: 2, name: 'Placeholder Product 2', image_url: 'assets/placeholder.png' },
+    { id: 3, name: 'Placeholder Product 3', image_url: 'assets/placeholder.png' },
+    { id: 4, name: 'Placeholder Product 4', image_url: 'assets/placeholder.png' },
   ];
 
   bottomCards = [
@@ -78,6 +65,53 @@ export class Landing implements OnInit {
 
   ngOnInit(): void {
     this.loadLandingData();
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.setInitialCarouselPosition(), 0);
+  }
+
+  private setInitialCarouselPosition(): void {
+    if (!this.carousel) return;
+
+    const el = this.carousel.nativeElement;
+    const card = el.querySelector('.loop-card') as HTMLElement;
+    if (!card) return;
+
+    const cardWidth = card.offsetWidth + 16; // gap
+    const oneSetWidth = this.trendingProducts.length * cardWidth;
+
+    el.scrollLeft = oneSetWidth;
+  }
+
+  onScroll(): void {
+    const el = this.carousel.nativeElement;
+    const card = el.querySelector('.loop-card') as HTMLElement;
+    if (!card) return;
+
+    const cardWidth = card.offsetWidth + 16;
+    const setWidth = this.trendingProducts.length * cardWidth;
+
+    const scroll = el.scrollLeft;
+
+    if (scroll < setWidth) {
+      this.temporarilyDisableSnap(el);
+      el.scrollLeft = scroll + setWidth;
+      return;
+    }
+
+    if (scroll >= setWidth * 2) {
+      this.temporarilyDisableSnap(el);
+      el.scrollLeft = scroll - setWidth;
+      return;
+    }
+  }
+
+  private temporarilyDisableSnap(el: HTMLElement) {
+    el.style.scrollSnapType = 'none';
+    setTimeout(() => {
+      el.style.scrollSnapType = 'x mandatory';
+    }, 50);
   }
 
   private loadLandingData(): void {
