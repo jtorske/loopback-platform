@@ -60,7 +60,7 @@
     </section>
 
     <!-- Product cards carousel -->
-    <section class="products-carousel">
+    <section *ngIf="products && products.length; else noProducts" class="products-carousel">
       <button class="carousel-arrow left" (click)="prevSlide()" [disabled]="currIndex === 0">
         ‹
       </button>
@@ -81,5 +81,14 @@
         ›
       </button>
     </section>
+
+    <!-- Fallback shown when there are no products -->
+    <ng-template #noProducts>
+      <section class="products-carousel no-products">
+        <div class="card no-products-card">
+          <p class="no-products-text">No products available</p>
+        </div>
+      </section>
+    </ng-template>
   </div>
 </div>

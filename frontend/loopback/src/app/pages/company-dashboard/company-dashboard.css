@@ -146,6 +146,23 @@
   gap: 0.75rem;
 }
 
+/* Fallback styling when there are no products */
+.products-carousel.no-products .no-products-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  background: whitesmoke;
+  color: #6b7280;
+  font-size: 1rem;
+  width: 100%;
+  flex: 1 1 100%;
+  box-sizing: border-box;
+}
+.no-products-text {
+  margin: 0; 
+}
+
 .carousel-arrow {
   border: none;
   border-radius: 8px;
