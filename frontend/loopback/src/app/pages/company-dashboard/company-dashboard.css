@@ -42,6 +42,36 @@
   grid-area: announcements;
 }
 
+/* Make the announcements list area vertically scrollable while keeping header/actions fixed */
+.announcements {
+  display: flex;
+  flex-direction: column;
+}
+
+.announcements-body {
+  /* limit height so area can scroll; adjust as needed */
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 0.5rem; /* avoid content under scrollbar */
+}
+
+.no-announcements {
+  color: #666;
+  padding: 0.5rem 0;
+}
+
+/* Thin, subtle scrollbar for webkit browsers */
+.announcements-body::-webkit-scrollbar {
+  width: 10px;
+}
+.announcements-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.12);
+  border-radius: 6px;
+}
+.announcements-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .products-carousel {
   grid-area: products;
 }
@@ -224,5 +254,12 @@
     max-width: 100%;
     box-sizing: border-box;
     min-width: 0;
+  }
+
+  /* On small screens let announcements expand naturally (no scroll) */
+  .announcements-body {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 }

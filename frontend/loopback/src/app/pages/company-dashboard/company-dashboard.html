@@ -32,20 +32,22 @@
         <h3>Announcements</h3>
       </div>
 
-      <ul class="announcement-list">
-        <li *ngFor="let ann of announcements" class="announcement-item">
-          <h4 class="announcement-title">{{ ann.title }}</h4>
-          <p class="announcement-body">{{ ann.body }}</p>
-          <small class="announcement-date" *ngIf="ann.published_at">{{
-            ann.published_at | date : 'short'
-          }}</small>
-        </li>
-        <li *ngIf="!announcements || announcements.length === 0" class="no-announcements">
-          No announcements
-        </li>
-      </ul>
+      <div class="announcements-body">
+        <ul class="announcement-list">
+          <li *ngFor="let ann of announcements" class="announcement-item">
+            <h4 class="announcement-title">{{ ann.title }}</h4>
+            <p class="announcement-body">{{ ann.body }}</p>
+            <small class="announcement-date" *ngIf="ann.published_at">{{
+              ann.published_at | date : 'short'
+            }}</small>
+          </li>
+          <li *ngIf="!announcements || announcements.length === 0" class="no-announcements">
+            No announcements
+          </li>
+        </ul>
+      </div>
 
-      <button class="btn btn-primary view-all-announcements">View All Announcements</button>
+      <button class="btn btn-primary create-announcement">Create Announcement</button>
     </section>
 
     <!-- Product cards carousel -->
