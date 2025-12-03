@@ -1,1 +1,93 @@
-<button class="primary-btn" (click)="logout()">Log out</button>
+<div class="account-page">
+  <div class="account-layout">
+    <div class="account-card">
+      <h1 class="title title-lg">Account</h1>
+      <div class="account-details">
+        <img src="assets/placeholder.png" alt="Profile Image" class="profile-img" />
+        <div class="account-info-group">
+          <p class="account-title">{{ user.name }}</p>
+          <p class="account-info">{{ user.email }}</p>
+          <p class="account-info">{{ user.role }}</p>
+          <div class="account-actions">
+            <button class="edit-btn" (click)="editAccount()">Edit</button>
+            <button class="logout-btn" (click)="logout()">Log out</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-card">
+        <div class="stats-header">
+          User Stats
+        </div>
+
+        <div class="stats-body">
+
+          <div class="stats-row">
+            <div class="stats-icon">
+              <img src="assets/suggestions.svg" alt="Suggestions" />
+            </div>
+            <div class="stats-label">Suggestions</div>
+            <div class="stats-value">{{ suggestions || 0 }}</div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stats-icon">
+              <img src="assets/bugReports.svg" alt="Bug Reports" />
+            </div>
+            <div class="stats-label">Bug Reports</div>
+            <div class="stats-value">{{ bugReports || 0 }}</div>
+          </div>
+
+          <div class="stats-row">
+            <div class="stats-icon">
+              <img src="assets/praises.svg" alt="Praises" />
+            </div>
+            <div class="stats-label">Praises</div>
+            <div class="stats-value">{{ praises || 0 }}</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="side-cards">
+      <div class="activity-card">
+        <h1 class="title title-md">Recent Activity</h1>
+        <div class="activity-body">
+
+          <!-- Implement a for loop up to two rows for all recent user activity -->
+          <div class="activity-row">
+            <div class="activity-left">
+              <div class="activity-title">Enhancement</div>
+              <div class="activity-product">iPhone SE</div>
+              <div class="activity-feedback">The iPhone SE is a great device with powerful features. 
+                This is going to be a super long thing to find out how long I can write about this and still have it show on the screen.</div>
+            </div>
+            <div class="activity-right">
+              <div class="stats-icon">
+                <img src="assets/suggestions.svg" alt="Suggestions" />
+              </div>
+              <div class="activity-company">Apple</div>
+            </div>
+          </div>
+
+          <div class="activity-row">
+            <div class="activity-left">
+              <div class="activity-title">Enhancement</div>
+              <div class="activity-product">iPhone SE</div>
+              <div class="activity-feedback">The iPhone SE is a great device with powerful features. 
+                This is going to be a super long thing to find out how long I can write about this and still have it show on the screen.</div>
+            </div>
+            <div class="activity-right">
+              <div class="stats-icon">
+                <img src="assets/suggestions.svg" alt="Suggestions" />
+              </div>
+              <div class="activity-company">Apple</div>
+            </div>
+          </div>
+
+        </div>
+        <button class="activity-btn">View All Activity</button>
+      </div>
+    </div>
+  </div>
+</div>
