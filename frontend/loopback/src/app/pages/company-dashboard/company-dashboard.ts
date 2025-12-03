@@ -30,6 +30,7 @@ export class CompanyDashboard implements OnInit {
     currIndex = 0;
 
     popularFeedbackType = 'Praise';
+    averageSentiment = 100;
 
     // placeholder data for user context (local storage for now)
     userPerms: string | null = null;
