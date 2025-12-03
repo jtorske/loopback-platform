@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -34,6 +34,7 @@ export class CompanyDashboard implements OnInit {
     isCompanyMember = false;
     isCompanyAdmin = false;
     user: any = null;
+    private route = inject(ActivatedRoute);
     private http = inject(HttpClient);
     get visibleProducts() {
         return this.products.slice(
@@ -59,9 +60,23 @@ export class CompanyDashboard implements OnInit {
     }
 
     ngOnInit(): void {
-        this.readUserContext();
-        this.updateVisibleCount();
-        this.loadDashboard();
+        // Prefer `company_id` from URL query params if present (e.g. /company?company_id=42)
+        this.route.queryParams.subscribe(params => {
+            const qid = params['company_id'];
+            if (qid) {
+                this.companyId = Number(qid);
+                localStorage.setItem('companyId', String(this.companyId));
+                this.isCompanyMember = false;
+                this.updateVisibleCount();
+                this.loadDashboard();
+                return;
+            }
+
+            // No explicit company in URL — fall back to user context
+            this.readUserContext();
+            this.updateVisibleCount();
+            this.loadDashboard();
+        });
     }
 
     @HostListener('window:resize', ['$event'])
