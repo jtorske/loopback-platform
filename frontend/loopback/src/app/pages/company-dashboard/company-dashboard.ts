@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -60,7 +60,28 @@ export class CompanyDashboard implements OnInit {
 
     ngOnInit(): void {
         this.readUserContext();
+        this.updateVisibleCount();
         this.loadDashboard();
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(_: UIEvent) {
+        this.updateVisibleCount();
+    }
+
+    private updateVisibleCount(): void {
+        const w = window.innerWidth;
+        let vc = 3;
+        if (w >= 1200) vc = 3;
+        else if (w >= 600) vc = 2;
+        else vc = 1;
+
+        if (vc !== this.visibleCount) {
+            this.visibleCount = vc;
+            // ensure current index is valid for new visible count
+            const maxStart = Math.max(0, this.products.length - this.visibleCount);
+            if (this.currIndex > maxStart) this.currIndex = maxStart;
+        }
     }
 
     private loadDashboard(): void {
@@ -100,6 +121,8 @@ export class CompanyDashboard implements OnInit {
                     name: p.name,
                     description: p.description,
                 })) : [];
+                // recalc visible count / clamp index now that products changed
+                this.updateVisibleCount();
             },
             error: (err: any) => {
                 console.error('Failed to fetch products for company', err);

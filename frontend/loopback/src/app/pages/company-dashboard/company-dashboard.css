@@ -209,44 +209,6 @@
 }
 
 @media (max-width: 600px) {
-  /* Mobile: show one card per viewport and make the track horizontally scrollable */
-  .products-carousel {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    width: 100%;
-    box-sizing: border-box;
-    overflow: visible;
-  }
-
-  /* hide arrows on very small screens */
-  .carousel-arrow {
-    display: none;
-  }
-
-  .carousel-track {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 12px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .carousel-track::-webkit-scrollbar { display: none; }
-
-  /* Each product should occupy the whole viewport width */
-  .product-card {
-    flex: 0 0 100%;
-    width: 100%;
-    max-width: 100%;
-    scroll-snap-align: start;
-    box-sizing: border-box;
-    min-width: 0;
-  }
-
   /* ensure cards and containers don't force page overflow */
   .card,
   .company-summary,
