@@ -11,11 +11,6 @@
         />
       </div>
 
-      <select class="filter-select" (change)="onCategoryChange($any($event.target).value)">
-        <option value="all">All Categories</option>
-        <option *ngFor="let c of allCategories" [value]="c">{{ c }}</option>
-      </select>
-
       <select class="filter-select" (change)="onSortChange($any($event.target).value)">
         <option value="none">Sort: Default</option>
         <option value="name-asc">Name (A-Z)</option>
@@ -48,12 +43,6 @@
     <div class="mobile-filter-panel" [class.open]="mobileFilterOpen">
       <h2 class="filter-title">Filters</h2>
 
-      <label class="filter-label">Category</label>
-      <select class="filter-select-mobile" (change)="onCategoryChange($any($event.target).value)">
-        <option value="all">All Categories</option>
-        <option *ngFor="let c of allCategories" [value]="c">{{ c }}</option>
-      </select>
-
       <label class="filter-label">Sort By</label>
       <select class="filter-select-mobile" (change)="onSortChange($any($event.target).value)">
         <option value="none">Default</option>
@@ -84,7 +73,6 @@
         <div class="company-content">
           <div class="company-grid">
             <div class="company-name">{{ company.name }}</div>
-            <div class="company-id">{{ company.id }}</div>
             <div class="company-category">{{ company.category }}</div>
 
             <div class="company-location">{{ company.location }}</div>

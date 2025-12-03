@@ -97,6 +97,15 @@ export class Products implements OnInit {
 
     return result;
   }
+  mobileFilterOpen = false;
+
+  openMobileFilter() {
+    this.mobileFilterOpen = true;
+  }
+
+  closeMobileFilter() {
+    this.mobileFilterOpen = false;
+  }
 
   private loadProducts(): void {
     if (!this.apiUrl) return;
@@ -117,7 +126,7 @@ export class Products implements OnInit {
     });
   }
 
-    private computeFilterOptions(): void {
+  private computeFilterOptions(): void {
     const categories = new Set<string>();
 
     for (const p of this.products) {
@@ -129,8 +138,19 @@ export class Products implements OnInit {
   }
 
   private parsePrice(price: string): number {
-    const numeric = price.replace(/[^0-9.]/g, '');
-    return Number(numeric) || 0;
+    if (!price) return 0;
+
+    // Normalize: remove currency symbols & commas
+    let cleaned = price
+      .toString()
+      .trim()
+      .replace(/[^0-9.,]/g, '') // keep digits, . and ,
+      .replace(/,/g, ''); // remove commas entirely
+
+    // If still empty → treat as zero
+    if (!cleaned) return 0;
+
+    return Number(cleaned);
   }
 
   // handlers for template

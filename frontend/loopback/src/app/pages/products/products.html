@@ -11,13 +11,6 @@
         />
       </div>
 
-      <select class="filter-select" (change)="onCategoryChange($any($event.target).value)">
-        <option value="all">All Types</option>
-        <option *ngFor="let category of allCategories" [value]="category">
-          {{ category }}
-        </option>
-      </select>
-
       <select class="filter-select" (change)="onSortChange($any($event.target).value)">
         <option value="none">Sort: Default</option>
         <option value="name-asc">Name (A-Z)</option>
@@ -27,6 +20,41 @@
         <option value="id-asc">ID (Asc)</option>
         <option value="id-desc">ID (Desc)</option>
       </select>
+    </div>
+    <!-- MOBILE TOOLBAR -->
+    <div class="toolbar-mobile">
+      <h1 class="mobile-title">Companies</h1>
+
+      <div class="mobile-search-row">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search"
+          (input)="onSearch($any($event.target).value)"
+        />
+
+        <button class="mobile-filter-btn" (click)="openMobileFilter()">
+          <i class="fa-solid fa-sliders"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-filter-panel" [class.open]="mobileFilterOpen">
+      <h2 class="filter-title">Filters</h2>
+
+      <!-- SORT (matches desktop exactly) -->
+      <label class="filter-label">Sort By</label>
+      <select class="filter-select-mobile" (change)="onSortChange($any($event.target).value)">
+        <option value="none">Sort: Default</option>
+        <option value="name-asc">Name (A-Z)</option>
+        <option value="name-desc">Name (Z-A)</option>
+        <option value="price-asc">Price (Low → High)</option>
+        <option value="price-desc">Price (High → Low)</option>
+        <option value="id-asc">ID (Asc)</option>
+        <option value="id-desc">ID (Desc)</option>
+      </select>
+
+      <button class="filter-close-btn" (click)="closeMobileFilter()">Done</button>
     </div>
 
     <div class="products-list">
@@ -38,17 +66,19 @@
         <div class="product-content">
           <div class="product-grid">
             <div class="product-name">{{ product.name }}</div>
-            <div class="product-id">{{ product.id }}</div>
             <div class="product-category">{{ product.category }}</div>
 
             <div class="company-name">{{ product.company }}</div>
-            <div class="price">{{ product.price }}</div>
+            <div class="price">$ {{ product.price }}</div>
             <div class="empty"></div>
           </div>
         </div>
 
         <div class="product-actions">
-            <button class="btn btn-primary" type="button" (click)="onReview(product)">Review</button>
+          <button class="btn btn-primary review-btn" type="button" (click)="onReview(product)">
+            <span class="review-text">Review</span>
+            <i class="fa-solid fa-pen review-icon"></i>
+          </button>
         </div>
       </article>
     </div>

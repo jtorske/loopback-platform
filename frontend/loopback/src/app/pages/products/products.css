@@ -4,6 +4,13 @@
   color: #f9fafb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+.toolbar {
+  display: grid;
+}
+
+.toolbar-mobile {
+  display: none;
+}
 
 .page {
   padding: 24px 16px 32px;
@@ -202,4 +209,183 @@
 .btn-secondary {
   background: #002246;
   color: #f9fafb;
+}
+
+.mobile-filter-panel {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .toolbar {
+    display: none !important;
+  }
+
+  .toolbar-mobile {
+    display: block;
+    background: #d4d4d4;
+    margin: -24px -20px 12px;
+    padding: 16px 16px 12px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .mobile-title {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    color: #111827;
+  }
+
+  .mobile-search-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mobile-search-row .search-input {
+    height: 44px;
+    padding: 0 12px;
+    font-size: 14px !important;
+    line-height: 44px;
+  }
+
+  .mobile-filter-btn {
+    width: 44px;
+    height: 44px;
+    background: #e5e7eb;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .review-text {
+    display: inline;
+  }
+
+  .review-icon {
+    display: none;
+  }
+
+  .companies-list {
+    padding-top: 4px;
+    overflow: hidden;
+  }
+
+  .mobile-filter-panel {
+    display: block !important;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -60%;
+    height: 60%;
+    background: #ffffff;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 16px 16px 0 0;
+    padding: 20px 16px;
+    transition: bottom 0.3s ease;
+    z-index: 200;
+  }
+
+  .mobile-filter-panel.open {
+    bottom: 0;
+  }
+
+  .filter-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .filter-label {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .filter-select-mobile {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    margin-bottom: 18px;
+    border-radius: 6px;
+    background: #e5e7eb;
+    border: none;
+  }
+
+  .filter-close-btn {
+    width: 100%;
+    padding: 12px;
+    background: #003566;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .review-text {
+    display: none !important;
+  }
+
+  .review-icon {
+    display: inline-block !important;
+    font-size: 18px;
+  }
+  .product-card {
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 12px;
+    padding: 12px 14px;
+    align-items: center;
+  }
+
+  .product-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+
+  .product-content {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .product-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .product-name {
+    font-size: 16px;
+    font-weight: 600;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .company-name,
+  .product-category,
+  .product-id,
+  .price {
+    font-size: 13px;
+    color: #333;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .product-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .product-actions .btn-primary {
+    padding: 6px 10px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
 }
