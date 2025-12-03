@@ -31,6 +31,7 @@ export class CompanyDashboard implements OnInit {
     // placeholder data for user context (local storage for now)
     userPerms: string | null = null;
     isCompanyMember = false;
+    isCompanyAdmin = false;
     user: any = null;
     private http = inject(HttpClient);
     get visibleProducts() {
@@ -129,6 +130,11 @@ export class CompanyDashboard implements OnInit {
     private readUserContext(): void {
         this.userPerms = localStorage.getItem('permissions');
         this.user = JSON.parse(localStorage.getItem('user') || '{}');
+        this.isCompanyAdmin = false;
+
+        if (this.userPerms) {
+            this.isCompanyAdmin = this.userPerms.includes('company_admin');
+        }
 
         const userId = this.user?.id;
         if (!userId) {

@@ -47,7 +47,9 @@
         </ul>
       </div>
 
-      <button class="btn btn-primary create-announcement">Create Announcement</button>
+      <button *ngIf="isCompanyAdmin" class="btn btn-primary create-announcement">
+        Create Announcement
+      </button>
     </section>
 
     <!-- Product cards carousel -->
