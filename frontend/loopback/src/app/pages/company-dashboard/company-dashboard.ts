@@ -179,9 +179,8 @@ export class CompanyDashboard implements OnInit {
     }
 
     private getAnnouncements(companyId: number): void {
-        this.http.get<any[]>('http://localhost:5000/company/announcements', {
-            params: { company_id: companyId },
-        }).subscribe({
+        let url = `http://localhost:5000/company/announcements/${companyId}`;
+        this.http.get<any[]>(url).subscribe({
             next: (res: any[]) => {
                 console.log('Fetched announcements for company', res);
                 this.announcements = Array.isArray(res) ? res.map((ann: any) => ({
