@@ -68,42 +68,46 @@ export class Landing implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => this.setInitialCarouselPosition(), 0);
+    setTimeout(() => {
+      if (window.innerWidth < 769) {
+        this.setInitialCarouselPosition();
+      }
+    }, 0);
   }
 
   private setInitialCarouselPosition(): void {
-    if (!this.carousel) return;
+    const el = this.carousel?.nativeElement;
+    if (!el) return;
 
-    const el = this.carousel.nativeElement;
-    const card = el.querySelector('.loop-card') as HTMLElement;
-    if (!card) return;
-
-    const cardWidth = card.offsetWidth + 16; // gap
-    const oneSetWidth = this.trendingProducts.length * cardWidth;
-
-    el.scrollLeft = oneSetWidth;
-  }
-
-  onScroll(): void {
-    const el = this.carousel.nativeElement;
     const card = el.querySelector('.loop-card') as HTMLElement;
     if (!card) return;
 
     const cardWidth = card.offsetWidth + 16;
     const setWidth = this.trendingProducts.length * cardWidth;
 
+    el.scrollLeft = setWidth * 1.5;
+  }
+
+  onScroll(): void {
+    if (window.innerWidth >= 769) return;
+
+    const el = this.carousel.nativeElement;
+    const card = el.querySelector('.loop-card') as HTMLElement;
+    if (!card) return;
+
+    const cardWidth = card.offsetWidth + 16;
+    const setWidth = this.trendingProducts.length * cardWidth;
     const scroll = el.scrollLeft;
 
-    if (scroll < setWidth) {
+    if (scroll < setWidth * 0.5) {
       this.temporarilyDisableSnap(el);
-      el.scrollLeft = scroll + setWidth;
+      el.scrollLeft = scroll + setWidth * 2;
       return;
     }
 
-    if (scroll >= setWidth * 2) {
+    if (scroll > setWidth * 2.5) {
       this.temporarilyDisableSnap(el);
-      el.scrollLeft = scroll - setWidth;
-      return;
+      el.scrollLeft = scroll - setWidth * 2;
     }
   }
 
@@ -130,9 +134,7 @@ export class Landing implements OnInit, AfterViewInit {
           }
         }
       },
-      error: (err) => {
-        console.error('Failed to load landing data:', err);
-      },
+      error: (err) => console.error('Failed to load landing data:', err),
     });
   }
 }
