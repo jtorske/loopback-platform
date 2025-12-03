@@ -3,10 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
 
-interface CompanyTopProduct {
-  name: string;
-  image_url: string;
-}
 
 interface Company {
   id: string | number;
@@ -15,7 +11,7 @@ interface Company {
   productCount: number;
   category: string;
   image_url: string;
-  topProduct: CompanyTopProduct;
+  product_image_url?: string;
 }
 
 type SortOption =
@@ -37,7 +33,7 @@ type SortOption =
 export class Companies implements OnInit {
 
   allCategories: string[] = [];
-  companies: Company[] = [];
+  companies: any[] = [];
   apiUrl = 'http://localhost:5000/companies';
 
   searchTerm = '';
@@ -51,15 +47,12 @@ export class Companies implements OnInit {
 
   get filteredCompanies(): Company[] {
     let result = this.companies.filter((c) => {
-      if (this.selectedCategory !== 'all' && c.category !== this.selectedCategory) return false;
-
       if (this.searchTerm.trim()) {
         const term = this.searchTerm.toLowerCase();
         const haystack =
           `${c.name} ${c.location} ${c.category} ${c.id} ${c.productCount}`.toLowerCase();
         if (!haystack.includes(term)) return false;
       }
-
       return true;
     });
 
@@ -79,7 +72,6 @@ export class Companies implements OnInit {
       case 'products-desc':
         result.sort((a, b) => b.productCount - a.productCount);
         break;
-
       case 'id-asc':
         result.sort((a, b) => String(a.id).localeCompare(String(b.id)));
         break;
@@ -87,7 +79,7 @@ export class Companies implements OnInit {
         result.sort((a, b) => String(b.id).localeCompare(String(a.id)));
         break;
     }
-
+    console.log('Filtered companies:', result);
     return result;
   }
 
@@ -108,12 +100,12 @@ export class Companies implements OnInit {
         if (data) {
           this.companies = Array.isArray(data) ? data : [];
         }
-        this.computeFilterOptions();
       },
       error: (err) => {
         console.error('Failed to load landing data:', err);
       },
     });
+    this.computeFilterOptions();
 
   }
 

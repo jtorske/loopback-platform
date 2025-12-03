@@ -69,6 +69,7 @@ def create_app():
         description = db.Column(db.Text)
         website = db.Column(db.String(255))
         created_at = db.Column(db.DateTime, default=datetime.utcnow)
+        image_url = db.Column(db.String(255))
 
         products = db.relationship("Product", backref="company", lazy=True)
 
@@ -79,6 +80,7 @@ def create_app():
                 "description": self.description,
                 "website": self.website,
                 "created_at": self.created_at.isoformat() if self.created_at else None,
+                "image_url": self.image_url,
             }
 
     class Employee(db.Model):
@@ -264,9 +266,8 @@ def create_app():
         return jsonify(company.to_dict()), 201
 
     # 6) List products for a company
-    @app.route("/companies/products", methods=["GET"])
-    def list_company_products():
-        company_id = request.args.get("company_id", type=int)
+    @app.route("/companies/products/<int:company_id>", methods=["GET"])
+    def list_company_products(company_id):
         if not company_id:
             return jsonify({"error": "company not found"}), 404
         products = Product.query.filter_by(company_id=company_id).all()
@@ -473,9 +474,8 @@ def create_app():
         return jsonify(company.to_dict()), 200
     
     # 19) get company announcements
-    @app.route("/company/announcements", methods=["GET"])
-    def get_company_announcements():
-        company_id = request.args.get("company_id", type=int)
+    @app.route("/company/announcements/<int:company_id>", methods=["GET"])
+    def get_company_announcements(company_id):
         if not company_id:
             return jsonify({"error": "company not found"}), 404
 

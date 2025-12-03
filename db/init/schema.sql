@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `companies` (
   `description` TEXT DEFAULT NULL,
   `website` VARCHAR(255) DEFAULT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `image_url` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 

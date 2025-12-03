@@ -4,7 +4,9 @@
     <div class="header">
       <div class="product-image">
         <!-- Just a simple placeholder icon; replace with real image later -->
-        <span class="image-icon">🖼️</span>
+        <span class="image-icon">
+          <img [src]="product.image_url" alt="Product Image" id="image-container" />
+        </span>
       </div>
 
       <div class="product-meta">
