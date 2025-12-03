@@ -31,6 +31,7 @@ export class CompanyDashboard implements OnInit {
 
     popularFeedbackType = 'Praise';
     averageSentiment = 100;
+    companyImage: string | null = null;
 
     // placeholder data for user context (local storage for now)
     userPerms: string | null = null;
@@ -113,6 +114,7 @@ export class CompanyDashboard implements OnInit {
                 this.industry = (res.description && res.website)
                     ? `${res.description} | ${res.website}`
                     : (res.description || res.website || this.industry);
+                this.companyImage = res.image_url;
                 // fetch announcements asynchronously (getAnnouncements sets `this.announcements`)
                 this.getAnnouncements(this.companyId);
                 console.log('Announcements:', this.announcements);
@@ -159,9 +161,8 @@ export class CompanyDashboard implements OnInit {
     }
 
     private updateProducts(companyId: number): void {
-        this.http.get<any>('http://localhost:5000/companies/products', {
-            params: { company_id: companyId },
-        }).subscribe({
+        let url = `http://localhost:5000/companies/products/${companyId}`;
+        this.http.get<any>(url).subscribe({
             next: (res: any) => {
                 console.log('Fetched products for company', res);
                 this.productCount = Array.isArray(res) ? res.length : 0;

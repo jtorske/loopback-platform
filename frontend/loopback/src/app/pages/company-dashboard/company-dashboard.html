@@ -5,8 +5,9 @@
   <div class="dashboard-grid">
     <section class="card company-summary">
       <div class="company-header">
-        <!-- placeholder image box -->
-        <div class="company-logo"></div>
+        <div class="company-logo" *ngIf="companyImage">
+          <img class="company-logo" [src]="companyImage" alt="{{ companyName }} Logo" />
+        </div>
 
         <div class="company-info">
           <h2>{{ companyName }}</h2>
