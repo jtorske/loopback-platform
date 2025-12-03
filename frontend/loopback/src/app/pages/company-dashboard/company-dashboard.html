@@ -14,13 +14,14 @@
           <p class="product-count">{{ productCount }} Products</p>
 
           <ul class="sentiment-list" *ngIf="isCompanyMember">
-            <li>Popular FB Type: {{ popularFeedbackType }}</li>
+            <li>Most Popular Feedback Type: {{ popularFeedbackType }}</li>
+            <li>Average Sentiment: {{ averageSentiment }}% Positive</li>
           </ul>
         </div>
       </div>
 
       <div class="company-actions">
-        <button class="btn btn-secondary">Follow Company</button>
+        <button class="btn btn-secondary" routerLink="/companies">Back to All Companies</button>
         <button *ngIf="isCompanyAdmin" class="btn btn-primary" routerLink="/add-product">
           Add Product
         </button>
