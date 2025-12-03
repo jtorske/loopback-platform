@@ -10,6 +10,8 @@ export class Account {
 
   logout() {
     localStorage.removeItem('user');
+    localStorage.removeItem('permissions');
+    localStorage.removeItem('companyId');
     window.location.href = '/';
   }
 }
