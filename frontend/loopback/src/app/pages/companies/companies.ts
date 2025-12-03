@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { Component, inject, OnInit } from '@angular/core';
 
-
 interface Company {
   id: string | number;
   name: string;
@@ -31,7 +30,6 @@ type SortOption =
   styleUrls: ['./companies.css'],
 })
 export class Companies implements OnInit {
-
   allCategories: string[] = [];
   companies: any[] = [];
   apiUrl = 'http://localhost:5000/companies';
@@ -44,6 +42,15 @@ export class Companies implements OnInit {
   ngOnInit(): void {
     this.getCompanies();
   }
+  mobileFilterOpen = false;
+
+  openMobileFilter() {
+    this.mobileFilterOpen = true;
+  }
+
+  closeMobileFilter() {
+    this.mobileFilterOpen = false;
+  }
 
   get filteredCompanies(): Company[] {
     let result = this.companies.filter((c) => {
@@ -53,6 +60,11 @@ export class Companies implements OnInit {
           `${c.name} ${c.location} ${c.category} ${c.id} ${c.productCount}`.toLowerCase();
         if (!haystack.includes(term)) return false;
       }
+
+      if (this.selectedCategory !== 'all' && c.category !== this.selectedCategory) {
+        return false;
+      }
+
       return true;
     });
 
@@ -90,7 +102,7 @@ export class Companies implements OnInit {
   }
 
   private getCompanies(): void {
-     if (!this.apiUrl) return;
+    if (!this.apiUrl) return;
     console.log('Fetching products from API:', this.apiUrl);
 
     this.http.get<Company[]>(this.apiUrl).subscribe({
@@ -106,7 +118,6 @@ export class Companies implements OnInit {
       },
     });
     this.computeFilterOptions();
-
   }
 
   onSearch(value: string) {
