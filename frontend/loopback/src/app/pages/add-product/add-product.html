@@ -1,0 +1,55 @@
+<div class="add-product-page">
+  <div class="add-card">
+    <div class="header">
+      <h1>Add Product</h1>
+    </div>
+
+    <form class="form" (ngSubmit)="onSubmit()" #prodForm="ngForm">
+      <div class="section">
+        <h2 class="section-title">Product SKU</h2>
+        <input name="sku" [(ngModel)]="sku" required placeholder="SKU" />
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Product Name</h2>
+        <input name="name" [(ngModel)]="name" required placeholder="Product name" />
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Description</h2>
+        <textarea
+          name="description"
+          [(ngModel)]="description"
+          required
+          placeholder="Describe the product"
+        ></textarea>
+      </div>
+
+      <div class="section two-up">
+        <div>
+          <h2 class="section-title">Price</h2>
+          <input
+            name="price"
+            type="number"
+            [(ngModel)]="price"
+            required
+            placeholder="0.00"
+            step="0.01"
+          />
+        </div>
+
+        <div>
+          <h2 class="section-title">Image URL</h2>
+          <input name="image_url" [(ngModel)]="image_url" placeholder="https://..." />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary-btn" type="submit" [disabled]="prodForm.invalid">
+          Create Product
+        </button>
+        <button class="cancel-btn" type="button" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

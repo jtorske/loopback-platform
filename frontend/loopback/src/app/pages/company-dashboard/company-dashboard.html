@@ -22,7 +22,9 @@
 
       <div class="company-actions">
         <button class="btn btn-secondary">Follow Company</button>
-        <button class="btn btn-primary">View All Products</button>
+        <button *ngIf="isCompanyAdmin" class="btn btn-primary" routerLink="/add-product">
+          Add Product
+        </button>
       </div>
     </section>
 

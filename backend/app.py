@@ -507,6 +507,34 @@ def create_app():
             return jsonify("Announcement creation failed"), 500
         
         return jsonify("Announcement created"), 200
+    
+    # 21) create product
+    @app.route("/product", methods=["POST"])
+    def create_product():
+        data = request.get_json() or {}
+        try:
+            sku = data.get("sku")
+            name = data.get("name")
+            description = data.get("description")
+            price = data.get("price")
+            image_url = data.get("image_url")
+            company_id = data.get("company_id")
+            
+            product = Product(
+                name=name,
+                company_id=company_id,
+                sku=sku,
+                description=description,
+                price=price,
+                image_url=image_url
+            )
+            
+            db.session.add(product)
+            db.session.commit()
+        except Exception:
+            return jsonify("Product creation failed"), 500
+        
+        return jsonify("Product created"), 200
 
     
     # enable CORS for the created app so preflight (OPTIONS) requests
