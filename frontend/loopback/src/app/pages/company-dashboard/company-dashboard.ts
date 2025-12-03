@@ -30,6 +30,7 @@ export class CompanyDashboard implements OnInit {
     currIndex = 0;
 
     popularFeedbackType = 'Praise';
+    averageSentiment = 100;
 
     // placeholder data for user context (local storage for now)
     userPerms: string | null = null;
@@ -144,9 +145,11 @@ export class CompanyDashboard implements OnInit {
                 if (maxCount === 0) {
                     // no feedback found — keep default
                     this.popularFeedbackType = 'Praise';
+                    this.averageSentiment = 100;
                 } else {
                     const winner = [1, 2, 3].find(k => counts[k] === maxCount) || 1;
                     this.popularFeedbackType = winner === 1 ? 'Praise' : winner === 2 ? 'Bug' : 'Enhancement';
+                    this.averageSentiment = Math.round((counts[1] / (counts[1] + counts[2])) * 100);
                 }
             },
             error: (err: any) => {
