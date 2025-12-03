@@ -1,10 +1,13 @@
 import os
 from datetime import datetime
+from urllib.parse import quote_plus
 from flask_cors import CORS
 
 
 from flask import Flask, jsonify, request
+from werkzeug.exceptions import NotFound
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import exc as sa_exc
 from dotenv import load_dotenv
 
 # env varialbes come from the docker-compose file
@@ -19,12 +22,13 @@ def create_app():
     # config
     db_user = os.getenv("MYSQL_USER", "root")
     db_password = os.getenv("MYSQL_PASSWORD", "")
+    db_password_quoted = quote_plus(db_password) if db_password else db_password
     db_host = os.getenv("MYSQL_HOST", "db")
     db_port = os.getenv("MYSQL_PORT", "3306")
     db_name = os.getenv("MYSQL_DATABASE", "seng513_db")
 
     app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"mysql+pymysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+        f"mysql+pymysql://{db_user}:{db_password_quoted}@{db_host}:{db_port}/{db_name}"
     )
 
 
@@ -75,6 +79,25 @@ def create_app():
                 "description": self.description,
                 "website": self.website,
                 "created_at": self.created_at.isoformat() if self.created_at else None,
+            }
+
+    class Employee(db.Model):
+        __tablename__ = "employees"
+        id = db.Column(db.Integer, primary_key=True)
+        user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+        company_id = db.Column(db.Integer, db.ForeignKey("companies.id"), nullable=False)
+        employee_number = db.Column(db.String(50), nullable=True)
+        title = db.Column(db.String(100), nullable=True)
+        hired_at = db.Column(db.Date, nullable=True)
+
+        def to_dict(self):
+            return {
+                "id": self.id,
+                "user_id": self.user_id,
+                "company_id": self.company_id,
+                "employee_number": self.employee_number,
+                "title": self.title,
+                "hired_at": self.hired_at.isoformat() if self.hired_at else None,
             }
 
     class Product(db.Model):
@@ -134,7 +157,7 @@ def create_app():
         title = db.Column(db.String(255), nullable=False)
         body = db.Column(db.Text, nullable=False)
         created_by_user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
-        published_at = db.Column(db.DateTime, nullable=True)
+        published_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
         
         def to_dict(self):
             return {
@@ -198,6 +221,25 @@ def create_app():
         user = User.query.get_or_404(user_id)
         return jsonify(user.to_dict()), 200
 
+
+    # 3b) Get company id for a given user (via employees table)
+    @app.route("/users/employee", methods=["GET"])
+    def get_employee_from_user():
+        user_id = request.args.get("user_id", type=int)
+        if not user_id:
+            return jsonify({"error": "user not found"}), 404
+        try:
+            employees = Employee.query.all()
+            for e in employees:
+                e_dict = e.to_dict()
+                if int(e_dict.get("user_id")) == int(user_id):
+                    return e.to_dict()
+        except Exception as ex:
+            # fallback for any other DB errors
+            return jsonify({"company_id": None}), 200
+
+        return jsonify({"company_id": None}), 200
+
     # 4) List companies
     @app.route("/companies", methods=["GET"])
     def list_companies():
@@ -222,10 +264,13 @@ def create_app():
         return jsonify(company.to_dict()), 201
 
     # 6) List products for a company
-    @app.route("/companies/<int:company_id>/products", methods=["GET"])
-    def list_company_products(company_id):
-        company = Company.query.get_or_404(company_id)
-        return jsonify([p.to_dict() for p in company.products]), 200
+    @app.route("/companies/products", methods=["GET"])
+    def list_company_products():
+        company_id = request.args.get("company_id", type=int)
+        if not company_id:
+            return jsonify({"error": "company not found"}), 404
+        products = Product.query.filter_by(company_id=company_id).all()
+        return jsonify([p.to_dict() for p in products]), 200
 
     # 7) Create feedback
     @app.route("/feedback", methods=["POST"])
@@ -418,11 +463,79 @@ def create_app():
         db.session.commit()
         return jsonify({"message": "signup successful", "user": new_user.to_dict()}), 201
     
-        # 18) get single company
-    @app.route("/companies/<int:company_id>", methods=["GET"])
-    def get_company(company_id):
+    # 18) get single company
+    @app.route("/company", methods=["GET"])
+    def get_company():
+        company_id = request.args.get("company_id", type=int)
+        if not company_id:
+            return jsonify({"error": "company not found"}), 404
         company = Company.query.get_or_404(company_id)
         return jsonify(company.to_dict()), 200
+    
+    # 19) get company announcements
+    @app.route("/company/announcements", methods=["GET"])
+    def get_company_announcements():
+        company_id = request.args.get("company_id", type=int)
+        if not company_id:
+            return jsonify({"error": "company not found"}), 404
+
+        announcements = Announcement.query.filter_by(company_id=company_id).all()
+        company_announcements = [a.to_dict() for a in announcements]
+
+        return jsonify(company_announcements), 200
+    
+    # 20) create company announcement
+    @app.route("/announcement", methods=["POST"])
+    def create_announcement():
+        data = request.get_json() or {}
+        try:
+            title = data.get("title")
+            body = data.get("body")
+            created_by_user_id = data.get("publisher_id")
+            company_id = data.get("company_id")
+            
+            announcement = Announcement(
+                title=title,
+                company_id=company_id,
+                body=body,
+                created_by_user_id=created_by_user_id
+            )
+            
+            db.session.add(announcement)
+            db.session.commit()
+        except Exception:
+            return jsonify("Announcement creation failed"), 500
+        
+        return jsonify("Announcement created"), 200
+    
+    # 21) create product
+    @app.route("/product", methods=["POST"])
+    def create_product():
+        data = request.get_json() or {}
+        try:
+            sku = data.get("sku")
+            name = data.get("name")
+            description = data.get("description")
+            price = data.get("price")
+            image_url = data.get("image_url")
+            company_id = data.get("company_id")
+            
+            product = Product(
+                name=name,
+                company_id=company_id,
+                sku=sku,
+                description=description,
+                price=price,
+                image_url=image_url
+            )
+            
+            db.session.add(product)
+            db.session.commit()
+        except Exception:
+            return jsonify("Product creation failed"), 500
+        
+        return jsonify("Product created"), 200
+
     
     # enable CORS for the created app so preflight (OPTIONS) requests
     # are handled regardless of how the app is run (dev/prod/Werkzeug/gunicorn)
