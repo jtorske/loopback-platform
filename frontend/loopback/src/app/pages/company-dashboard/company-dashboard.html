@@ -5,8 +5,9 @@
   <div class="dashboard-grid">
     <section class="card company-summary">
       <div class="company-header">
-        <!-- placeholder image box -->
-        <div class="company-logo"></div>
+        <div *ngIf="companyImage">
+          <img class="company-logo" [src]="companyImage" alt="{{ companyName }} Logo" />
+        </div>
 
         <div class="company-info">
           <h2>{{ companyName }}</h2>
@@ -59,7 +60,7 @@
     </section>
 
     <!-- Product cards carousel -->
-    <section class="products-carousel">
+    <section *ngIf="products && products.length; else noProducts" class="products-carousel">
       <button class="carousel-arrow left" (click)="prevSlide()" [disabled]="currIndex === 0">
         ‹
       </button>
@@ -80,5 +81,14 @@
         ›
       </button>
     </section>
+
+    <!-- Fallback shown when there are no products -->
+    <ng-template #noProducts>
+      <section class="products-carousel no-products">
+        <div class="card no-products-card">
+          <p class="no-products-text">No products available</p>
+        </div>
+      </section>
+    </ng-template>
   </div>
 </div>
