@@ -69,21 +69,33 @@ export class Landing implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => this.setInitialCarouselPosition(), 0);
+
+    // Enable mouse-wheel horizontal scrolling
+    this.carousel.nativeElement.addEventListener('wheel', (e: WheelEvent) => this.onWheel(e), {
+      passive: false,
+    });
   }
 
+  // ---------------------------------------
+  // INITIAL CENTERING FOR 4 SETS
+  // ---------------------------------------
   private setInitialCarouselPosition(): void {
-    if (!this.carousel) return;
+    const el = this.carousel?.nativeElement;
+    if (!el) return;
 
-    const el = this.carousel.nativeElement;
     const card = el.querySelector('.loop-card') as HTMLElement;
     if (!card) return;
 
-    const cardWidth = card.offsetWidth + 16; // gap
+    const cardWidth = card.offsetWidth + 16; // gap = 16
     const oneSetWidth = this.trendingProducts.length * cardWidth;
 
-    el.scrollLeft = oneSetWidth;
+    // Start halfway through set #2 (perfectly centered)
+    el.scrollLeft = oneSetWidth * 1.5;
   }
 
+  // ---------------------------------------
+  // INFINITE SCROLL LOGIC FOR 4 SETS
+  // ---------------------------------------
   onScroll(): void {
     const el = this.carousel.nativeElement;
     const card = el.querySelector('.loop-card') as HTMLElement;
@@ -91,19 +103,21 @@ export class Landing implements OnInit, AfterViewInit {
 
     const cardWidth = card.offsetWidth + 16;
     const setWidth = this.trendingProducts.length * cardWidth;
-
     const scroll = el.scrollLeft;
 
-    if (scroll < setWidth) {
+    // LEFT WRAP (scrolling backward)
+    // When user goes too far left (< half a set from beginning)
+    if (scroll < setWidth * 0.5) {
       this.temporarilyDisableSnap(el);
-      el.scrollLeft = scroll + setWidth;
+      el.scrollLeft = scroll + setWidth * 2; // jump forward two sets
       return;
     }
 
-    if (scroll >= setWidth * 2) {
+    // RIGHT WRAP (scrolling forward)
+    // When user goes too far right (> 2.5 sets into track)
+    if (scroll > setWidth * 2.5) {
       this.temporarilyDisableSnap(el);
-      el.scrollLeft = scroll - setWidth;
-      return;
+      el.scrollLeft = scroll - setWidth * 2; // jump backward two sets
     }
   }
 
@@ -114,6 +128,18 @@ export class Landing implements OnInit, AfterViewInit {
     }, 50);
   }
 
+  // ---------------------------------------
+  // DESKTOP MOUSE WHEEL SUPPORT
+  // ---------------------------------------
+  onWheel(event: WheelEvent) {
+    const el = this.carousel.nativeElement;
+    event.preventDefault(); // stop vertical scroll
+    el.scrollLeft += event.deltaY; // convert wheel → horizontal
+  }
+
+  // ---------------------------------------
+  // LOAD API PRODUCTS + BOTTOM IMAGES
+  // ---------------------------------------
   private loadLandingData(): void {
     this.http.get<LandingResponse>(this.apiUrl + this.urlpath).subscribe({
       next: (data) => {
