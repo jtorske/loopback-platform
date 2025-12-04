@@ -1,7 +1,32 @@
-import { NgModule, Component } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+interface User{
+  company: number;
+  created_at: string;
+  email : string;
+  id: number;
+  is_active:boolean;
+  role:string;
+  username: string;
+}
+
+interface RecentActivity {
+  body: string;
+  company_id: number;
+  created_at: string;
+  feedback_type_id: number;
+  id: number;
+  parent_feedback_id?: number;
+  product_id: number;
+  status: string;
+  title: string;
+  user_id: number;
+}
 
 @Component({
   selector: 'app-account',
@@ -12,37 +37,54 @@ import { CommonModule } from '@angular/common';
   templateUrl: './account.html',
   styleUrl: './account.css',
 })
-export class Account {
+export class Account implements OnInit {
 
-  accountInfo: any;
+  constructor(private route: ActivatedRoute, private router: Router) {}
+  private http = inject(HttpClient);
 
-  constructor() {
-    if (!localStorage['user']) {
-      window.location.href = '/login';
-    }
-
-
-    console.log(localStorage);
-    console.log(localStorage.getItem('user'))
-    const userRaw = localStorage.getItem('user');
-    console.log()
-
-    this.accountInfo = {
-      id: userRaw ? (JSON.parse(userRaw).id) : 0,
-      name: userRaw ? (JSON.parse(userRaw).username) : '',
-      email: userRaw ? (JSON.parse(userRaw).email) : '',
-      role: userRaw ? (JSON.parse(userRaw).role) : ''
-    }
-  }
-  // urlplaceholder for isaac
-  // Please add data :)
-
-  // Temp placeholders
-  suggestions = 5;
-  bugReports = 2;
-  praises = 8;
+  user: User = {} as User;
+  recentActivity: RecentActivity[] = [];
+  suggestions = 0;
+  bugReports = 0;
+  praises = 0;
 
   showEditModal = false;
+
+  ngOnInit() {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      this.user = JSON.parse(userData);
+    }
+
+    this.getFeedbackCounts();
+    this.getRecentActivity();
+  }
+
+  private getFeedbackCounts() {
+    let userId = this.user ? this.user.id : "";
+    let url = `http://localhost:5000/user-feedback-counts/${userId}`;
+
+    this.http.get<any>(url).subscribe({
+      next: (response) => {
+        console.log('Feedback counts fetched:', response);
+        this.suggestions = response.enhancement || 0;
+        this.bugReports = response.bug || 0;
+        this.praises = response.praises || 0;
+      }
+    });
+  }
+
+  private getRecentActivity() {
+    let userId = this.user ? this.user.id : "";
+    let url = `http://localhost:5000/get-recent-activity/${userId}`;
+
+    this.http.get<any>(url).subscribe({
+      next: (response) => {
+        console.log('Recent activity fetched:', response);
+        this.recentActivity = response.recent_activity || [];
+      }
+    });
+  }
 
   editAccount() {
     this.showEditModal = true;
@@ -63,7 +105,7 @@ export class Account {
 
     // Call the PATCH endpoint
     // http://localhost:5000/company
-    fetch(`http://localhost:5000/users/update/${this.accountInfo.id}`, {
+    fetch(`http://localhost:5000/users/update/${this.user.id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -74,7 +116,7 @@ export class Account {
       .then(data => {
         // Update local state with response
         if (data.user) {
-          this.accountInfo = data.user;
+          this.user = data.user;
           localStorage.setItem('user', JSON.stringify(data.user));
         }
         this.closeEditModal();
@@ -83,13 +125,16 @@ export class Account {
         console.error('Error updating account:', error);
         this.closeEditModal();
       });
-    // this.closeEditModal();
   }
 
   logout() {
     localStorage.removeItem('user');
     localStorage.removeItem('permissions');
     localStorage.removeItem('companyId');
-    window.location.href = '/';
+    this.router.navigate(['/']);
+  }
+
+  routeToProducts() {
+    this.router.navigate(['/products']);
   }
 }

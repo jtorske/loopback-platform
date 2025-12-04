@@ -17,6 +17,16 @@
 
     <form class="form" (ngSubmit)="onSubmit()" #feedbackForm="ngForm">
       <!-- Feedback textarea -->
+       <div class="section">
+        <h2 class="section-title">Feedback title</h2>
+        <input
+          type="text"
+          name="title"
+          [(ngModel)]="feedbackTitle"
+          required
+          placeholder="Enter a title for your feedback"
+        />
+      </div>
       <div class="section">
         <h2 class="section-title">Your Feedback</h2>
         <textarea
