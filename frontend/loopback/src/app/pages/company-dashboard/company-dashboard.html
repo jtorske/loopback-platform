@@ -14,7 +14,7 @@
           <p class="industry">{{ industry }}</p>
           <p class="product-count">{{ productCount }} Products</p>
 
-          <ul class="sentiment-list" *ngIf="isCompanyMember">
+          <ul class="sentiment-list" *ngIf="isCompanyMember || isCompanyAdmin">
             <li>Most Popular Feedback Type: {{ popularFeedbackType }}</li>
             <li>Average Sentiment: {{ averageSentiment }}% Positive</li>
           </ul>
@@ -68,6 +68,7 @@
       <div class="carousel-track">
         <article class="card product-card" *ngFor="let product of visibleProducts">
           <h4>{{ product.name }}</h4>
+          <img [src]="product.image_url" alt="{{ product.name }} Image" class="product-image" />
           <p class="product-meta">{{ product.description }}</p>
           <button class="btn btn-primary">Read More</button>
         </article>

@@ -119,7 +119,7 @@
 .bottom-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  height: 270px;
+  height: 40px;
   margin-top: auto;
 }
 

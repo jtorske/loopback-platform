@@ -52,6 +52,7 @@ export class ProductFeedback implements OnInit {
   }
 
   feedbackText = '';
+  feedbackTitle = '';
   tags = ['Praise', 'Enhancement', 'Bug Fix'];
   selectedTag: string | null = 'Praise';
 
@@ -113,7 +114,7 @@ export class ProductFeedback implements OnInit {
       user_id: user ? JSON.parse(user).id : 0,
       company_id: this.product ? +this.product.company_id : 0,
       feedback_type_id: this.selectedTag ? feedbackTypes[this.selectedTag] : 1,
-      title: 'Title',
+      title: this.feedbackTitle,
       status: 'open'
     };
 

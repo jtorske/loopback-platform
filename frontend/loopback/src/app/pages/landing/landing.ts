@@ -45,22 +45,19 @@ export class Landing implements OnInit, AfterViewInit {
   bottomCards = [
     {
       id: 'company-login',
-      title: 'Company Login',
-      route: '/company-login',
-      image_url: 'assets/placeholder.png',
+      title: 'Login',
+      route: '/login'
     },
     {
       id: 'browse-products',
       title: 'Browse Products',
-      route: '/products',
-      image_url: 'assets/placeholder.png',
+      route: '/products'
     },
     {
       id: 'browse-companies',
       title: 'Browse Companies',
-      route: '/companies',
-      image_url: 'assets/placeholder.png',
-    },
+      route: '/companies'
+    }
   ];
 
   ngOnInit(): void {
@@ -128,9 +125,6 @@ export class Landing implements OnInit, AfterViewInit {
         if (data.bottomCardImages?.length) {
           for (const apiCard of data.bottomCardImages) {
             const localCard = this.bottomCards.find((c) => c.id === apiCard.id);
-            if (localCard && apiCard.image_url) {
-              localCard.image_url = apiCard.image_url;
-            }
           }
         }
       },

@@ -381,6 +381,10 @@ def create_app():
             return jsonify({"error": "username and email are required"}), 400
         user = User.query.filter_by(email=email).first()
         user_dict = user.to_dict() if user else None
+        if user_dict:
+            employee = Employee.query.filter_by(user_id=user_dict.get("id")).first()
+            if employee:
+                user_dict["company_id"] = employee.company_id
         try:
             if user_dict:
                 if user_dict.get("passwordhash") == passwordhash:
@@ -390,7 +394,8 @@ def create_app():
                         "email": user_dict.get("email"),
                         "role": user_dict.get("role"),
                         "is_active": user_dict.get("is_active"),
-                        "created_at": user_dict.get("created_at")
+                        "created_at": user_dict.get("created_at"),
+                        "company_id": user_dict.get("company_id", None)
                     }
                     return jsonify({"message": "login successful", "user": ret_user}), 200
                 else:
@@ -503,8 +508,8 @@ def create_app():
             
             db.session.add(announcement)
             db.session.commit()
-        except Exception:
-            return jsonify("Announcement creation failed"), 500
+        except Exception as e:
+            return jsonify({"message":"Announcement creation failed", "error": e}), 500
         
         return jsonify("Announcement created"), 200
     
@@ -536,6 +541,7 @@ def create_app():
         
         return jsonify("Product created"), 200
     
+    # 22) get user feedback counts
     @app.route("/user-feedback-counts/<int:user_id>", methods=["GET"])
     def user_feedback_counts(user_id):
         if not user_id:
@@ -557,6 +563,7 @@ def create_app():
                     counts["praises"] += 1
         return jsonify(counts), 200
     
+    # 23) get recent user activity
     @app.route("/get-recent-activity/<int:user_id>", methods=["GET"])
     def get_recent_activity(user_id):
         if not user_id:
@@ -565,6 +572,13 @@ def create_app():
         recent_activity = [f.to_dict() for f in feedback_items]
         return jsonify({"recent_activity": recent_activity}), 200
 
+    # 24) get products for a company
+    @app.route("/company/products/<int:company_id>", methods=["GET"])
+    def get_company_products(company_id):
+        if not company_id:
+            return jsonify({"error": "company not found"}), 404
+        products = Product.query.filter_by(company_id=company_id).all()
+        return jsonify([p.to_dict() for p in products]), 200
     
     # enable CORS for the created app so preflight (OPTIONS) requests
     # are handled regardless of how the app is run (dev/prod/Werkzeug/gunicorn)
