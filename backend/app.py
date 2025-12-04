@@ -580,9 +580,46 @@ def create_app():
         products = Product.query.filter_by(company_id=company_id).all()
         return jsonify([p.to_dict() for p in products]), 200
     
+    # 25) update user info
+    @app.route("/users/update/<int:user_id>", methods=["PATCH"])
+    def update_user(user_id):
+        data = request.get_json() or {}
+        name = data.get("name")
+        email = data.get("email")
+
+        user = User.query.get_or_404(user_id)
+
+        if name:
+            user.username = name
+        if email:
+            user.email = email
+
+        try:
+            db.session.commit()
+            return jsonify({"message": "user updated", "user": user.to_dict()}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": f"update failed: {str(e)}"}), 500
+        
+        
+    # 26) get product information
+    @app.route("/product-info/<int:product_id>", methods=["GET"])
+    def product_info(product_id):
+        product = Product.query.get_or_404(product_id)
+        company = Company.query.filter_by(id=product.company_id).first()
+        company_name = company.name if company else ""
+        return_dict = product.to_dict()
+        return_dict["company"] = company_name
+        
+        feedback_list = Feedback.query.filter_by(product_id=product_id).all()
+        feedback_dicts = [f.to_dict() for f in feedback_list]
+        return_dict["feedback"] = feedback_dicts
+        return jsonify(return_dict), 200
+
+    
     # enable CORS for the created app so preflight (OPTIONS) requests
     # are handled regardless of how the app is run (dev/prod/Werkzeug/gunicorn)
-    CORS(app, resources={r"/*": {"origins": "*"}})
+    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
     return app
 
 

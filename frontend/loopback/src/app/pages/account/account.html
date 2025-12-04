@@ -3,13 +3,13 @@
     <div class="account-card">
       <h1 class="title title-lg">Account</h1>
       <div class="account-details">
-        <img src="assets/placeholder.png" alt="Profile Image" class="profile-img" />
+        <img src="assets/account.png" alt="Profile Image" class="profile-img" />
         <div class="account-info-group">
           <p class="account-title">{{ user.username }}</p>
           <p class="account-info">{{ user.email }}</p>
           <p class="account-info">{{ user.role }}</p>
           <div class="account-actions">
-            <!-- <button class="edit-btn" (click)="editAccount()">Edit</button> -->
+            <button class="edit-btn" (click)="editAccount()">Edit</button>
             <button class="logout-btn" (click)="logout()">Log out</button>
           </div>
         </div>
@@ -67,8 +67,47 @@
               </div>
             </div>
           </div>
+
         </div>
         <button class="activity-btn" (click)="routeToProducts()">Create New Review</button>
+      </div>
+    </div>
+    <div class="modal-backdrop" *ngIf="showEditModal">
+      <div class="modal">
+        <h2>Edit Account Details</h2>
+        <form #editForm="ngForm" (ngSubmit)="saveAccountDetails(editForm.value)">
+          <label>
+            Name:
+            <input type="text" name="name" [ngModel]="user.username" required />
+          </label>
+          <label>
+            Email:
+            <input type="email" name="email" [ngModel]="user.email" required />
+          </label>
+          <div class="modal-actions">
+            <button type="submit">Save</button>
+            <button type="button" (click)="closeEditModal()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-backdrop" *ngIf="showEditModal">
+      <div class="modal">
+        <h2>Edit Account Details</h2>
+        <form #editForm="ngForm" (ngSubmit)="saveAccountDetails(editForm.value)">
+          <label>
+            Name:
+            <input type="text" name="name" [ngModel]="user.username" required />
+          </label>
+          <label>
+            Email:
+            <input type="email" name="email" [ngModel]="user.email" required />
+          </label>
+          <div class="modal-actions">
+            <button type="submit">Save</button>
+            <button type="button" (click)="closeEditModal()">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
