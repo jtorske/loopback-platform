@@ -5,9 +5,9 @@
       <div class="account-details">
         <img src="assets/placeholder.png" alt="Profile Image" class="profile-img" />
         <div class="account-info-group">
-          <p class="account-title">{{ user.name }}</p>
-          <p class="account-info">{{ user.email }}</p>
-          <p class="account-info">{{ user.role }}</p>
+          <p class="account-title">{{ accountInfo.name }}</p>
+          <p class="account-info">{{ accountInfo.email }}</p>
+          <p class="account-info">{{ accountInfo.role }}</p>
           <div class="account-actions">
             <button class="edit-btn" (click)="editAccount()">Edit</button>
             <button class="logout-btn" (click)="logout()">Log out</button>

@@ -7,22 +7,37 @@ import { Component } from '@angular/core';
   styleUrl: './account.css',
 })
 export class Account {
+
+  accountInfo: any;
+
+  constructor() {
+    if (!localStorage['user']) {
+      window.location.href = '/login';
+    }
+
+    
+    console.log(localStorage);
+    console.log(localStorage.getItem('user'))
+    const userRaw = localStorage.getItem('user');
+    console.log()
+
+    this.accountInfo = {
+      name: userRaw ? (JSON.parse(userRaw).username) : '',
+      email: userRaw ? (JSON.parse(userRaw).email) : '',
+      role: userRaw ? (JSON.parse(userRaw).role) : ''
+    }
+  }
   // urlplaceholder for isaac
   // Please add data :)
 
   // Temp placeholders
-  user = {
-    name: 'Jane Doe',
-    email: 'jane.doe@example.com',
-    role: 'Administrator'
-  };
   suggestions = 5;
   bugReports = 2;
   praises = 8;
 
   editAccount() {
     console.log('Nah')
-    console.log(localStorage)
+    console.log(localStorage['user'])
   }
 
   logout() {
