@@ -87,8 +87,43 @@
             </div>
           </div>
 
+          <div class="activity-row">
+            <div class="activity-left">
+              <div class="activity-title">Enhancement</div>
+              <div class="activity-product">iPhone SE</div>
+              <div class="activity-feedback">The iPhone SE is a great device with powerful features.
+                This is going to be a super long thing to find out how long I can write about this and still have it
+                show on the screen.</div>
+            </div>
+            <div class="activity-right">
+              <div class="stats-icon">
+                <img src="assets/suggestions.svg" alt="Suggestions" />
+              </div>
+              <div class="activity-company">Apple</div>
+            </div>
+          </div>
+
         </div>
         <button class="activity-btn">View All Activity</button>
+      </div>
+    </div>
+    <div class="modal-backdrop" *ngIf="showEditModal">
+      <div class="modal">
+        <h2>Edit Account Details</h2>
+        <form #editForm="ngForm" (ngSubmit)="saveAccountDetails(editForm.value)">
+          <label>
+            Name:
+            <input type="text" name="name" [ngModel]="accountInfo.name" required />
+          </label>
+          <label>
+            Email:
+            <input type="email" name="email" [ngModel]="accountInfo.email" required />
+          </label>
+          <div class="modal-actions">
+            <button type="submit">Save</button>
+            <button type="button" (click)="closeEditModal()">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

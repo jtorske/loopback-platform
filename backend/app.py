@@ -536,6 +536,27 @@ def create_app():
         
         return jsonify("Product created"), 200
 
+    # 22) update user info
+    @app.route("/users/update/<int:user_id>", methods=["PATCH"])
+    def update_user(user_id):
+        data = request.get_json() or {}
+        name = data.get("name")
+        email = data.get("email")
+
+        user = User.query.get_or_404(user_id)
+
+        if name:
+            user.username = name
+        if email:
+            user.email = email
+
+        try:
+            db.session.commit()
+            return jsonify({"message": "user updated", "user": user.to_dict()}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": f"update failed: {str(e)}"}), 500
+
     
     # enable CORS for the created app so preflight (OPTIONS) requests
     # are handled regardless of how the app is run (dev/prod/Werkzeug/gunicorn)
