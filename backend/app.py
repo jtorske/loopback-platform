@@ -535,6 +535,35 @@ def create_app():
             return jsonify("Product creation failed"), 500
         
         return jsonify("Product created"), 200
+    
+    @app.route("/user-feedback-counts/<int:user_id>", methods=["GET"])
+    def user_feedback_counts(user_id):
+        if not user_id:
+            return jsonify({"error": "user not found"}), 404
+        feedback_items = Feedback.query.filter_by(user_id=user_id).all()
+        counts = {
+            "enhancement": 0,
+            "bug": 0,
+            "praises": 0
+        }
+        for fb in feedback_items:
+            fb_type = fb.feedback_type_id
+            if fb_type:
+                if fb_type == 3:
+                    counts["enhancement"] += 1
+                elif fb_type == 2:
+                    counts["bug"] += 1
+                elif fb_type == 1:
+                    counts["praises"] += 1
+        return jsonify(counts), 200
+    
+    @app.route("/get-recent-activity/<int:user_id>", methods=["GET"])
+    def get_recent_activity(user_id):
+        if not user_id:
+            return jsonify({"error": "user not found"}), 404
+        feedback_items = Feedback.query.filter_by(user_id=user_id).order_by(Feedback.created_at.desc()).limit(3).all()
+        recent_activity = [f.to_dict() for f in feedback_items]
+        return jsonify({"recent_activity": recent_activity}), 200
 
     
     # enable CORS for the created app so preflight (OPTIONS) requests
