@@ -13,7 +13,8 @@ INSERT INTO `users` (`id`, `username`, `email`, `password_hash`, `role`, `is_act
   (2, 'coadmin', 'admin@example.com', 'password', 'company_admin', 1),
   (3, 'employee', 'employee@example.com', 'password', 'employee', 1),
   (4, 'consumer', 'consumer@example.com', 'password', 'consumer', 1),
-  (5, 'consumer2', 'consumer2@example.com', 'password', 'consumer', 1)
+  (5, 'consumer2', 'consumer2@example.com', 'password', 'consumer', 1),
+  (6, 'coadmin2', 'admin2@example.com', 'password', 'company_admin', 1)
 ON DUPLICATE KEY UPDATE
   `email` = VALUES(`email`),
   `role` = VALUES(`role`);
@@ -32,7 +33,9 @@ ON DUPLICATE KEY UPDATE `description` = VALUES(`description`);
 -- Employees (profiles linking users to companies)
 -- ---------------------------------------------------------------------------
 INSERT INTO `employees` (`id`, `user_id`, `company_id`, `employee_number`, `title`, `hired_at`) VALUES
-  (1, 3, 1, 'EMP-001', 'Support Engineer', '2024-01-01')
+  (1, 3, 1, 'EMP-001', 'Support Engineer', '2024-01-01'),
+  (2, 2, 1, 'EMP-002', 'Company Admin', '2023-06-15'),
+  (3, 6, 2, 'EMP-003', 'company 2 admin', '2022-11-20')
 ON DUPLICATE KEY UPDATE `employee_number` = VALUES(`employee_number`);
 
 -- ---------------------------------------------------------------------------

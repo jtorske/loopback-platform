@@ -3,6 +3,19 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 
+
+
+interface Product {
+    name: string;
+    description: string;
+    id: number;
+    image_url: string;
+    company_id: number;
+    created_at: string;
+    price: number;
+    sku: string;
+}
+
 @Component({
     selector: 'app-company-dashboard',
     standalone: true,
@@ -18,13 +31,7 @@ export class CompanyDashboard implements OnInit {
     industry = 'Technology';
     productCount = 15;
     announcements: Array<{ id: number; title: string; body: string; published_at?: string; publisher?: string }> = [];
-    products = [
-        { name: 'Product 1', description: 'Description 1' },
-        { name: 'Product 2', description: 'Description 2' },
-        { name: 'Product 3', description: 'Description 3' },
-        { name: 'Product 4', description: 'Description 4' },
-        { name: 'Product 5', description: 'Description 5' },
-    ];
+    products: Product[] = [];
 
     visibleCount = 3;
     currIndex = 0;
@@ -80,6 +87,7 @@ export class CompanyDashboard implements OnInit {
             this.readUserContext();
             this.updateVisibleCount();
             this.loadDashboard();
+            this.getProducts();
         });
     }
 
@@ -118,7 +126,7 @@ export class CompanyDashboard implements OnInit {
                 // fetch announcements asynchronously (getAnnouncements sets `this.announcements`)
                 this.getAnnouncements(this.companyId);
                 console.log('Announcements:', this.announcements);
-                this.updateProducts(this.companyId)
+                this.updateProducts(this.companyId);
                 this.updateCompanyMetrics(this.companyId);
             },
             error: (err: any) => {
@@ -162,14 +170,11 @@ export class CompanyDashboard implements OnInit {
 
     private updateProducts(companyId: number): void {
         let url = `http://localhost:5000/companies/products/${companyId}`;
-        this.http.get<any>(url).subscribe({
+        this.http.get<Product[]>(url).subscribe({
             next: (res: any) => {
                 console.log('Fetched products for company', res);
-                this.productCount = Array.isArray(res) ? res.length : 0;
-                this.products = Array.isArray(res) ? res.map((p: any) => ({
-                    name: p.name,
-                    description: p.description,
-                })) : [];
+                this.productCount = res.length;
+                this.products = res;
                 // recalc visible count / clamp index now that products changed
                 this.updateVisibleCount();
             },
@@ -191,11 +196,40 @@ export class CompanyDashboard implements OnInit {
                     published_at: ann.published_at,
                     publisher: ann.publisher,
                 })) : [];
+                this.announcements.sort((a, b) => {
+                    return b.published_at!.localeCompare(a.published_at!);
+                });
             },
             error: (err: any) => {
                 console.error('Failed to fetch announcement data', err);
                 this.announcements = [];
             }
+        });
+    }
+
+    private getProducts(): void {
+        let url = `http://localhost:5000/company/products/${this.companyId}`;
+        this.http.get<[]>(url).subscribe({
+            next: (res: any[]) => {
+                console.log('Fetched products for company', res);
+                this.products = Array.isArray(res) ? res.map((p: any) => ({
+                    name: p.name,
+                    description: p.description,
+                    id: p.id,
+                    image_url: p.image_url,
+                    company_id: p.company_id,
+                    created_at: p.created_at,
+                    price: p.price,
+                    sku: p.sku
+                })) : [];
+                this.productCount = this.products.length;
+                this.updateVisibleCount();
+            },
+            error: (err: any) => {
+                console.error('Failed to fetch products for company', err);
+                this.products = [];
+                this.productCount = 0;
+            }  
         });
     }
 
