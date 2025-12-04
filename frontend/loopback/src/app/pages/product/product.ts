@@ -12,6 +12,9 @@ interface ProductData {
   category: string;
   image_url: string;
   company_id: number;
+  created_at: string;
+  description: string;
+  sku: string;
 }
 
 interface Feedback {
@@ -24,6 +27,8 @@ interface Feedback {
   title: string;
   status: string;
   parent_feedback_id?: number;
+  created_at: string;
+  id: number;
 }
 
 @Component({
@@ -35,8 +40,12 @@ interface Feedback {
 })
 export class Product {
   productId: string | null = null;
+  
+  apiUrl = 'http://localhost:5000/product-info/';
+
+  feedbacks : Feedback[] = [];
   product: ProductData = {} as ProductData;
-  apiUrl = 'http://localhost:5000/products/';
+
 
   constructor(private route: ActivatedRoute, private router: Router) {}
   private http = inject(HttpClient);
@@ -51,15 +60,30 @@ export class Product {
 
   getProduct() {
     if (!this.apiUrl) return;
-    console.log('Fetching products from API:', this.apiUrl);
     let fullUrl = this.apiUrl + (this.productId ? this.productId : '1');
+    console.log('Fetching product data from URL:', fullUrl);
 
-    this.http.get<ProductData>(fullUrl).subscribe({
+    this.http.get<any>(fullUrl).subscribe({
       next: (data) => {
         console.log('Products data received:', data);
         console.log('Type of data:', typeof data);
         if (data) {
-          this.product = data;
+          this.product = {
+            id: data.id,
+            name: data.name,
+            company: data.company,
+            price: data.price,
+            category: data.category,
+            image_url: data.image_url,
+            company_id: data.company_id,
+            created_at: data.created_at,
+            description: data.description,
+            sku: data.sku
+          }
+          this.feedbacks = data.feedback || [];
+
+          console.log('Product set to:', this.product);
+          console.log('Feedbacks set to:', this.feedbacks);
         }
       },
       error: (err) => {
