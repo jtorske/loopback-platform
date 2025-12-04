@@ -40,14 +40,14 @@ interface Feedback {
 })
 export class Product {
   productId: string | null = null;
-  
+
   apiUrl = 'http://localhost:5000/product-info/';
 
-  feedbacks : Feedback[] = [];
+  feedbacks: Feedback[] = [];
   product: ProductData = {} as ProductData;
 
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router) { }
   private http = inject(HttpClient);
 
   ngOnInit() {
@@ -92,8 +92,32 @@ export class Product {
     });
   }
 
-  giveFeedback() {
-    
+  getFeedbackTypeName(typeId: number): string {
+    switch (typeId) {
+      case 1: return 'Praise';
+      case 2: return 'Bug';
+      case 3: return 'Enhancement';
+      default: return 'Unknown';
+    }
+  }
+
+  getFeedbackTypeImage(typeId: number): string {
+    switch (typeId) {
+      case 1: return 'assets/praises.svg';
+      case 2: return 'assets/bugReports.svg';
+      case 3: return 'assets/suggestions.svg';
+      default: return 'assets/placeholder.png';
+    }
+  }
+
+  giveFeedback(productID: any): void {
+    this.router.navigate(['/feedback', productID]);
+  }
+
+  viewOtherProducts(companyId: number): void {
+    this.router.navigate(['/company'], {
+      queryParams: { company_id: companyId },
+    });
   }
 
 }
