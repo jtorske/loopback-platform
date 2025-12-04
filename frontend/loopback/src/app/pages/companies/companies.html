@@ -1,32 +1,60 @@
 <div class="page">
   <div class="shell">
-    <div class="toolbar">
+    <!-- DESKTOP TOOLBAR -->
+    <div class="toolbar toolbar-desktop">
       <div class="search-wrapper">
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search companies"
+          (input)="onSearch($any($event.target).value)"
+        />
+      </div>
+
+      <select class="filter-select" (change)="onSortChange($any($event.target).value)">
+        <option value="none">Sort: Default</option>
+        <option value="name-asc">Name (A-Z)</option>
+        <option value="name-desc">Name (Z-A)</option>
+        <option value="id-asc">ID (Asc)</option>
+        <option value="id-desc">ID (Desc)</option>
+        <option value="created-newest">Newest</option>
+        <option value="created-oldest">Oldest</option>
+      </select>
+    </div>
+
+    <!-- MOBILE TOOLBAR -->
+    <div class="toolbar-mobile">
+      <h1 class="mobile-title">Companies</h1>
+
+      <div class="mobile-search-row">
         <input
           type="text"
           class="search-input"
           placeholder="Search"
           (input)="onSearch($any($event.target).value)"
         />
+
+        <button class="mobile-filter-btn" (click)="openMobileFilter()">
+          <i class="fa-solid fa-sliders"></i>
+        </button>
       </div>
+    </div>
 
-      <select class="filter-select" (change)="onCategoryChange($any($event.target).value)">
-        <option value="all">All Categories</option>
-        <option *ngFor="let c of allCategories" [value]="c">{{ c }}</option>
-      </select>
+    <div class="mobile-filter-panel" [class.open]="mobileFilterOpen">
+      <h2 class="filter-title">Filters</h2>
 
-      <select class="filter-select" (change)="onSortChange($any($event.target).value)">
-        <option value="none">Sort: Default</option>
-
-        <option value="name-asc">Name (A-Z)</option>
-        <option value="name-desc">Name (Z-A)</option>
-
-        <option value="products-asc"># Products (Low → High)</option>
-        <option value="products-desc"># Products (High → Low)</option>
-
+      <label class="filter-label">Sort By</label>
+      <select class="filter-select-mobile" (change)="onSortChange($any($event.target).value)">
+        <option value="none">Default</option>
+        <option value="name-asc">Name (A→Z)</option>
+        <option value="name-desc">Name (Z→A)</option>
         <option value="id-asc">ID (Asc)</option>
         <option value="id-desc">ID (Desc)</option>
+        <option value="created-newest">Newest</option>
+        <option value="created-oldest">Oldest</option>
       </select>
+
+      <button class="filter-close-btn" (click)="closeMobileFilter()">Done</button>
     </div>
 
     <div class="companies-list">
@@ -43,28 +71,21 @@
         </div>
 
         <div class="company-content">
-          <div class="company-grid">
-            <div class="company-name">{{ company.name }}</div>
-            <div class="company-id">{{ company.id }}</div>
-            <div class="company-category">{{ company.category }}</div>
+          <div class="company-name">{{ company.name }}</div>
 
-            <div class="company-location">{{ company.location }}</div>
-            <div class="company-product-count">{{ company.productCount }} Products</div>
-            <div class="empty"></div>
-          </div>
-        </div>
+          <div class="company-meta-row">
+            <div class="company-description">
+              {{ company.description || 'No description available.' }}
+            </div>
 
-        <div class="top-product">
-          <div class="top-product-label">Top Product</div>
-          <div class="top-product-card">
-            <div class="top-product-image-wrapper">
-              <img
-                class="top-product-image"
-                src='assets/top_prod.png'
-                alt="Top product image"
-              />
+            <div class="company-website">
+              <a [href]="company.website" target="_blank" (click)="stopProp($event)">
+                {{ company.website || 'No website' }}
+              </a>
             </div>
           </div>
+
+          <div class="company-created">Added: {{ company.created_at | date : 'MMM d, y' }}</div>
         </div>
       </article>
     </div>
