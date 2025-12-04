@@ -215,6 +215,18 @@
   display: none !important;
 }
 
+.company-name.clickable {
+  color: #002246;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.company-name.clickable:hover {
+  color: #001630;
+}
+
 @media (max-width: 768px) {
   .toolbar {
     display: none !important;
@@ -368,6 +380,7 @@
   .company-name,
   .product-category,
   .product-id,
+  .product-sku,
   .price {
     font-size: 13px;
     color: #333;

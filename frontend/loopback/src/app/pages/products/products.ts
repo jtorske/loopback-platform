@@ -4,26 +4,17 @@ import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 interface Product {
-  id: string | number;
-  name: string;
+  id: number;
+  company_id: number;
   company: string;
-  price: string;
-  category: string;
-  image_url: string;
+  sku?: string | null;
+  name: string;
+  description?: string | null;
+  price?: number | string | null;
+  image_url?: string | null;
 }
 
-interface ProductsApiResponse {
-  products?: Product[];
-}
-
-type SortOption =
-  | 'none'
-  | 'name-asc'
-  | 'name-desc'
-  | 'price-asc'
-  | 'price-desc'
-  | 'id-asc'
-  | 'id-desc';
+type SortOption = 'none' | 'name-asc' | 'name-desc' | 'price-asc' | 'price-desc';
 
 @Component({
   selector: 'app-products',
@@ -33,18 +24,14 @@ type SortOption =
   styleUrls: ['./products.css'],
 })
 export class Products implements OnInit {
-  private readonly url = 'http://localhost:5000';
-  private readonly apiUrl = this.url + '/products';
-
+  private readonly apiUrl = 'http://localhost:5000/products';
   private http = inject(HttpClient);
 
   products: Product[] = [];
 
-  allCategories: string[] = [];
-
   searchTerm = '';
-  selectedCategory = 'all';
   sortOption: SortOption = 'none';
+  mobileFilterOpen = false;
 
   constructor(private router: Router) {}
 
@@ -53,23 +40,15 @@ export class Products implements OnInit {
   }
 
   get filteredProducts(): Product[] {
-    let result = this.products.filter((p) => {
-      if (this.selectedCategory !== 'all' && p.category !== this.selectedCategory) {
-        return false;
-      }
+    let result = [...this.products];
 
-      if (this.searchTerm.trim()) {
-        const term = this.searchTerm.toLowerCase();
-        const haystack = `${p.name} ${p.company} ${p.category} ${p.id} ${p.price}`.toLowerCase();
-        if (!haystack.includes(term)) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-
-    result = [...result];
+    // SEARCH
+    if (this.searchTerm.trim()) {
+      const t = this.searchTerm.toLowerCase();
+      result = result.filter((p) =>
+        `${p.name} ${p.sku} ${p.company} ${p.price}`.toLowerCase().includes(t)
+      );
+    }
 
     switch (this.sortOption) {
       case 'name-asc':
@@ -79,16 +58,10 @@ export class Products implements OnInit {
         result.sort((a, b) => b.name.localeCompare(a.name));
         break;
       case 'price-asc':
-        result.sort((a, b) => this.parsePrice(a.price) - this.parsePrice(b.price));
+        result.sort((a, b) => (Number(a.price) || 0) - (Number(b.price) || 0));
         break;
       case 'price-desc':
-        result.sort((a, b) => this.parsePrice(b.price) - this.parsePrice(a.price));
-        break;
-      case 'id-asc':
-        result.sort((a, b) => String(a.id).localeCompare(String(b.id)));
-        break;
-      case 'id-desc':
-        result.sort((a, b) => String(b.id).localeCompare(String(a.id)));
+        result.sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
         break;
       case 'none':
       default:
@@ -97,7 +70,6 @@ export class Products implements OnInit {
 
     return result;
   }
-  mobileFilterOpen = false;
 
   openMobileFilter() {
     this.mobileFilterOpen = true;
@@ -108,62 +80,28 @@ export class Products implements OnInit {
   }
 
   private loadProducts(): void {
-    if (!this.apiUrl) return;
-    console.log('Fetching products from API:', this.apiUrl);
-
     this.http.get<Product[]>(this.apiUrl).subscribe({
-      next: (data) => {
-        console.log('Products data received:', data);
-        console.log('Type of data:', typeof data);
-        if (data) {
-          this.products = Array.isArray(data) ? data : [];
-        }
-        this.computeFilterOptions();
+      next: (data: Product[]) => {
+        this.products = Array.isArray(data) ? data : [];
       },
-      error: (err) => {
-        console.error('Failed to load landing data:', err);
+      error: (err: any) => {
+        console.error('Failed to load products:', err);
       },
     });
   }
 
-  private computeFilterOptions(): void {
-    const categories = new Set<string>();
-
-    for (const p of this.products) {
-      categories.add(p.category);
-    }
-
-    this.allCategories = Array.from(categories).sort();
-    console.log('Available categories:', this.allCategories);
-  }
-
-  private parsePrice(price: string): number {
-    if (!price) return 0;
-
-    // Normalize: remove currency symbols & commas
-    let cleaned = price
-      .toString()
-      .trim()
-      .replace(/[^0-9.,]/g, '') // keep digits, . and ,
-      .replace(/,/g, ''); // remove commas entirely
-
-    // If still empty → treat as zero
-    if (!cleaned) return 0;
-
-    return Number(cleaned);
-  }
-
-  // handlers for template
   onSearch(value: string): void {
     this.searchTerm = value;
   }
 
-  onCategoryChange(value: string): void {
-    this.selectedCategory = value;
-  }
-
   onSortChange(value: string): void {
     this.sortOption = value as SortOption;
+  }
+
+  goToCompany(companyId: number): void {
+    this.router.navigate(['/company'], {
+      queryParams: { company_id: companyId },
+    });
   }
 
   onReview(product: Product): void {

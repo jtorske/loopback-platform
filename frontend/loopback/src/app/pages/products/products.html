@@ -17,13 +17,12 @@
         <option value="name-desc">Name (Z-A)</option>
         <option value="price-asc">Price (Low → High)</option>
         <option value="price-desc">Price (High → Low)</option>
-        <option value="id-asc">ID (Asc)</option>
-        <option value="id-desc">ID (Desc)</option>
       </select>
     </div>
+
     <!-- MOBILE TOOLBAR -->
     <div class="toolbar-mobile">
-      <h1 class="mobile-title">Companies</h1>
+      <h1 class="mobile-title">Products</h1>
 
       <div class="mobile-search-row">
         <input
@@ -42,16 +41,13 @@
     <div class="mobile-filter-panel" [class.open]="mobileFilterOpen">
       <h2 class="filter-title">Filters</h2>
 
-      <!-- SORT (matches desktop exactly) -->
       <label class="filter-label">Sort By</label>
       <select class="filter-select-mobile" (change)="onSortChange($any($event.target).value)">
-        <option value="none">Sort: Default</option>
+        <option value="none">Default</option>
         <option value="name-asc">Name (A-Z)</option>
         <option value="name-desc">Name (Z-A)</option>
         <option value="price-asc">Price (Low → High)</option>
         <option value="price-desc">Price (High → Low)</option>
-        <option value="id-asc">ID (Asc)</option>
-        <option value="id-desc">ID (Desc)</option>
       </select>
 
       <button class="filter-close-btn" (click)="closeMobileFilter()">Done</button>
@@ -66,11 +62,14 @@
         <div class="product-content">
           <div class="product-grid">
             <div class="product-name">{{ product.name }}</div>
-            <div class="product-category">{{ product.category }}</div>
 
-            <div class="company-name">{{ product.company }}</div>
+            <div class="company-name clickable" (click)="goToCompany(product.company_id)">
+              {{ product.company }}
+            </div>
+
             <div class="price">$ {{ product.price }}</div>
-            <div class="empty"></div>
+
+            <div class="product-sku" *ngIf="product.sku">SKU: {{ product.sku }}</div>
           </div>
         </div>
 
