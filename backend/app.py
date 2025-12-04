@@ -600,6 +600,21 @@ def create_app():
         except Exception as e:
             db.session.rollback()
             return jsonify({"error": f"update failed: {str(e)}"}), 500
+        
+        
+    # 26) get product information
+    @app.route("/product-info/<int:product_id>", methods=["GET"])
+    def product_info(product_id):
+        product = Product.query.get_or_404(product_id)
+        company = Company.query.filter_by(id=product.company_id).first()
+        company_name = company.name if company else ""
+        return_dict = product.to_dict()
+        return_dict["company"] = company_name
+        
+        feedback_list = Feedback.query.filter_by(product_id=product_id).all()
+        feedback_dicts = [f.to_dict() for f in feedback_list]
+        return_dict["feedback"] = feedback_dicts
+        return jsonify(return_dict), 200
 
     
     # enable CORS for the created app so preflight (OPTIONS) requests
