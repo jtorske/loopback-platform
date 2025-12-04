@@ -90,7 +90,10 @@ export class Product {
         console.error('Failed to load landing data:', err);
       },
     });
+  }
 
+  giveFeedback() {
+    
   }
 
 }
