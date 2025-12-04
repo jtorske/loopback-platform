@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 interface User{
   company: number;
@@ -27,10 +28,12 @@ interface RecentActivity {
   user_id: number;
 }
 
-
 @Component({
   selector: 'app-account',
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './account.html',
   styleUrl: './account.css',
 })
@@ -44,6 +47,8 @@ export class Account implements OnInit {
   suggestions = 0;
   bugReports = 0;
   praises = 0;
+
+  showEditModal = false;
 
   ngOnInit() {
     const userData = localStorage.getItem('user');
@@ -82,8 +87,44 @@ export class Account implements OnInit {
   }
 
   editAccount() {
-    console.log('Nah')
-    console.log(localStorage)
+    this.showEditModal = true;
+  }
+
+  closeEditModal() {
+    this.showEditModal = false;
+  }
+
+  saveAccountDetails(updatedInfo: any) {
+    // Save logic here (e.g., update localStorage, send to backend, etc.)
+    // this.accountInfo = { ...this.accountInfo, ...updatedInfo };
+    // console.log(updatedInfo);
+    const payload = {
+      name: updatedInfo.name,
+      email: updatedInfo.email
+    };
+
+    // Call the PATCH endpoint
+    // http://localhost:5000/company
+    fetch(`http://localhost:5000/users/update/${this.user.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+      .then(response => response.json())
+      .then(data => {
+        // Update local state with response
+        if (data.user) {
+          this.user = data.user;
+          localStorage.setItem('user', JSON.stringify(data.user));
+        }
+        this.closeEditModal();
+      })
+      .catch(error => {
+        console.error('Error updating account:', error);
+        this.closeEditModal();
+      });
   }
 
   logout() {
