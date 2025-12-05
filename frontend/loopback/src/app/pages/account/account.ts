@@ -86,6 +86,24 @@ export class Account implements OnInit {
     });
   }
 
+  getFeedbackTypeName(typeId: number): string {
+    switch (typeId) {
+      case 1: return 'Praise';
+      case 2: return 'Bug';
+      case 3: return 'Enhancement';
+      default: return 'Unknown';
+    }
+  }
+
+  getFeedbackTypeImage(typeId: number): string {
+    switch (typeId) {
+      case 1: return 'assets/praises.svg';
+      case 2: return 'assets/bugReports.svg';
+      case 3: return 'assets/suggestions.svg';
+      default: return 'assets/placeholder.png';
+    }
+  }
+
   editAccount() {
     this.showEditModal = true;
   }
