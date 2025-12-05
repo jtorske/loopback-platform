@@ -73,6 +73,8 @@ CREATE TABLE IF NOT EXISTS `feedback` (
   `title` VARCHAR(255) DEFAULT NULL,
   `body` TEXT NOT NULL,
   `status` VARCHAR(50) DEFAULT 'open',
+  `upvotes` INT NOT NULL DEFAULT 0,
+  `downvotes` INT NOT NULL DEFAULT 0,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_feedback_user` (`user_id`),

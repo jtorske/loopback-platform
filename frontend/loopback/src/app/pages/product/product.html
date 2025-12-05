@@ -27,6 +27,25 @@
                                                                 getFeedbackTypeName(feedback.feedback_type_id) }}</div>
                                                         <div class="feedback-product">{{ product.name }}</div>
                                                         <div class="feedback-feedback"> {{ feedback.body }}</div>
+                                                        <div class="feedback-votes">
+                                                                <button type="button" class="vote-btn up"
+                                                                        [class.active]="myVotes[feedback.id] === 'up'"
+                                                                        (click)="vote(feedback, 'up')"
+                                                                        aria-label="Upvote this feedback">
+                                                                        ▲
+                                                                </button>
+
+                                                                <span class="vote-score">
+                                                                        {{ getScore(feedback) }}
+                                                                </span>
+
+                                                                <button type="button" class="vote-btn down"
+                                                                        [class.active]="myVotes[feedback.id] === 'down'"
+                                                                        (click)="vote(feedback, 'down')"
+                                                                        aria-label="Downvote this feedback">
+                                                                        ▼
+                                                                </button>
+                                                        </div>
                                                 </div>
                                                 <div class="feedback-right">
                                                         <div class="stats-icon">
@@ -39,8 +58,8 @@
                                                                 class="delete-feedback-btn"
                                                                 (click)="deleteFeedback(feedback.id)"
                                                                 title="Delete review">
-                                                                <img src="assets/trash.svg" alt="Delete" class="bottom-icon-img"
-    />
+                                                                <img src="assets/trash.svg" alt="Delete"
+                                                                        class="bottom-icon-img" />
                                                         </button>
                                                 </div>
                                         </div>
