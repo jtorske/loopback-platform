@@ -332,6 +332,22 @@ def create_app():
         db.session.commit()
         return jsonify(feedback.to_dict()), 200
     
+    # Delete feedback (used by system admin in the UI)
+    @app.route("/feedback/<int:feedback_id>", methods=["DELETE"])
+    def delete_feedback(feedback_id):
+        feedback = Feedback.query.get(feedback_id)
+        if not feedback:
+            return jsonify({"error": "feedback not found"}), 404
+
+        try:
+            db.session.delete(feedback)
+            db.session.commit()
+            return jsonify({"message": "feedback deleted"}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"error": f"delete failed: {str(e)}"}), 500
+
+    
     # 11) List products
     @app.route("/products", methods=["GET"])
     def list_products():

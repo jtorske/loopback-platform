@@ -104,6 +104,10 @@ export class Products implements OnInit {
     });
   }
 
+  goToProduct(product: Product): void {
+    this.router.navigate(['/product', product.id]);
+  }
+
   onReview(product: Product): void {
     this.router.navigate(['/feedback', product.id]);
   }

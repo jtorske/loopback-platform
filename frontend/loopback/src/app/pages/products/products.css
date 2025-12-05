@@ -4,6 +4,7 @@
   color: #f9fafb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+
 .toolbar {
   display: grid;
 }
@@ -28,7 +29,8 @@
 
 .toolbar {
   display: grid;
-  grid-template-columns: 1fr auto; /* search left, sort right */
+  grid-template-columns: 1fr auto;
+  /* search left, sort right */
   gap: 12px;
   margin-bottom: 20px;
 }
@@ -215,6 +217,16 @@
   display: none !important;
 }
 
+.product-name.clickable {
+    cursor: pointer;
+  }
+
+  .product-name.clickable:hover {
+    color: #001630;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
 .company-name.clickable {
   color: #002246;
   font-weight: 600;
@@ -270,6 +282,7 @@
     align-items: center;
     justify-content: center;
   }
+
   .review-text {
     display: inline;
   }
@@ -340,6 +353,7 @@
     display: inline-block !important;
     font-size: 18px;
   }
+
   .product-card {
     display: grid;
     grid-template-columns: 90px 1fr auto;

@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'company-dashboard', component: CompanyDashboard },
   { path: 'company', component: CompanyDashboard },
   { path: 'account', component: Account },
-  { path: 'product', component: Product },
+  { path: 'product/:id', component: Product },
   { path: 'login', component: Login },
   { path: 'register', component: Register },
   { path: 'feedback/:id', component: ProductFeedback },

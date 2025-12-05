@@ -61,7 +61,7 @@
 
         <div class="product-content">
           <div class="product-grid">
-            <div class="product-name">{{ product.name }}</div>
+            <div class="product-name clickable" (click)="goToProduct(product)">{{ product.name }}</div>
 
             <div class="company-name clickable" (click)="goToCompany(product.company_id)">
               {{ product.company }}
