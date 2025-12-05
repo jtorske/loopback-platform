@@ -6,10 +6,10 @@
     <div class="loop-track">
       <!-- FIRST SET -->
       @for (p of trendingProducts; track p.id) {
-      <div class="loop-card">
+      <div class="loop-card clickable" (click)="goToProduct(p.id)">
         <div class="product-name">{{ p.name }}</div>
         <div
-          class="image-placeholder"
+          class="image-placeholder" 
           [ngStyle]="{ 'background-image': 'url(' + p.image_url + ')' }"
         ></div>
       </div>
@@ -17,7 +17,7 @@
 
       <!-- SECOND SET -->
       @for (p of trendingProducts; track p.id) {
-      <div class="loop-card">
+      <div class="loop-card clickable" (click)="goToProduct(p.id)">
         <div class="product-name">{{ p.name }}</div>
         <div
           class="image-placeholder"
@@ -28,7 +28,7 @@
 
       <!-- THIRD SET -->
       @for (p of trendingProducts; track p.id) {
-      <div class="loop-card">
+      <div class="loop-card clickable" (click)="goToProduct(p.id)">
         <div class="product-name">{{ p.name }}</div>
         <div
           class="image-placeholder"
@@ -39,7 +39,7 @@
 
       <!-- FOURTH SET -->
       @for (p of trendingProducts; track p.id) {
-      <div class="loop-card">
+      <div class="loop-card clickable" (click)="goToProduct(p.id)">
         <div class="product-name">{{ p.name }}</div>
         <div
           class="image-placeholder"

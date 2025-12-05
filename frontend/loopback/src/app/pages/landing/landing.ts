@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, inject } from '@angular/core';
 
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
@@ -59,6 +59,8 @@ export class Landing implements OnInit, AfterViewInit {
       route: '/companies'
     }
   ];
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.loadLandingData();
@@ -130,5 +132,10 @@ export class Landing implements OnInit, AfterViewInit {
       },
       error: (err) => console.error('Failed to load landing data:', err),
     });
+  }
+
+  goToProduct(productID: any): void {
+    console.log('click')
+    this.router.navigate(['/product', productID]);
   }
 }
