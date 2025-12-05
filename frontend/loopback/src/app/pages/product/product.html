@@ -3,34 +3,47 @@
                 <div class="product-card">
                         <div class="product-card-content">
                                 <div class="product-image-section">
-                                        <img [src]="product.image_url || 'assets/placeholder.png'" alt="Profile Image" class="profile-img" />
-                                        <button class="feedback-btn" (click)="giveFeedback(product.id)">Write Feedback</button>
+                                        <img [src]="product.image_url || 'assets/placeholder.png'" alt="Profile Image"
+                                                class="profile-img" />
+                                        <button class="feedback-btn" (click)="giveFeedback(product.id)">Write
+                                                Feedback</button>
                                 </div>
                                 <div class="product-details">
                                         <p class="product-title">{{ product.name }}</p>
                                         <p class="product-info">{{ product.company }}</p>
                                         <p class="product-info">Description: {{ product.description }}</p>
                                 </div>
-                                <button class="company-btn" (click)="viewOtherProducts(product.company_id)">View Other Products from Company</button>
+                                <button class="company-btn" (click)="viewOtherProducts(product.company_id)">View Other
+                                        Products from Company</button>
                         </div>
                 </div>
                 <div class="feedback-card">
                         <p class="feedback-title">Recent Feedback</p>
                         <div class="feedback-list">
                                 <div *ngFor="let feedback of feedbacks">
-                                <div class="feedback-row">
-                                        <div class="feedback-left">
-                                                <div class="feedback-type">{{ getFeedbackTypeName(feedback.feedback_type_id) }}</div>
-                                                <div class="feedback-product">iPhone SE</div>
-                                                <div class="feedback-feedback"> {{ feedback.body }}</div>
-                                        </div>
-                                        <div class="feedback-right">
-                                                <div class="stats-icon">
-                                                        <img [src]="getFeedbackTypeImage(feedback.feedback_type_id)" alt="Feedback Type" />
+                                        <div class="feedback-row">
+                                                <div class="feedback-left">
+                                                        <div class="feedback-type">{{
+                                                                getFeedbackTypeName(feedback.feedback_type_id) }}</div>
+                                                        <div class="feedback-product">iPhone SE</div>
+                                                        <div class="feedback-feedback"> {{ feedback.body }}</div>
                                                 </div>
-                                                <div class="feedback-company">Apple</div>
+                                                <div class="feedback-right">
+                                                        <div class="stats-icon">
+                                                                <img [src]="getFeedbackTypeImage(feedback.feedback_type_id)"
+                                                                        alt="Feedback Type" />
+                                                        </div>
+                                                        <div class="feedback-company">Apple</div>
+                                                        <!-- Trash button visible only to system admins -->
+                                                        <button *ngIf="canDeleteFeedback" type="button"
+                                                                class="delete-feedback-btn"
+                                                                (click)="deleteFeedback(feedback.id)"
+                                                                title="Delete review">
+                                                                <img src="assets/trash.svg" alt="Delete" class="bottom-icon-img"
+    />
+                                                        </button>
+                                                </div>
                                         </div>
-                                </div>
                                 </div>
                         </div>
                         <button class="company-btn">View Discussion</button>

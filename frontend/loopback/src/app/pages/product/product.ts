@@ -45,18 +45,44 @@ export class Product {
 
   feedbacks: Feedback[] = [];
   product: ProductData = {} as ProductData;
-
+  // only sys admin see delete button
+  canDeleteFeedback = false;
 
   constructor(private route: ActivatedRoute, private router: Router) { }
   private http = inject(HttpClient);
 
   ngOnInit() {
+    // if current user is sys admin
+    this.refreshDeletePermission();
     this.route.paramMap.subscribe(params => {
       this.productId = params.get('id');
       console.log('Product ID:', this.productId);
     });
     this.getProduct();
   }
+
+    private refreshDeletePermission(): void {
+    try {
+      // login.ts stores this as the user's role string
+      const perms = localStorage.getItem('permissions');
+      const userJson = localStorage.getItem('user');
+
+      let role = (perms || '').toString().toLowerCase();
+
+      // Fallback to user.role if needed
+      if (!role && userJson) {
+        const user = JSON.parse(userJson);
+        role = (user?.role || '').toString().toLowerCase();
+      }
+
+      const adminRoles = ['system_admin', 'sysadmin'];
+      this.canDeleteFeedback = !!role && adminRoles.some(r => role.includes(r));
+    } catch (e) {
+      console.error('Failed to read user role for delete permission', e);
+      this.canDeleteFeedback = false;
+    }
+  }
+
 
   getProduct() {
     if (!this.apiUrl) return;
@@ -109,6 +135,29 @@ export class Product {
       default: return 'assets/placeholder.png';
     }
   }
+
+    deleteFeedback(feedbackId: number): void {
+    if (!feedbackId) return;
+    if (!this.canDeleteFeedback) return;
+
+    const confirmed = window.confirm('Are you sure you want to delete this review?');
+    if (!confirmed) return;
+
+    const url = `http://localhost:5000/feedback/${feedbackId}`;
+
+    this.http.delete(url).subscribe({
+      next: () => {
+        // Remove from the local list so the UI updates immediately
+        this.feedbacks = this.feedbacks.filter(f => f.id !== feedbackId);
+        console.log('Feedback deleted:', feedbackId);
+      },
+      error: (err) => {
+        console.error('Failed to delete feedback:', err);
+        alert('Error deleting feedback. Please try again.');
+      },
+    });
+  }
+
 
   giveFeedback(productID: any): void {
     this.router.navigate(['/feedback', productID]);

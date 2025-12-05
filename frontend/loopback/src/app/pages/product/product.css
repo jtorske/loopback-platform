@@ -205,7 +205,6 @@
 .stats-icon {
         width: 32px;
         height: 32px;
-        background: #ededed;
         border-radius: 6px;
         margin-right: 12px;
         display: flex;
@@ -224,6 +223,21 @@
         font-size: 18px;
         margin-top: 8px;
 }
+
+.delete-feedback-btn {
+        margin-top: 4px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+        color: #ef4444; /* red */
+}
+
+.delete-feedback-btn:hover {
+        color: #b91c1c;
+}
+
 
 /* Smaller screen media Query */
 
