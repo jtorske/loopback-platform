@@ -51,6 +51,10 @@ export class Product {
   // only sys admin see delete button
   canDeleteFeedback = false;
   myVotes: { [feedbackId: number]: 'up' | 'down' } = {};
+  // Key used to store votes in localStorage (per user).
+  // temp solution if not tied to a user
+  private voteStorageKey: string | null = null;
+
 
   constructor(private route: ActivatedRoute, private router: Router) { }
   private http = inject(HttpClient);
@@ -58,6 +62,7 @@ export class Product {
   ngOnInit() {
     // if current user is sys admin
     this.refreshDeletePermission();
+    this.loadVotesForCurrentUser();
     this.route.paramMap.subscribe(params => {
       this.productId = params.get('id');
       console.log('Product ID:', this.productId);
@@ -216,6 +221,8 @@ export class Product {
         } else {
           delete this.myVotes[feedbackId];
         }
+
+        this.saveVotesForCurrentUser();
       },
       error: (err) => {
         console.error('Failed to register vote', err);
@@ -223,6 +230,57 @@ export class Product {
       },
     });
   }
+
+    private initVoteStorageKey(): void {
+    // Try to tie votes to the logged-in user
+    try {
+      const userRaw = localStorage.getItem('user');
+      if (userRaw) {
+        const user = JSON.parse(userRaw);
+        if (user && user.id) {
+          this.voteStorageKey = `feedbackVotes_user_${user.id}`;
+        }
+      }
+    } catch (e) {
+      console.error('Failed to read user from localStorage', e);
+    }
+
+    // Fallback to a guest key if we don't have a user
+    if (!this.voteStorageKey) {
+      this.voteStorageKey = 'feedbackVotes_guest';
+    }
+  }
+
+  private loadVotesForCurrentUser(): void {
+    this.initVoteStorageKey();
+
+    if (!this.voteStorageKey) {
+      this.myVotes = {};
+      return;
+    }
+
+    try {
+      const stored = localStorage.getItem(this.voteStorageKey);
+      this.myVotes = stored ? JSON.parse(stored) : {};
+    } catch (e) {
+      console.error('Failed to parse stored votes', e);
+      this.myVotes = {};
+    }
+  }
+
+  private saveVotesForCurrentUser(): void {
+    if (!this.voteStorageKey) {
+      this.initVoteStorageKey();
+    }
+    if (!this.voteStorageKey) return;
+
+    try {
+      localStorage.setItem(this.voteStorageKey, JSON.stringify(this.myVotes));
+    } catch (e) {
+      console.error('Failed to save votes to localStorage', e);
+    }
+  }
+
 
   viewOtherProducts(companyId: number): void {
     this.router.navigate(['/company'], {
