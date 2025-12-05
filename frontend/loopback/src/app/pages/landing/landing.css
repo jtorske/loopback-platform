@@ -86,11 +86,16 @@
   background-image: inherit;
 }
 
+.loop-card.clickable {
+    cursor: pointer;
+  }
+
 @media (min-width: 769px) {
   .loop-track,
   .loop-card,
   .image-placeholder {
-    pointer-events: none;
+    /* pointer-events: none; */
+    /* Can uncomment if needed for bug reasons */
   }
   .loop-card {
     flex: 0 0 300px;
