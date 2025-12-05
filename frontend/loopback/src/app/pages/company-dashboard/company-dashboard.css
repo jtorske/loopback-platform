@@ -57,7 +57,7 @@
 
 .announcements-body {
   /* limit height so area can scroll; adjust as needed */
-  max-height: 320px;
+  max-height: 460px;
   overflow-y: auto;
   padding-right: 0.5rem; /* avoid content under scrollbar */
 }
@@ -202,14 +202,6 @@
   }
 }
 
-@media (max-width: 600px) {
-  /* On really small screens, maybe only 1 card visually */
-  .product-card {
-    min-width: 100%;
-  }
-}
-
-
 /* Responsive: stack on small screens */
 @media (max-width: 768px) {
   .dashboard-grid {
@@ -235,18 +227,27 @@
     min-width: 0;
   }
 
+  .product-card {
+    min-width: 100%;
+  }
+
   /* On small screens let announcements expand naturally (no scroll) */
   .announcements-body {
     max-height: none;
     overflow: visible;
     padding-right: 0;
   }
+
+  p, li {
+    font-size: 0.9rem;
+  }
+
 }
 
 .product-image {
   width: 100%;
   height: 120px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 6px;
   margin-bottom: 8px;
 }
