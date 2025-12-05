@@ -57,13 +57,14 @@
             <div class="activity-row">
               <div class="activity-left">
                 <div class="activity-title">{{ activity.title }}</div>
-                <div class="activity-product">Product ID:{{ activity.product_id }}</div>
+                <div class="activity-product">{{ activity.productName }}</div>
                 <div class="activity-feedback">{{ activity.body }}</div>
               </div>
               <div class="activity-right">
                 <div class="stats-icon">
                   <img [src]="getFeedbackTypeImage(activity.feedback_type_id)" alt="Feedback Type" />
                 </div>
+                <div class="activity-company">{{ activity.companyName }}</div>
               </div>
             </div>
           </div>

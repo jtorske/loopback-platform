@@ -5,13 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-interface User{
+interface User {
   company: number;
   created_at: string;
-  email : string;
+  email: string;
   id: number;
-  is_active:boolean;
-  role:string;
+  is_active: boolean;
+  role: string;
   username: string;
 }
 
@@ -26,6 +26,8 @@ interface RecentActivity {
   status: string;
   title: string;
   user_id: number;
+  productName?: string;
+  companyName?: string;
 }
 
 @Component({
@@ -39,7 +41,7 @@ interface RecentActivity {
 })
 export class Account implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router) { }
   private http = inject(HttpClient);
 
   user: User = {} as User;
@@ -80,8 +82,19 @@ export class Account implements OnInit {
 
     this.http.get<any>(url).subscribe({
       next: (response) => {
-        console.log('Recent activity fetched:', response);
-        this.recentActivity = response.recent_activity || [];
+        const activities = response.recent_activity || [];
+        activities.forEach((activity: RecentActivity) => {
+          const productId = activity.product_id;
+          const productUrl = `http://localhost:5000/product-info/${productId}`;
+          this.http.get<any>(productUrl).subscribe({
+            next: (productInfo) => {
+              activity.productName = productInfo.name;
+              activity.companyName = productInfo.company;
+            }
+          });
+        });
+        this.recentActivity = activities;
+        console.log(this.recentActivity)
       }
     });
   }
