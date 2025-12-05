@@ -70,7 +70,7 @@
           <h4>{{ product.name }}</h4>
           <img [src]="product.image_url" alt="{{ product.name }} Image" class="product-image" />
           <p class="product-meta">{{ product.description }}</p>
-          <button class="btn btn-primary">Read More</button>
+          <button class="btn btn-primary" routerLink="/product/{{ product.id }}">Read More</button>
         </article>
       </div>
 
