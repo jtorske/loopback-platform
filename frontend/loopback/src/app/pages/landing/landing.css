@@ -87,6 +87,11 @@
 }
 
 @media (min-width: 769px) {
+  .loop-track,
+  .loop-card,
+  .image-placeholder {
+    pointer-events: none;
+  }
   .loop-card {
     flex: 0 0 300px;
     max-width: 300px;
@@ -95,9 +100,6 @@
   .title {
     margin-left: 12px;
   }
-}
-
-@media (min-width: 769px) {
   .loop-carousel {
     overflow-x: hidden;
   }
