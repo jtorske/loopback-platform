@@ -91,12 +91,6 @@
   }
 
 @media (min-width: 769px) {
-  .loop-track,
-  .loop-card,
-  .image-placeholder {
-    /* pointer-events: none; */
-    /* Can uncomment if needed for bug reasons */
-  }
   .loop-card {
     flex: 0 0 300px;
     max-width: 300px;
