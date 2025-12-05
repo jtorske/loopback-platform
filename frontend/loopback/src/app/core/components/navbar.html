@@ -8,7 +8,9 @@
       <a routerLink="/products" class="nav-item">Products</a>
       <a routerLink="/companies" class="nav-item">Companies</a>
       <!-- show My Company only for employee/coadmin/sysadmin roles -->
-      <a *ngIf="showMyCompany" routerLink="/company-dashboard" class="nav-item">My Company</a>
+      <a *ngIf="showMyCompany && isLoggedIn()" routerLink="/company-dashboard" class="nav-item"
+        >My Company</a
+      >
     </div>
 
     <div class="nav-right">
@@ -18,7 +20,7 @@
       <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-item nav-auth" id="signup-button"
         >Sign up</a
       >
-      <button class="profile-btn" type="button" routerLink="/account">
+      <button *ngIf="isLoggedIn()" class="profile-btn" type="button" routerLink="/account">
         <i class="fa-regular fa-user profile-icon"></i>
       </button>
     </div>
