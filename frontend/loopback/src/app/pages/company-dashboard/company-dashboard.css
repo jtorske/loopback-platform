@@ -1,7 +1,7 @@
 :host {
   display: block;
-  background: #003566;
-  color: #ffd600;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Roboto Mono', monospace;
   height: 100%;
 }
@@ -11,7 +11,7 @@
 .title {
   font-size: 48px;
   font-weight: 600;
-  color: #ffd600;
+  color: var(--accent-strong);
 }
 
 .company-logo {
@@ -30,6 +30,7 @@
     "products announcements";
   gap: 1.5rem;
   padding: 1.5rem;
+  min-height: 0; /* allow children to properly constrain and scroll */
 }
 
 .card {
@@ -53,11 +54,20 @@
 .announcements {
   display: flex;
   flex-direction: column;
+  min-height: 0;
+}
+
+/* Ensure the card wrapper for announcements participates in flex layout */
+.announcements > .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .announcements-body {
-  /* limit height so area can scroll; adjust as needed */
-  max-height: 460px;
+  /* allow the announcements body to grow and scroll within the card */
+  flex: 1 1 auto;
+  min-height: 0; /* enables proper overflow inside flex containers */
   overflow-y: auto;
   padding-right: 0.5rem; /* avoid content under scrollbar */
 }
@@ -112,17 +122,17 @@
 
 .btn-primary {
   background: transparent;
-  color: gray;
+  color: var(--muted);
   padding: 8px;
-  border: 2px solid gray;
+  border: 2px solid rgba(11,35,48,0.08);
   border-radius: 8px;
 }
 
 .btn-secondary {
-  background: #ffc94b;
-  color: #0f2745;
+  background: var(--accent);
+  color: #ffffff;
   padding: 8px;
-  border: 2px solid #ffc94b;
+  border: 2px solid var(--accent);
   border-radius: 8px;
 }
 
@@ -135,7 +145,7 @@
 
 .announcement-list li {
   padding: 0.4rem 0;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(11,35,48,0.06);
 }
 
 /* Products row */
@@ -152,8 +162,8 @@
   align-items: center;
   justify-content: center;
   min-height: 140px;
-  background: whitesmoke;
-  color: #6b7280;
+  background: var(--surface);
+  color: var(--muted);
   font-size: 1rem;
   width: 100%;
   flex: 1 1 100%;
@@ -169,8 +179,8 @@
   font-size: 1.3rem;
   line-height: 1;
   cursor: pointer;
-  background: #ffffff;
-  color: #0f2745;
+  background: var(--surface);
+  color: var(--text);
   display: flex;
   align-items: center;
   justify-content: center;

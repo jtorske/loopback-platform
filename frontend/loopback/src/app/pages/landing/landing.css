@@ -1,7 +1,7 @@
 :host {
   display: block;
-  background: #003566;
-  color: #ffd600;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Roboto Mono', monospace;
   height: 100%;
 }
@@ -48,11 +48,11 @@
   flex: 0 0 80vw;
   max-width: 320px;
   scroll-snap-align: start;
-  background: #003566;
+  background: var(--surface);
   border-radius: 6px;
   padding: 12px;
   box-sizing: border-box;
-  color: #ffd600;
+  color: var(--text);
 }
 
 .product-name {
@@ -142,22 +142,22 @@
 
 .bottom-image {
   flex: 1;
-  background-color: #d9d9d9;
+  background-color: var(--muted);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .login-card {
-  background: #ffd600;
-  color: #000;
+  background: var(--accent);
+  color: #ffffff;
 }
 .products-card {
-  background: #002246;
+  background: var(--surface);
 }
 .companies-card {
-  background: #000;
-  color: #ffd600;
+  background: var(--surface);
+  color: var(--text);
 }
 
 @media (max-width: 768px) {

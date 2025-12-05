@@ -3,7 +3,7 @@
 	align-items: center;
 	justify-content: center;
 	min-height: calc(100vh - 64px);
-	background: #133462;
+	background: var(--bg);
 	padding: 1.5rem;
 	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
 		"Liberation Mono", "Courier New", monospace;
@@ -13,28 +13,28 @@
 .add-card {
 	width: 100%;
 	max-width: 720px;
-	background: #ffffff;
+	background: var(--surface);
 	border-radius: 20px;
 	padding: 36px 44px;
-	box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+	box-shadow: 0 20px 45px rgba(0,0,0,0.08);
 	box-sizing: border-box;
 }
 
 .header { margin-bottom: 1.5rem }
-.header h1 { margin:0; font-size:1.6rem; color:#0b2344 }
+.header h1 { margin:0; font-size:1.6rem; color:var(--text) }
 
 .form { display:flex; flex-direction:column; gap:1.25rem }
 .section-title { margin:0 0 0.5rem; font-weight:700; color:#0b2344 }
 
-input, textarea { width:100%; border-radius:12px; border:2px solid #d4d4d4; padding:0.6rem 0.85rem; background:#f9fafb }
+input, textarea { width:100%; border-radius:12px; border:2px solid rgba(11,35,48,0.06); padding:0.6rem 0.85rem; background:#f7f7f7 }
 textarea { min-height:140px; resize:vertical }
 
 .two-up { display:flex; gap:1rem }
 .two-up > div { flex:1 }
 
 .actions { display:flex; gap:1rem; align-items:center; margin-top:0.5rem }
-.primary-btn { background:#facc15; border:none; padding:0.6rem 1.4rem; border-radius:8px; cursor:pointer }
-.primary-btn:hover { background:#eab308 }
+.primary-btn { background:var(--accent); border:none; padding:0.6rem 1.4rem; border-radius:8px; cursor:pointer; color:#fff }
+.primary-btn:hover { background:var(--accent-strong) }
 .cancel-btn { background:transparent; border:none; cursor:pointer }
 
 @media (max-width: 600px) {

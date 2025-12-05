@@ -12,10 +12,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root {
+  /* Palette: light neutral background, teal accents, dark text */
+  --bg: whitesmoke;
+  --surface: #ffffff;
+  --accent: #00796b; /* teal */
+  --accent-strong: #00695c;
+  --text: #0b2330; /* dark slate */
+  --muted: #6b7280;
+}
+
 body {
   overflow-x: hidden;
-  background: #0f172a;
-  color: #f1f5f9;
+  background: var(--bg);
+  color: var(--text);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 

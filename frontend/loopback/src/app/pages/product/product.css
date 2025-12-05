@@ -1,6 +1,6 @@
 :host {
         display: block;
-        background: #003566;
+        background: whitesmoke;
         color: #f9fafb;
         font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
@@ -100,14 +100,14 @@
 .feedback-btn {
         margin-top: 16px;
         align-self: flex-start;
-        background-color: #FFD60A;
-        color: #001D3D;
+        background-color: var(--accent);
+        color: whitesmoke;
         font-size: 24px;
         font-weight: bold;
         border: none;
         width: 255px;
         height: 69px;
-        border-radius: 2px;
+        border-radius: 8px;
 }
 
 .feedback-btn:hover {
@@ -122,13 +122,13 @@
         background-color: white;
         color: #696969;
         border: 1px solid #CCCCCC;
-        border-radius: 2px;
+        border-radius: 8px;
         font-size: 18px;
         cursor: pointer;
 }
 
 .company-btn:hover {
-        background-color: #ffe066;
+        background-color: #e3e1e1;
 }
 
 /* Feedback section */
