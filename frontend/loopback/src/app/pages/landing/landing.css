@@ -94,7 +94,8 @@
   .loop-track,
   .loop-card,
   .image-placeholder {
-    pointer-events: none;
+    /* pointer-events: none; */
+    /* Can uncomment if needed for bug reasons */
   }
   .loop-card {
     flex: 0 0 300px;
