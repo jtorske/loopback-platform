@@ -110,10 +110,11 @@
         width: 255px;
         height: 69px;
         border-radius: 8px;
+        cursor: pointer;
 }
 
 .feedback-btn:hover {
-        background-color: #e0e0e0;
+        background-color: #526b67;
 }
 
 .company-btn {

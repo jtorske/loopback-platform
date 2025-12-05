@@ -17,7 +17,7 @@
 
     <form class="form" (ngSubmit)="onSubmit()" #feedbackForm="ngForm">
       <!-- Feedback textarea -->
-       <div class="section">
+      <div class="section">
         <h2 class="section-title">Feedback title</h2>
         <input
           type="text"
@@ -25,6 +25,7 @@
           [(ngModel)]="feedbackTitle"
           required
           placeholder="Enter a title for your feedback"
+          class="title-field"
         />
       </div>
       <div class="section">
@@ -55,21 +56,11 @@
 
       <!-- Actions -->
       <div class="actions">
-        <button
-          class="primary-btn"
-          type="submit"
-          [disabled]="feedbackForm.invalid"
-        >
+        <button class="primary-btn" type="submit" [disabled]="feedbackForm.invalid">
           Submit Feedback
         </button>
 
-        <button
-          class="cancel-btn"
-          type="button"
-          (click)="onCancel()"
-        >
-          Cancel
-        </button>
+        <button class="cancel-btn" type="button" (click)="onCancel()">Cancel</button>
       </div>
     </form>
   </div>

@@ -83,6 +83,15 @@
   color: #0b2344;
 }
 
+.title-field {
+  margin-top: 4px;
+  padding: 8px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  min-width: 100%;
+}
+
 /* Textarea */
 textarea {
   width: 100%;
