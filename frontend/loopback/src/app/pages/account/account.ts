@@ -54,6 +54,10 @@ export class Account implements OnInit {
 
   ngOnInit() {
     const userData = localStorage.getItem('user');
+    if (!userData) {
+    this.router.navigate(['/login']);
+    return;
+  }
     if (userData) {
       this.user = JSON.parse(userData);
     }
