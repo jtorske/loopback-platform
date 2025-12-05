@@ -86,6 +86,10 @@
   background-image: inherit;
 }
 
+.loop-card.clickable {
+    cursor: pointer;
+  }
+
 @media (min-width: 769px) {
   .loop-track,
   .loop-card,
