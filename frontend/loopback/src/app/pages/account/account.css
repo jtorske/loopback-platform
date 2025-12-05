@@ -51,6 +51,8 @@
   gap: 32px;
   align-items: flex-start;
   height: auto;
+  width: 1200px;
+  max-width: 95vw;
 }
 
 @media (max-width: 1200px) {
@@ -366,7 +368,8 @@
 @media (max-width: 767px) {
   .account-layout {
     flex-direction: column;
-    align-items: stretch;
+    /* align-items: stretch; */
+    justify-content: center;
     gap: 16px;
     height: auto;
   }
