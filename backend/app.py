@@ -188,6 +188,8 @@ def create_app():
         title = db.Column(db.String(255))
         body = db.Column(db.Text, nullable=False)
         status = db.Column(db.String(50), default="open")
+        upvotes = db.Column(db.Integer, default=0)
+        downvotes = db.Column(db.Integer, default=0)
         created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
         def to_dict(self):
@@ -201,6 +203,9 @@ def create_app():
                 "title": self.title,
                 "body": self.body,
                 "status": self.status,
+                "upvotes": self.upvotes or 0,
+                "downvotes": self.downvotes or 0,
+                "score": (self.upvotes or 0) - (self.downvotes or 0),
                 "created_at": self.created_at.isoformat() if self.created_at else None,
             }
 
@@ -346,6 +351,42 @@ def create_app():
         except Exception as e:
             db.session.rollback()
             return jsonify({"error": f"delete failed: {str(e)}"}), 500
+    
+    # Vote on feedback (simple Reddit-style up/down)
+    @app.route("/feedback/<int:feedback_id>/vote", methods=["POST"])
+    def vote_feedback(feedback_id):
+        data = request.get_json() or {}
+        direction = data.get("direction")  # "up", "down", or null
+        previous = data.get("previous")   # "up", "down", or null
+
+        # validate
+        if direction not in (None, "up", "down"):
+            return jsonify({"error": "direction must be 'up', 'down', or null"}), 400
+        if previous not in (None, "up", "down"):
+            return jsonify({"error": "previous must be 'up', 'down', or null"}), 400
+
+        feedback = Feedback.query.get_or_404(feedback_id)
+
+        # normalize None -> 0
+        feedback.upvotes = feedback.upvotes or 0
+        feedback.downvotes = feedback.downvotes or 0
+
+        # 1) remove previous vote, if any
+        if previous == "up":
+            feedback.upvotes = max(0, feedback.upvotes - 1)
+        elif previous == "down":
+            feedback.downvotes = max(0, feedback.downvotes - 1)
+
+        # 2) apply new vote, if any (direction == None means "undo")
+        if direction == "up":
+            feedback.upvotes += 1
+        elif direction == "down":
+            feedback.downvotes += 1
+
+        db.session.commit()
+        return jsonify(feedback.to_dict()), 200
+
+
 
     
     # 11) List products

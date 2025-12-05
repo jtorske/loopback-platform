@@ -167,6 +167,40 @@
         gap: 8px;
 }
 
+.feedback-votes {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 4px;
+        font-size: 14px;
+}
+
+.vote-btn {
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 2px 4px;
+        font-size: 14px;
+        line-height: 1;
+        color: #9ca3af; /* neutral gray */
+        transition: transform 0.1s ease, color 0.1s ease;
+}
+
+.vote-btn:hover {
+        transform: translateY(-1px);
+}
+
+.vote-btn.active {
+        color: #facc15; /* highlight when chosen */
+        font-weight: 600;
+}
+
+.vote-score {
+        min-width: 24px;
+        text-align: center;
+}
+
+
 .feedback-right {
         width: 30%;
         display: flex;

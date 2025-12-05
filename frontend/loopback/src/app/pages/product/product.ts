@@ -29,6 +29,9 @@ interface Feedback {
   parent_feedback_id?: number;
   created_at: string;
   id: number;
+  upvotes?: number;
+  downvotes?: number;
+  score?: number;
 }
 
 @Component({
@@ -47,6 +50,7 @@ export class Product {
   product: ProductData = {} as ProductData;
   // only sys admin see delete button
   canDeleteFeedback = false;
+  myVotes: { [feedbackId: number]: 'up' | 'down' } = {};
 
   constructor(private route: ActivatedRoute, private router: Router) { }
   private http = inject(HttpClient);
@@ -136,7 +140,7 @@ export class Product {
     }
   }
 
-    deleteFeedback(feedbackId: number): void {
+  deleteFeedback(feedbackId: number): void {
     if (!feedbackId) return;
     if (!this.canDeleteFeedback) return;
 
@@ -161,6 +165,63 @@ export class Product {
 
   giveFeedback(productID: any): void {
     this.router.navigate(['/feedback', productID]);
+  }
+
+    getScore(feedback: Feedback): number {
+    const up = feedback.upvotes ?? 0;
+    const down = feedback.downvotes ?? 0;
+    // if backend sends score, prefer that:
+    if (typeof feedback.score === 'number') {
+      return feedback.score;
+    }
+    return up - down;
+  }
+
+    vote(feedback: Feedback, direction: 'up' | 'down'): void {
+    if (!feedback || !feedback.id) return;
+
+    const feedbackId = feedback.id;
+
+    const current = this.myVotes[feedbackId] ?? null; // "up" | "down" | null
+    let next: 'up' | 'down' | null;
+
+    // If user clicks the same direction again, undo their vote
+    if (current === direction) {
+      next = null; // undo
+    } else {
+      // Either no vote yet, or switching directions
+      next = direction;
+    }
+
+    const url = `http://localhost:5000/feedback/${feedbackId}/vote`;
+
+    this.http.post<any>(url, {
+      direction: next,   // "up", "down", or null
+      previous: current, // "up", "down", or null
+    }).subscribe({
+      next: (updated) => {
+        const idx = this.feedbacks.findIndex((f) => f.id === feedbackId);
+        if (idx !== -1) {
+          this.feedbacks[idx] = {
+            ...this.feedbacks[idx],
+            upvotes: updated.upvotes,
+            downvotes: updated.downvotes,
+            score: updated.score,
+          };
+        }
+
+        // Update local vote state
+        if (next) {
+          this.myVotes[feedbackId] = next;
+        } else {
+          delete this.myVotes[feedbackId];
+        }
+      },
+      error: (err) => {
+        console.error('Failed to register vote', err);
+        alert('Error voting on feedback. Please try again.');
+      },
+    });
   }
 
   viewOtherProducts(companyId: number): void {
