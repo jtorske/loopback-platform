@@ -1,21 +1,35 @@
-# Loopback
+## LoopBack
 
-Group 6
+Contributors
+
+- Riyad Abdullayev  
+- Gaurav Ashar  
+- Isaac Hus  
+- Luke Nodwell  
+- Jordan Torske  
 
 
-| Name | Student ID |
-| --- | --- |
-| Riyad Abdullayev | 30140509 |
-| Gaurav Ashar | 30140471 |
-| Isaac Hus | 30139733 |
-| Luke Nodwell | 30144931 |
-| Jordan Torske | 30142873 |
+## Project Summary
 
-## Project overview
+LoopBack is a centralized feedback platform designed to connect consumers and companies through
+structured, visible, and actionable product feedback. Unlike traditional review systems where
+feedback is often fragmented or ignored, LoopBack provides a single ecosystem where verified
+consumers can share insights and companies can directly engage with user sentiment.
+
+The platform supports multiple user roles, including consumers, corporate employees,
+corporate administrators, and system administrators. Core features include product management,
+categorized feedback posts, voting, replies, company announcements, and content moderation.
+By organizing feedback and surfacing meaningful trends, LoopBack enables companies to make
+data-driven product improvements while ensuring users feel their voices are heard.
+
+## Project Overview
 
 - `backend/` — Flask backend (Python)
 - `frontend/` — Angular frontend
-- `docker-compose.yml` — defines three services: `client` (frontend), `server` (backend), and `db` (MySQL)
+- `docker-compose.yml` — defines three services:
+  - `client` (Angular frontend)
+  - `server` (Flask backend)
+  - `db` (MySQL database)
 
 ## Environment
 
